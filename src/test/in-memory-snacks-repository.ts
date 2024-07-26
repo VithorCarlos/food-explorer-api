@@ -1,6 +1,6 @@
 import { Snack } from "@prisma/client";
-import { SnacksRepository } from "../snacks-repository";
-import { PaginationParams } from "@/core/shared/pagination-params";
+import { SnacksRepository } from "../domain/repositories/snacks-repository";
+import { PaginationParams } from "@/shared/pagination-params";
 
 class InMemorySnacksRepository implements SnacksRepository {
   private items: Snack[] = [];

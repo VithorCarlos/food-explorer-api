@@ -1,4 +1,4 @@
-import { PaginationParams } from "@/core/shared/pagination-params";
+import { PaginationParams } from "@/shared/pagination-params";
 import { Snack } from "@prisma/client";
 
 export interface SnacksRepository {
