@@ -1,7 +1,8 @@
 {
   "extends": [
     "eslint:recommend",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:vitest-globals/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
