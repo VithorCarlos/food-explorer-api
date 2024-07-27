@@ -28,7 +28,8 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  snacks Snack[]
+  snacks   Snack[]
+  Favorite Favorite[]
 
   @@map("users")
 }
@@ -45,8 +46,21 @@ model Snack {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
+  User     User?      @relation(fields: [userId], references: [id])
+  userId   String?
+  Favorite Favorite[]
 
   @@map("snacks")
+}
+
+model Favorite {
+  id String @unique @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  Snack   Snack  @relation(fields: [snackId], references: [id])
+  snackId String
+
+  @@map("favorites")
 }

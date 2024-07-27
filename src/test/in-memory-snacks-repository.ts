@@ -1,9 +1,9 @@
-import { Snack } from "@prisma/client";
+import { Snack } from "@/domain/entities/snack";
 import { SnacksRepository } from "../domain/repositories/snacks-repository";
 import { PaginationParams } from "@/shared/pagination-params";
 
-class InMemorySnacksRepository implements SnacksRepository {
-  private items: Snack[] = [];
+export class InMemorySnacksRepository implements SnacksRepository {
+  public items: Snack[] = [];
 
   async findById(id: string) {
     const item = this.items.find((item) => item.id === id);
@@ -16,6 +16,10 @@ class InMemorySnacksRepository implements SnacksRepository {
   }
 
   async searchMany({ page, query, perPage = 20 }: PaginationParams) {
+    if (!query) {
+      return [];
+    }
+
     return this.items
       .filter(
         (item) =>
@@ -41,5 +45,3 @@ class InMemorySnacksRepository implements SnacksRepository {
     this.items.splice(itemIndex, 1);
   }
 }
-
-export { InMemorySnacksRepository };

@@ -1,5 +1,5 @@
 export interface PaginationParams {
-  query: string;
+  query?: string;
   page: number;
   perPage: number;
 }

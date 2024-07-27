@@ -1,8 +1,8 @@
-import { User } from "@prisma/client";
+import { User } from "@/domain/entities/user";
 import { UsersRepository } from "../domain/repositories/users-repository";
 
-class InMemoryUsersRepository implements UsersRepository {
-  private items: User[] = [];
+export class InMemoryUsersRepository implements UsersRepository {
+  public items: User[] = [];
 
   async findById(id: string) {
     const item = this.items.find((item) => item.id === id);
@@ -35,6 +35,10 @@ class InMemoryUsersRepository implements UsersRepository {
       this.items[itemIndex] = data;
     }
   }
-}
 
-export { InMemoryUsersRepository };
+  async delete(id: string) {
+    const itemIndex = this.items.findIndex((item) => item.id === id);
+
+    this.items.splice(itemIndex, 1);
+  }
+}

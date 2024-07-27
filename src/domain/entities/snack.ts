@@ -2,7 +2,7 @@ import { BaseEntity } from "../../shared/entity/base-identity";
 import { Optional } from "@/shared/optional";
 import { randomUUID } from "node:crypto";
 
-interface Props {
+export interface SnackProps {
   id: string;
   title: string;
   description: string;
@@ -15,8 +15,8 @@ interface Props {
   updated_at?: Date;
 }
 
-export class Snack extends BaseEntity<Props> {
-  static create(props: Optional<Props, "id" | "created_at">) {
+export class Snack extends BaseEntity<SnackProps> {
+  static create(props: Optional<SnackProps, "id" | "created_at">) {
     const snack = new Snack({
       ...props,
       id: props.id || randomUUID(),
@@ -77,7 +77,7 @@ export class Snack extends BaseEntity<Props> {
     ingredients,
     price,
     imageUrl,
-  }: Props) {
+  }: SnackProps) {
     Object.assign(this, {
       title,
       description,
