@@ -1,7 +1,7 @@
 import { Snack, SnackProps } from "@/domain/entities/snack";
 import { faker } from "@faker-js/faker";
 
-export function makeSnacks(override: Partial<SnackProps> = {}, userId: string) {
+export function makeSnack(override: Partial<SnackProps> = {}, userId: string) {
   const user = Snack.create({
     title: faker.commerce.productName(),
     description: faker.commerce.productDescription(),

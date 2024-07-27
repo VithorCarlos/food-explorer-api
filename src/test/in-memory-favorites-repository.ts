@@ -15,8 +15,10 @@ export class InMemoryFavoritesRepository implements FavoritesRepository {
     return item;
   }
 
-  async findMany({ page, perPage = 20 }: PaginationParams) {
-    return this.items.slice((page - 1) * perPage, page * perPage);
+  async findMany({ page, perPage = 20 }: PaginationParams, userId: string) {
+    return this.items
+      .filter((item) => item.userId === userId)
+      .slice((page - 1) * perPage, page * perPage);
   }
 
   async create(data: Favorite) {
