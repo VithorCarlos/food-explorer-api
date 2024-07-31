@@ -1,6 +1,6 @@
-import { User } from "../entities/user";
-import { UserAlreadyExists } from "../errors/user-already-exists";
-import { UsersRepository } from "../repositories/users-repository";
+import { User } from "@/domain/entities/user";
+import { UserAlreadyExists } from "@/domain/errors/user-already-exists";
+import { UsersRepository } from "@/domain/repositories/users-repository";
 import { hash } from "bcryptjs";
 
 interface CreateUserRequest {

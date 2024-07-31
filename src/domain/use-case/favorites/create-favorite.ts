@@ -1,5 +1,5 @@
-import { Favorite } from "../entities/favorite";
-import { FavoritesRepository } from "../repositories/favorites-repository";
+import { Favorite } from "@/domain/entities/favorite";
+import { FavoritesRepository } from "@/domain/repositories/favorites-repository";
 
 interface CreateFavoriteRequest {
   userId: string;

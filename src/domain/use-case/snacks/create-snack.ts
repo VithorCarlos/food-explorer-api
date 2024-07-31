@@ -1,5 +1,5 @@
-import { Snack } from "../entities/snack";
-import { SnacksRepository } from "../repositories/snacks-repository";
+import { Snack } from "@/domain/entities/snack";
+import { SnacksRepository } from "@/domain/repositories/snacks-repository";
 
 interface CreateSnackRequest {
   title: string;

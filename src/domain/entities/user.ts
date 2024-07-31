@@ -13,6 +13,12 @@ export interface UserProps {
   updated_at?: Date;
 }
 
+interface SaveUserProps {
+  name?: string;
+  email?: string;
+  password?: string;
+}
+
 export class User extends BaseEntity<UserProps> {
   static create(props: Optional<UserProps, "id" | "created_at" | "role">) {
     const user = new User({
@@ -57,8 +63,11 @@ export class User extends BaseEntity<UserProps> {
     this.props.updated_at = new Date();
   }
 
-  public update({ name, password }: UserProps) {
-    Object.assign(this, { name, password });
+  public update({ name, password, email }: SaveUserProps) {
+    this.props.name = name ?? this.name;
+    this.props.password = password ?? this.password;
+    this.props.email = email ?? this.email;
+
     this.touch();
   }
 }
