@@ -5,9 +5,9 @@ import { hash } from "bcryptjs";
 
 interface UpdateUserRequest {
   userId: string;
-  name: string;
-  email: string;
-  password: string;
+  name?: string;
+  email?: string;
+  password?: string;
 }
 
 export class UpdateUserUseCase {

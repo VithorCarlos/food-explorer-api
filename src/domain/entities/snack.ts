@@ -15,6 +15,15 @@ export interface SnackProps {
   updated_at?: Date;
 }
 
+interface SaveSnacksProps {
+  title?: string;
+  description?: string;
+  category?: string;
+  ingredients?: string[];
+  price?: number;
+  imageUrl?: string;
+}
+
 export class Snack extends BaseEntity<SnackProps> {
   static create(props: Optional<SnackProps, "id" | "created_at">) {
     const snack = new Snack({
@@ -77,15 +86,18 @@ export class Snack extends BaseEntity<SnackProps> {
     ingredients,
     price,
     imageUrl,
-  }: SnackProps) {
-    Object.assign(this, {
-      title,
-      description,
-      category,
-      ingredients,
-      price,
-      imageUrl,
-    });
+  }: SaveSnacksProps) {
+    this.props.title = title ?? this.title;
+
+    this.props.description = description ?? this.description;
+
+    this.props.category = category ?? this.category;
+
+    this.props.ingredients = ingredients ?? this.ingredients;
+
+    this.props.price = price ?? this.price;
+
+    this.props.imageUrl = imageUrl ?? this.imageUrl;
 
     this.touch();
   }
