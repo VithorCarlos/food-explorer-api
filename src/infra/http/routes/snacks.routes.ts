@@ -8,6 +8,29 @@ import { deleteSnack } from "../controllers/snacks/delete";
 import { searchSnack } from "../controllers/snacks/search";
 
 export const snackRoutes = async (fastify: FastifyInstance) => {
+  fastify.get(
+    "",
+    {
+      schema: {
+        security: [{ BearerAuth: [] }],
+        description: "Search snacks",
+        tags: ["Snacks"],
+        summary: "Search snacks",
+        querystring: {
+          type: "object",
+          properties: {
+            page: { type: "integer", default: 1 },
+            perPage: { type: "integer", default: 10 },
+            title: { type: "string" },
+            ingredients: { type: "array" },
+          },
+        },
+      },
+      onRequest: [verifyJWT],
+    },
+    searchSnack
+  );
+
   fastify.post(
     "",
     {
@@ -112,48 +135,9 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
         },
         tags: ["Snacks"],
         summary: "Delete snack",
-        response: {
-          200: {
-            description: "Successful response",
-            type: "array",
-            properties: {
-              id: { type: "string" },
-              title: { type: "string" },
-              category: { type: "string" },
-              ingredients: { type: "array" },
-              price: { type: "integer" },
-              description: { type: "string" },
-              imageUrl: { type: "string" },
-            },
-          },
-        },
       },
       onRequest: [verifyJWT, verifyRole(ROLE.ADMIN)],
     },
     deleteSnack
-  );
-
-  fastify.get(
-    "",
-    {
-      schema: {
-        security: [{ BearerAuth: [] }],
-        description: "Search snack",
-        querystring: {
-          type: "object",
-          properties: {
-            page: { type: "integer", default: 1 },
-            perPage: { type: "integer", default: 10 },
-            title: { type: "string" },
-            ingredients: { type: "array" },
-          },
-        },
-
-        tags: ["Snacks"],
-        summary: "Search snack",
-      },
-      onRequest: [verifyJWT],
-    },
-    searchSnack
   );
 };
