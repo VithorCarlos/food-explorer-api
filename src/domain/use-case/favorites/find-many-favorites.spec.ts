@@ -11,7 +11,7 @@ describe("Find many favorites", () => {
     sut = new FindManyFavoriteUseCase(inMemoryFavoritesRepository);
   });
 
-  it("Should be able to findmany an favorite", async () => {
+  it("Should be able to find many favorites", async () => {
     for (let i = 1; i <= 12; i++) {
       await inMemoryFavoritesRepository.create(
         makeFavorite({

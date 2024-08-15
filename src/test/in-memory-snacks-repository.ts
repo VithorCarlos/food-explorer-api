@@ -1,6 +1,8 @@
 import { Snack } from "@/domain/entities/snack";
-import { SnacksRepository } from "../domain/repositories/snacks-repository";
-import { PaginationParams } from "@/shared/pagination-params";
+import {
+  SearchManySnacksParams,
+  SnacksRepository,
+} from "../domain/repositories/snacks-repository";
 
 export class InMemorySnacksRepository implements SnacksRepository {
   public items: Snack[] = [];
@@ -15,17 +17,30 @@ export class InMemorySnacksRepository implements SnacksRepository {
     return item;
   }
 
-  async searchMany({ page, query, perPage = 20 }: PaginationParams) {
-    if (!query) {
-      return [];
+  async searchMany({
+    page,
+    perPage,
+    title,
+    ingredients,
+  }: SearchManySnacksParams) {
+    if (!title && (!ingredients || ingredients.length === 0)) {
+      return this.items.slice((page - 1) * perPage, page * perPage);
     }
 
     return this.items
-      .filter(
-        (item) =>
-          item.ingredients.some((ingredient) => ingredient.includes(query)) ||
-          item.title.includes(query)
-      )
+      .filter((item) => {
+        if (title) {
+          return item.title.includes(title);
+        }
+
+        if (Array.isArray(ingredients)) {
+          return item.ingredients.some((ingredient) =>
+            ingredients.some((q) => ingredient.includes(q))
+          );
+        }
+
+        return false;
+      })
       .slice((page - 1) * perPage, page * perPage);
   }
 
