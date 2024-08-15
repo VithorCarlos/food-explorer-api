@@ -39,11 +39,11 @@ app.setErrorHandler((error, _, reply) => {
   return reply.status(500).send({ message: "Internal server error." });
 });
 
-app.register(usersRoutes);
+app.register(usersRoutes, { prefix: "users" });
 
 app.get("/", { onRequest: verifyJWT }, (request, reply) => {
-  const user = request.user.sub;
-  reply.send({ user });
+  const sub = request.user.sub;
+  reply.send({ sub });
 });
 
 export { app };

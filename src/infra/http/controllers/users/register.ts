@@ -3,7 +3,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import { makeRegisterUserUseCase } from "../../factories/make-register-user-use-case";
 
-export const register = async (
+export const registerUser = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
@@ -24,7 +24,7 @@ export const register = async (
       password,
     });
 
-    reply.status(200);
+    reply.status(201);
   } catch (error) {
     if (error instanceof UserAlreadyExists) {
       reply.status(400).send({ message: error.message });

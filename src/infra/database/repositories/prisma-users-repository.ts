@@ -1,7 +1,7 @@
 import { UsersRepository } from "@/domain/repositories/users-repository";
-import { prisma } from "../prisma";
 import { User } from "@/domain/entities/user";
 import { PrismaUserAdapter } from "../adapters/prisma-user-adapter";
+import { prisma } from "../prisma";
 
 export class PrismaUsersRepository implements UsersRepository {
   async findById(id: string) {
