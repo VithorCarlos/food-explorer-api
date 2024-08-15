@@ -24,9 +24,9 @@ export class User extends BaseEntity<UserProps> {
   static create(props: Optional<UserProps, "id" | "created_at" | "role">) {
     return new User({
       ...props,
-      id: props.id || randomUUID(),
+      id: props.id ?? randomUUID(),
       created_at: props.created_at ?? new Date(),
-      role: ROLE.CLIENT,
+      role: props.role ?? ROLE.CLIENT,
     });
   }
 

@@ -3,14 +3,14 @@ import { SnackNotFoundForThisUser } from "@/domain/errors/snack-not-found-for-th
 import { SnacksRepository } from "@/domain/repositories/snacks-repository";
 
 interface UdpateSnackRequest {
+  id: string;
+  userId: string;
   title?: string;
   description?: string;
   imageUrl?: string;
   category?: string;
   ingredients?: string[];
   price?: number;
-  userId: string;
-  id: string;
 }
 
 export class UdpateSnackUseCase {

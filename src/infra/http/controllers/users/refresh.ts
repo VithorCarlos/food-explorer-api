@@ -1,4 +1,4 @@
-import { errorCodes, FastifyReply, FastifyRequest } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify";
 
 export const refreshToken = async (
   request: FastifyRequest,
@@ -7,22 +7,26 @@ export const refreshToken = async (
   await request.jwtVerify({ onlyCookie: true });
 
   try {
-    const userId = request.user.sub;
+    const { sub, role } = request.user;
 
     const accessToken = await reply.jwtSign(
-      {},
+      {
+        role,
+      },
       {
         sign: {
-          sub: userId,
+          sub,
         },
       }
     );
 
     const refreshToken = await reply.jwtSign(
-      {},
+      {
+        role,
+      },
       {
         sign: {
-          sub: userId,
+          sub,
           expiresIn: "7d",
         },
       }

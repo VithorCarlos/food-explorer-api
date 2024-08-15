@@ -45,8 +45,8 @@ model snacks {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  user   users?  @relation(fields: [userId], references: [id])
-  userId String?
+  user   users  @relation(fields: [userId], references: [id])
+  userId String
 
   favorite favorites[]
 }

@@ -8,6 +8,7 @@ import { usersRoutes } from "./infra/http/routes/users.routes";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import cors from "@fastify/cors";
+import { snackRoutes } from "./infra/http/routes/snacks.routes";
 
 const app = fastify({
   logger: true,
@@ -83,6 +84,7 @@ app.setErrorHandler((error, _, reply) => {
 });
 
 app.register(usersRoutes);
+app.register(snackRoutes, { prefix: "snack" });
 
 app.get("/", { onRequest: verifyJWT }, (request, reply) => {
   const sub = request.user.sub;
