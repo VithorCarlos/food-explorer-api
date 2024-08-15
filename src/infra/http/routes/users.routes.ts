@@ -4,6 +4,7 @@ import { registerUser } from "../controllers/users/register";
 import { updateUser } from "../controllers/users/update";
 import { verifyJWT } from "../middleware/verify-jwt";
 import { deleteUser } from "../controllers/users/delete";
+import { refreshToken } from "../controllers/users/refresh";
 
 export const usersRoutes = async (fastify: FastifyInstance) => {
   fastify.post(
@@ -33,6 +34,28 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
       },
     },
     authenticate
+  );
+
+  fastify.post(
+    "/refresh",
+    {
+      schema: {
+        security: [{ BearerAuth: [] }],
+        description: "Refresh access token",
+        tags: ["Authentication"],
+        summary: "Refresh access token",
+        response: {
+          200: {
+            description: "Successful response",
+            type: "object",
+            properties: {
+              token: { type: "string" },
+            },
+          },
+        },
+      },
+    },
+    refreshToken
   );
 
   fastify.post(
