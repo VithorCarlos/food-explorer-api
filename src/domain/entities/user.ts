@@ -1,3 +1,4 @@
+import { $Enums } from "@prisma/client";
 import { BaseEntity } from "../../shared/entity/base-identity";
 import { ROLE } from "../enums/role";
 import { Optional } from "@/shared/optional";
@@ -8,7 +9,7 @@ export interface UserProps {
   name: string;
   email: string;
   password: string;
-  role: ROLE;
+  role: $Enums.ROLE;
   created_at: Date;
   updated_at?: Date;
 }
@@ -21,14 +22,12 @@ interface SaveUserProps {
 
 export class User extends BaseEntity<UserProps> {
   static create(props: Optional<UserProps, "id" | "created_at" | "role">) {
-    const user = new User({
+    return new User({
       ...props,
       id: props.id || randomUUID(),
       created_at: props.created_at ?? new Date(),
       role: ROLE.CLIENT,
     });
-
-    return user;
   }
 
   get id() {

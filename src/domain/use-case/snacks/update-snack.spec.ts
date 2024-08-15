@@ -1,5 +1,4 @@
 import { InMemorySnacksRepository } from "@/test/in-memory-snacks-repository";
-import { EmailAlreadyExists } from "@/domain/errors/email-already-exists";
 import { UdpateSnackUseCase } from "./update-snack";
 import { makeSnack } from "@/test/factories/make-snack";
 import { InMemoryUsersRepository } from "@/test/in-memory-users-repository";

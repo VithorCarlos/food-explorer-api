@@ -19,7 +19,7 @@ enum ROLE {
   RESTAURANT
 }
 
-model User {
+model users {
   id       String @unique @default(uuid())
   name     String
   email    String @unique
@@ -29,13 +29,11 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  snacks   Snack[]
-  Favorite Favorite[]
-
-  @@map("users")
+  snacks   snacks[]
+  favorite favorites[]
 }
 
-model Snack {
+model snacks {
   id          String   @unique @default(uuid())
   title       String
   description String
@@ -47,22 +45,18 @@ model Snack {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  User   User?   @relation(fields: [userId], references: [id])
+  user   users?  @relation(fields: [userId], references: [id])
   userId String?
 
-  Favorite Favorite[]
-
-  @@map("snacks")
+  favorite favorites[]
 }
 
-model Favorite {
+model favorites {
   id String @unique @default(uuid())
 
-  User   User   @relation(fields: [userId], references: [id])
+  user   users  @relation(fields: [userId], references: [id])
   userId String
 
-  Snack   Snack  @relation(fields: [snackId], references: [id])
+  snack   snacks @relation(fields: [snackId], references: [id])
   snackId String
-
-  @@map("favorites")
 }

@@ -28,7 +28,7 @@ export class InMemoryUsersRepository implements UsersRepository {
     this.items.push(data);
   }
 
-  async save(data: User) {
+  async update(data: User) {
     const itemIndex = this.items.findIndex((item) => item.id === data.id);
 
     if (itemIndex >= 0) {

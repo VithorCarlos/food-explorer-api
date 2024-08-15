@@ -40,7 +40,7 @@ export class UpdateUserUseCase {
       ...(password && { password: password_hash }),
     });
 
-    await this.usersRepository.save(user);
+    await this.usersRepository.update(user);
 
     return { user };
   }

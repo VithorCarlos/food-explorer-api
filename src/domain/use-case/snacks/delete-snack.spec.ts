@@ -3,7 +3,6 @@ import { makeSnack } from "@/test/factories/make-snack";
 import { DeleteSnackUseCase } from "./delete-snack";
 import { SnackDoesNotExists } from "@/domain/errors/snack-does-not-exists";
 import { SnackNotFoundForThisUser } from "@/domain/errors/snack-not-found-for-this-user";
-import { makeUser } from "@/test/factories/make-user";
 
 let sut: DeleteSnackUseCase;
 let inMemorySnacksRepository: InMemorySnacksRepository;
