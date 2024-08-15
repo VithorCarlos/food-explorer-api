@@ -24,7 +24,7 @@ export const registerUser = async (
       password,
     });
 
-    reply.status(201);
+    reply.status(200);
   } catch (error) {
     if (error instanceof UserAlreadyExists) {
       reply.status(400).send({ message: error.message });

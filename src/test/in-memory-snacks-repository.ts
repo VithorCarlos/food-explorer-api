@@ -33,7 +33,7 @@ export class InMemorySnacksRepository implements SnacksRepository {
     this.items.push(data);
   }
 
-  async save(data: Snack) {
+  async update(data: Snack) {
     const itemIndex = this.items.findIndex((item) => item.id === data.id);
 
     this.items[itemIndex] = data;

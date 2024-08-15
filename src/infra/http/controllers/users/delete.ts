@@ -15,7 +15,7 @@ export const deleteUser = async (
       userId,
     });
 
-    reply.status(204);
+    reply.status(200);
   } catch (error) {
     if (error instanceof UserDoesNotExists) {
       reply.status(400).send({ message: error.message });

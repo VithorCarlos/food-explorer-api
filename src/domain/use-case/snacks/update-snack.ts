@@ -45,7 +45,7 @@ export class UdpateSnackUseCase {
       ...(imageUrl && { imageUrl }),
     });
 
-    await this.snacksRepository.save(snack);
+    await this.snacksRepository.update(snack);
 
     return { snack };
   }
