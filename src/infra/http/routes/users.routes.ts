@@ -27,7 +27,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
             description: "Successful response",
             type: "object",
             properties: {
-              token: { type: "string" },
+              accessToken: { type: "string" },
             },
           },
         },
@@ -49,7 +49,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
             description: "Successful response",
             type: "object",
             properties: {
-              token: { type: "string" },
+              accessToken: { type: "string" },
             },
           },
         },

@@ -1,6 +1,4 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
-import { UserInvalidCredential } from "@/domain/errors/user-invalid-crendential";
+import { errorCodes, FastifyReply, FastifyRequest } from "fastify";
 
 export const refreshToken = async (
   request: FastifyRequest,
@@ -11,7 +9,7 @@ export const refreshToken = async (
   try {
     const userId = request.user.sub;
 
-    const token = await reply.jwtSign(
+    const accessToken = await reply.jwtSign(
       {},
       {
         sign: {
@@ -38,7 +36,7 @@ export const refreshToken = async (
         path: "/",
       })
       .status(200)
-      .send({ token });
+      .send({ accessToken });
   } catch (error) {
     throw error;
   }

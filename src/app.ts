@@ -69,9 +69,14 @@ app.setErrorHandler((error, _, reply) => {
     });
   }
 
+  if (error.code === "FST_JWT_AUTHORIZATION_TOKEN_EXPIRED") {
+    return reply.status(401).send({
+      message: "Authorization code expired",
+    });
+  }
+
   if (env.NODE_ENV !== "production") {
     console.error(error);
-  } else {
   }
 
   return reply.status(500).send({ message: "Internal server error." });

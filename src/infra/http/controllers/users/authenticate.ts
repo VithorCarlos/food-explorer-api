@@ -20,7 +20,7 @@ export const authenticate = async (
 
     const { user } = await authenticateUseCase.execute({ email, password });
 
-    const token = await reply.jwtSign(
+    const accessToken = await reply.jwtSign(
       {},
       {
         sign: {
@@ -47,7 +47,7 @@ export const authenticate = async (
         path: "/",
       })
       .status(200)
-      .send({ token });
+      .send({ accessToken });
   } catch (error) {
     if (error instanceof UserDoesNotExists) {
       reply.status(400).send({ message: error.message });
