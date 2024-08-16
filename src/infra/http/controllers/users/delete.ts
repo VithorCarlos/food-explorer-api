@@ -15,7 +15,7 @@ export const deleteUser = async (
       userId,
     });
 
-    reply.status(200);
+    reply.clearCookie("refresh-token").status(200);
   } catch (error) {
     if (error instanceof UserDoesNotExists) {
       reply.status(400).send({ message: error.message });
