@@ -16,6 +16,16 @@ export class InMemoryFavoritesRepository implements FavoritesRepository {
     return item;
   }
 
+  async findBySnackId(id: string) {
+    const item = this.items.find((item) => item.snackId === id);
+
+    if (!item) {
+      return null;
+    }
+
+    return item;
+  }
+
   async findMany({ page, perPage }: PaginationParams, userId: string) {
     const mockSnack = makeSnack({}, userId);
 

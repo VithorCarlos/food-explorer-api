@@ -16,6 +16,20 @@ export class PrismaFavoritesRepository implements FavoritesRepository {
     return PrismaFavoriteAdapter.toDomain(favorite);
   }
 
+  async findBySnackId(snackId: string) {
+    const favorite = await prisma.favorites.findFirst({
+      where: {
+        snackId,
+      },
+    });
+
+    if (!favorite) {
+      return null;
+    }
+
+    return PrismaFavoriteAdapter.toDomain(favorite);
+  }
+
   async findMany({ page, perPage }: PaginationParams, userId: string) {
     const favorites = await prisma.favorites.findMany({
       where: { userId },

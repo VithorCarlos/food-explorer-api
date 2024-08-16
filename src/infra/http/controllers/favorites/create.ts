@@ -18,14 +18,20 @@ export const createFavorite = async (
   try {
     const createFavoriteUseCase = makeCreateFavoriteUseCase();
 
-    const { favorite: createdFavorite } = await createFavoriteUseCase.execute({
+    const createdFavorite = await createFavoriteUseCase.execute({
       userId,
       snackId,
     });
 
-    const favorite = PrismaFavoriteAdapter.toPrisma(createdFavorite);
+    if (createdFavorite?.favorite?.id) {
+      const favorite = PrismaFavoriteAdapter.toPrisma(
+        createdFavorite?.favorite
+      );
 
-    reply.status(201).send({ favorite });
+      reply.status(201).send({ favorite });
+    } else {
+      reply.status(423).send({ message: "Snack's already favorited" });
+    }
   } catch (error) {
     throw error;
   }

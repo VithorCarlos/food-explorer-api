@@ -1,5 +1,6 @@
 import { Favorite } from "@/domain/entities/favorite";
 import { FavoritesRepository } from "@/domain/repositories/favorites-repository";
+import { PrismaFavoriteAdapter } from "@/infra/database/adapters/prisma-favorite-adapter";
 
 interface CreateFavoriteRequest {
   userId: string;
@@ -10,13 +11,17 @@ export class CreateFavoriteUseCase {
   constructor(private favoritesRepository: FavoritesRepository) {}
 
   async execute({ userId, snackId }: CreateFavoriteRequest) {
-    const favorite = Favorite.create({
-      userId,
-      snackId,
-    });
+    const favorited = await this.favoritesRepository.findBySnackId(snackId);
 
-    await this.favoritesRepository.create(favorite);
+    if (favorited?.snackId !== snackId) {
+      const favorite = Favorite.create({
+        userId,
+        snackId,
+      });
 
-    return { favorite };
+      await this.favoritesRepository.create(favorite);
+
+      return { favorite };
+    }
   }
 }
