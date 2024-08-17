@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 import { makeDeleteUserUseCase } from "../../factories/make-delete-user-use-case";
+import { TOKEN } from "@/domain/enums/cookie";
 
 export const deleteUser = async (
   request: FastifyRequest,
@@ -15,7 +16,7 @@ export const deleteUser = async (
       userId,
     });
 
-    reply.clearCookie("refresh-token").status(200);
+    reply.clearCookie(TOKEN.REFRESH_TOKEN).status(200);
   } catch (error) {
     if (error instanceof UserDoesNotExists) {
       reply.status(400).send({ message: error.message });

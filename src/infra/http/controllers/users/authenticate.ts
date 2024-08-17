@@ -3,6 +3,7 @@ import { z } from "zod";
 import { makeAuthenticateUseCase } from "../../factories/make-authenticate-use-case";
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 import { UserInvalidCredential } from "@/domain/errors/user-invalid-crendential";
+import { TOKEN } from "@/domain/enums/cookie";
 
 export const authenticate = async (
   request: FastifyRequest,
@@ -38,13 +39,13 @@ export const authenticate = async (
       {
         sign: {
           sub: user.id,
-          expiresIn: "3d",
+          expiresIn: "7d",
         },
       }
     );
 
     reply
-      .setCookie("refresh-token", refreshToken, {
+      .setCookie(TOKEN.REFRESH_TOKEN, refreshToken, {
         secure: true,
         sameSite: true,
         httpOnly: true,

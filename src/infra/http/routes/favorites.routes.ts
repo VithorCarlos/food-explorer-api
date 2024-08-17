@@ -1,6 +1,5 @@
 import { FastifyInstance } from "fastify";
 import { createFavorite } from "../controllers/favorites/create";
-import { verifyJWT } from "../middleware/verify-jwt";
 import { deleteFavorite } from "../controllers/favorites/delete";
 import { findManyFavorites } from "../controllers/favorites/find-many";
 
@@ -21,7 +20,7 @@ export const favoritesRoutes = async (fastify: FastifyInstance) => {
           required: ["snackId"],
         },
       },
-      onRequest: [verifyJWT],
+      preHandler: [fastify.authenticate],
     },
     createFavorite
   );
@@ -42,7 +41,7 @@ export const favoritesRoutes = async (fastify: FastifyInstance) => {
           },
         },
       },
-      onRequest: [verifyJWT],
+      preHandler: [fastify.authenticate],
     },
     findManyFavorites
   );
@@ -62,7 +61,7 @@ export const favoritesRoutes = async (fastify: FastifyInstance) => {
         tags: ["Favorites"],
         summary: "Delete favorite",
       },
-      onRequest: [verifyJWT],
+      preHandler: [fastify.authenticate],
     },
     deleteFavorite
   );

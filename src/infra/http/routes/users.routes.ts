@@ -2,7 +2,6 @@ import { FastifyInstance } from "fastify";
 import { authenticate } from "../controllers/users/authenticate";
 import { registerUser } from "../controllers/users/register";
 import { updateUser } from "../controllers/users/update";
-import { verifyJWT } from "../middleware/verify-jwt";
 import { deleteUser } from "../controllers/users/delete";
 import { refreshToken } from "../controllers/users/refresh";
 
@@ -107,7 +106,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
           },
         },
       },
-      onRequest: [verifyJWT],
+      preHandler: [fastify.authenticate],
     },
     updateUser
   );
@@ -121,7 +120,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
         tags: ["User"],
         summary: "Delete user",
       },
-      onRequest: [verifyJWT],
+      preHandler: [fastify.authenticate],
     },
     deleteUser
   );

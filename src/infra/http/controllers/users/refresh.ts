@@ -1,12 +1,13 @@
+import { TOKEN } from "@/domain/enums/cookie";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 export const refreshToken = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
-  await request.jwtVerify({ onlyCookie: true });
-
   try {
+    await request.jwtVerify({ onlyCookie: true });
+
     const { sub, role } = request.user;
 
     const accessToken = await reply.jwtSign(
@@ -33,7 +34,7 @@ export const refreshToken = async (
     );
 
     reply
-      .setCookie("refresh-token", refreshToken, {
+      .setCookie(TOKEN.REFRESH_TOKEN, refreshToken, {
         secure: true,
         sameSite: true,
         httpOnly: true,
@@ -42,6 +43,15 @@ export const refreshToken = async (
       .status(200)
       .send({ accessToken });
   } catch (error) {
+    if (error instanceof Error) {
+      if (error.message.includes("Authorization token expired")) {
+        reply
+          .clearCookie(TOKEN.REFRESH_TOKEN)
+          .status(403)
+          .send({ message: "Code expired" });
+      }
+    }
+
     throw error;
   }
 };
