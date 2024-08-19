@@ -50,6 +50,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
             type: "object",
             properties: {
               accessToken: { type: "string" },
+              refreshToken: { type: "string" },
             },
           },
         },
