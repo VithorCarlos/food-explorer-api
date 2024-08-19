@@ -52,7 +52,7 @@ export const authenticate = async (
         path: "/",
       })
       .status(200)
-      .send({ accessToken });
+      .send({ accessToken, refreshToken });
   } catch (error) {
     if (error instanceof UserDoesNotExists) {
       reply.status(400).send({ message: error.message });

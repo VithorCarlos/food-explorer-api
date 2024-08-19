@@ -41,7 +41,7 @@ export const refreshToken = async (
         path: "/",
       })
       .status(200)
-      .send({ accessToken });
+      .send({ accessToken, refreshToken });
   } catch (error) {
     if (error instanceof Error) {
       if (error.message.includes("Authorization token expired")) {
