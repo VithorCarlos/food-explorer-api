@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { Snack } from "./snack";
 
 describe("Snack entity", () => {
-  it("Shold be able to create user entity", () => {
+  it("Should be able to create user entity", () => {
     const snack = Snack.create({
       id: randomUUID(),
       title: "My title",

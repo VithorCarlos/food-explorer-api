@@ -4,6 +4,7 @@ import { registerUser } from "../controllers/users/register";
 import { updateUser } from "../controllers/users/update";
 import { deleteUser } from "../controllers/users/delete";
 import { refreshToken } from "../controllers/users/refresh";
+import { verifyJWT } from "../middleware/verify-jwt";
 
 export const usersRoutes = async (fastify: FastifyInstance) => {
   fastify.post(
@@ -27,7 +28,14 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
             type: "object",
             properties: {
               accessToken: { type: "string" },
-              refreshToken: { type: "string" },
+              refreshToken: {
+                type: "object",
+                properties: {
+                  id: { type: "string" },
+                  expiresIn: { type: "integer" },
+                  userId: { type: "string" },
+                },
+              },
             },
           },
         },
@@ -37,20 +45,34 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
   );
 
   fastify.post(
-    "/refresh",
+    "/refresh-token",
     {
       schema: {
         security: [{ BearerAuth: [] }],
         description: "Refresh access token",
         tags: ["Authentication"],
         summary: "Refresh access token",
+        body: {
+          type: "object",
+          properties: {
+            id: { type: "string", default: "" },
+          },
+          required: ["id"],
+        },
         response: {
           200: {
             description: "Successful response",
             type: "object",
             properties: {
               accessToken: { type: "string" },
-              refreshToken: { type: "string" },
+              refreshToken: {
+                type: "object",
+                properties: {
+                  id: { type: "string" },
+                  expiresIn: { type: "integer" },
+                  userId: { type: "string" },
+                },
+              },
             },
           },
         },
@@ -108,7 +130,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
           },
         },
       },
-      preHandler: [fastify.authenticate],
+      preHandler: [verifyJWT],
     },
     updateUser
   );
@@ -122,7 +144,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
         tags: ["User"],
         summary: "Delete user",
       },
-      preHandler: [fastify.authenticate],
+      preHandler: [verifyJWT],
     },
     deleteUser
   );

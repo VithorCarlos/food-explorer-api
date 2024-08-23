@@ -27,10 +27,11 @@ model users {
   role     ROLE   @default(CLIENT)
 
   created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 
-  snacks   snacks[]
-  favorite favorites[]
+  snacks        snacks[]
+  favorite      favorites[]
+  refresh_token refresh_tokens?
 }
 
 model snacks {
@@ -43,7 +44,7 @@ model snacks {
   price       Float
 
   created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 
   user   users  @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
@@ -59,4 +60,12 @@ model favorites {
 
   snack   snacks @relation(fields: [snackId], references: [id], onDelete: Cascade)
   snackId String
+}
+
+model refresh_tokens {
+  id     String @unique @default(uuid())
+  userId String @unique
+  user   users  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  expiresIn Int
 }

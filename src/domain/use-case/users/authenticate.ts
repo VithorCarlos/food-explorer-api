@@ -1,6 +1,7 @@
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 import { UserInvalidCredential } from "@/domain/errors/user-invalid-crendential";
 import { UsersRepository } from "@/domain/repositories/users-repository";
+import { GenerateToken } from "@/domain/services/generate-token";
 import { compare } from "bcryptjs";
 
 interface AuthenticateUserRequest {
@@ -24,6 +25,10 @@ export class AuthenticateUserUseCase {
       throw new UserInvalidCredential();
     }
 
-    return { user };
+    const accessToken = GenerateToken.generate({
+      userId: user.id,
+    });
+
+    return { accessToken };
   }
 }

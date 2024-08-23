@@ -5,6 +5,7 @@ import { ROLE } from "@/domain/enums/role";
 import { updateSnack } from "../controllers/snacks/update";
 import { deleteSnack } from "../controllers/snacks/delete";
 import { searchSnack } from "../controllers/snacks/search";
+import { verifyJWT } from "../middleware/verify-jwt";
 
 export const snackRoutes = async (fastify: FastifyInstance) => {
   fastify.get(
@@ -25,7 +26,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
           },
         },
       },
-      preHandler: [fastify.authenticate],
+      preHandler: [verifyJWT],
     },
     searchSnack
   );
@@ -74,7 +75,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
           },
         },
       },
-      preHandler: [fastify.authenticate, verifyRole(ROLE.ADMIN)],
+      preHandler: [verifyJWT, verifyRole(ROLE.ADMIN)],
     },
     createSnack
   );
@@ -115,7 +116,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
           },
         },
       },
-      preHandler: [fastify.authenticate, verifyRole(ROLE.ADMIN)],
+      preHandler: [verifyJWT, verifyRole(ROLE.ADMIN)],
     },
     updateSnack
   );
@@ -135,7 +136,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
         tags: ["Snacks"],
         summary: "Delete snack",
       },
-      preHandler: [fastify.authenticate, verifyRole(ROLE.ADMIN)],
+      preHandler: [verifyJWT, verifyRole(ROLE.ADMIN)],
     },
     deleteSnack
   );

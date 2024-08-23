@@ -1,25 +1,33 @@
-import { FastifyJWT } from "@fastify/jwt";
-import { FastifyPluginAsync, FastifyReply, FastifyRequest } from "fastify";
-import fp from "fastify-plugin";
+import { env } from "@/env";
+import { FastifyReply, FastifyRequest } from "fastify";
+import { decode, verify } from "jsonwebtoken";
 
-const verifyJWT: FastifyPluginAsync = async (app) => {
-  app.decorate(
-    "authenticate",
-    async (request: FastifyRequest, reply: FastifyReply) => {
-      const token = request.headers.authorization?.split(" ")[1];
+export const verifyJWT = (
+  request: FastifyRequest,
+  reply: FastifyReply,
+  done: (err?: Error) => void
+) => {
+  try {
+    const authorization = request.headers.authorization;
 
-      if (!token) {
-        return reply.status(401).send({ message: "Unauthorized" });
-      }
-
-      try {
-        const decoded = await request.jwt.verify<FastifyJWT["user"]>(token);
-        request.user = decoded;
-      } catch (error) {
-        return reply.status(401).send({ message: "Unauthorized" });
-      }
+    if (!authorization) {
+      return reply.status(401).send({
+        message: "you do not have authorization of access",
+      });
     }
-  );
-};
 
-export default fp(verifyJWT);
+    const [, accessToken] = authorization.split(" ");
+
+    verify(accessToken, env.JWT_SECRET);
+
+    const { sub: userId } = decode(accessToken);
+
+    request.user = {
+      sub: userId!,
+    };
+
+    done();
+  } catch (error) {
+    throw error;
+  }
+};

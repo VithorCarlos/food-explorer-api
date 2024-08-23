@@ -3,7 +3,7 @@ import { z } from "zod";
 
 const schema = z.object({
   NODE_ENV: z
-    .enum(["development", "production", "staging"])
+    .enum(["development", "production", "staging", "test"])
     .default("development"),
   PORT: z.coerce.number().default(3333),
   DATABASE_URL: z.string(),

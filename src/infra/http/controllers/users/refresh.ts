@@ -1,57 +1,34 @@
-import { TOKEN } from "@/domain/enums/cookie";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { makeRefreshTokenUseCase } from "../../factories/make-refresh-token-use-case";
+import { decode } from "jsonwebtoken";
+import { z } from "zod";
+import { makeGenerateRefreshTokenUseCase } from "../../factories/make-generate-refresh-token-use-case";
+import { RefreshTokenNotFoundError } from "@/domain/errors/refresh-token-not-found";
 
 export const refreshToken = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
   try {
-    await request.jwtVerify({ onlyCookie: true });
+    const refreshTokenSchema = z.object({
+      id: z.string(),
+    });
 
-    const { sub, role } = request.user;
+    const { id } = refreshTokenSchema.parse(request.body);
 
-    const accessToken = await reply.jwtSign(
-      {
-        role,
-      },
-      {
-        sign: {
-          sub,
-        },
-      }
-    );
+    const refreshTokenUseCase = makeGenerateRefreshTokenUseCase();
 
-    const refreshToken = await reply.jwtSign(
-      {
-        role,
-      },
-      {
-        sign: {
-          sub,
-          expiresIn: "7d",
-        },
-      }
-    );
+    const refreshToken = await refreshTokenUseCase.execute({
+      id,
+    });
 
-    reply
-      .setCookie(TOKEN.REFRESH_TOKEN, refreshToken, {
-        secure: true,
-        sameSite: true,
-        httpOnly: true,
-        path: "/",
-      })
-      .status(200)
-      .send({ accessToken, refreshToken });
-  } catch (error) {
-    if (error instanceof Error) {
-      if (error.message.includes("Authorization token expired")) {
-        reply
-          .clearCookie(TOKEN.REFRESH_TOKEN)
-          .status(403)
-          .send({ message: "Code expired" });
-      }
+    if (refreshToken?.accessToken) {
+      return reply.status(200).send(refreshToken);
     }
-
+  } catch (error) {
+    if (error instanceof RefreshTokenNotFoundError) {
+      reply.status(401).send({ message: "refresh token not found" });
+    }
     throw error;
   }
 };

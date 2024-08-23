@@ -1,5 +1,5 @@
 export class SnackNotFoundForThisUser extends Error {
   constructor() {
-    super("Snack not found for this user");
+    super("snack not found for this user");
   }
 }

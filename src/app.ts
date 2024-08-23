@@ -1,8 +1,6 @@
 import fastify from "fastify";
 import { ZodError } from "zod";
 import { env } from "./env";
-import fastifyJwt from "@fastify/jwt";
-import verifyJWT from "./infra/http/middleware/verify-jwt";
 import cookie from "@fastify/cookie";
 import { usersRoutes } from "./infra/http/routes/users.routes";
 import fastifySwagger from "@fastify/swagger";
@@ -17,24 +15,14 @@ const app = fastify({
   },
 });
 
-app.register(cookie);
-
-app.register(fastifyJwt, {
-  secret: env.JWT_SECRET,
-  cookie: {
-    cookieName: "@food-explorer:token",
-    signed: false,
-  },
-  sign: {
-    expiresIn: "10m",
-  },
-});
-
 app.register(cors, {
-  origin: "*",
+  origin: ["http://localhost:3000"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization", "Accept"],
+  credentials: true,
 });
+
+app.register(cookie);
 
 app.register(fastifySwagger, {
   openapi: {
@@ -73,9 +61,9 @@ app.setErrorHandler((error, _, reply) => {
     });
   }
 
-  if (error.code === "FST_JWT_NO_AUTHORIZATION_IN_COOKIE") {
+  if (error.message.includes("jwt expired")) {
     return reply.status(401).send({
-      message: "Authorization code expired or doesn't exists",
+      message: "token is expired or not valid",
     });
   }
 
@@ -85,13 +73,6 @@ app.setErrorHandler((error, _, reply) => {
 
   return reply.status(500).send({ message: "Internal server error." });
 });
-
-app.addHook("preHandler", (req, res, next) => {
-  req.jwt = app.jwt;
-  return next();
-});
-
-app.register(verifyJWT);
 
 app.register(usersRoutes);
 app.register(snackRoutes, { prefix: "snack" });

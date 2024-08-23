@@ -4,6 +4,8 @@ import { makeUser } from "@/test/factories/make-user";
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 import { UserInvalidCredential } from "@/domain/errors/user-invalid-crendential";
 import { hash } from "bcryptjs";
+import { verify } from "jsonwebtoken";
+import { env } from "@/env";
 
 describe("Authenticate test", () => {
   let sut: AuthenticateUserUseCase;
@@ -25,18 +27,14 @@ describe("Authenticate test", () => {
 
     inMemoryUsersRepository.create(makedUser);
 
-    const { user } = await sut.execute({
+    const { accessToken } = await sut.execute({
       email: makedUser.email,
       password: "mypassword",
     });
 
-    expect(user).toEqual(
-      expect.objectContaining({
-        email: "johndoe@gmail.com",
-        id: "user-01",
-        password: password_hash,
-      })
-    );
+    const decoded = verify(accessToken, env.JWT_SECRET);
+
+    expect(decoded).toEqual(expect.objectContaining({ sub: "user-01" }));
   });
 
   it("Should not be able to authenticate if user doesn't exists", () => {

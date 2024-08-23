@@ -1,4 +1,3 @@
-import { PrismaSnackAdapter } from "../adapters/prisma-snack-adapter";
 import { prisma } from "../prisma";
 import { FavoritesRepository } from "@/domain/repositories/favorites-repository";
 import { PrismaFavoriteAdapter } from "../adapters/prisma-favorite-adapter";
