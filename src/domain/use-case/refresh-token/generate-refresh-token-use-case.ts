@@ -22,9 +22,7 @@ export class GenerateRefreshTokenUseCase {
       throw new RefreshTokenNotFoundError();
     }
 
-    const refreshTokenExpired = dayjs().isAfter(
-      dayjs.unix(refreshToken.expiresIn)
-    );
+    const expiresIn = dayjs().add(7, "day").unix();
 
     const user = await this.usersRepository.findById(refreshToken.userId);
 
@@ -32,20 +30,15 @@ export class GenerateRefreshTokenUseCase {
       userId: refreshToken.userId,
     });
 
-    if (refreshTokenExpired) {
-      await this.refreshTokenRepository.delete(refreshToken.id);
-      const expiresIn = dayjs().add(7, "day").unix();
+    const newRefreshToken = RefreshToken.create({
+      userId: user!.id,
+      expiresIn,
+    });
 
-      const newRefreshToken = RefreshToken.create({
-        userId: user!.id,
-        expiresIn,
-      });
+    await this.refreshTokenRepository.delete(refreshToken.id);
 
-      await this.refreshTokenRepository.create(newRefreshToken);
+    await this.refreshTokenRepository.create(newRefreshToken);
 
-      return { accessToken, refreshToken: newRefreshToken };
-    }
-
-    return { accessToken };
+    return { accessToken, refreshToken: newRefreshToken };
   }
 }
