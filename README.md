@@ -1,5 +1,5 @@
 # Food Explorer API
-Complete digital menu being developed in React.js with Next.js, and Node.js with Prisma and Nest.js. The system features JWT-based login authentication with Cookie, user registration, and access authorization.
+Complete digital menu being developed in React.js with Next.js, and Node.js with Prisma. The system features JWT-based login authentication with Cookie, user registration, and access authorization.
 
 The food explorer will have two personas: the admin and the user;
 
