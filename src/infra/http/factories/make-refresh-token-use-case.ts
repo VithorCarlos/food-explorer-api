@@ -1,4 +1,4 @@
-import { RefreshTokenUseCase } from "@/domain/use-case/refresh-token/refresh-token-use-case";
+import { RefreshTokenUseCase } from "@/domain/use-case/refresh-token/refresh-token";
 import { PrismaRefreshTokenRepository } from "@/infra/database/repositories/prisma-refresh-token-repository";
 
 export function makeRefreshTokenUseCase() {

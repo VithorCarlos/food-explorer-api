@@ -1,23 +1,17 @@
-import { GenerateRefreshTokenUseCase } from "./generate-refresh-token-use-case";
+import { GenerateRefreshTokenUseCase } from "./generate-refresh-token";
 import { InMemoryRefreshTokenRepository } from "@/test/in-memory-refresh-token";
 import { RefreshToken } from "@/domain/entities/refresh-token";
 import dayjs from "dayjs";
 import { RefreshTokenNotFoundError } from "@/domain/errors/refresh-token-not-found";
-import { InMemoryUsersRepository } from "@/test/in-memory-users-repository";
 
 let sut: GenerateRefreshTokenUseCase;
 let inMemoryRefreshTokenRepository: InMemoryRefreshTokenRepository;
-let inMemoryUsersRepository: InMemoryUsersRepository;
 
 describe("Generate refresh token", () => {
   beforeEach(() => {
     inMemoryRefreshTokenRepository = new InMemoryRefreshTokenRepository();
-    inMemoryUsersRepository = new InMemoryUsersRepository();
 
-    sut = new GenerateRefreshTokenUseCase(
-      inMemoryRefreshTokenRepository,
-      inMemoryUsersRepository
-    );
+    sut = new GenerateRefreshTokenUseCase(inMemoryRefreshTokenRepository);
     vi.useFakeTimers();
   });
 

@@ -1,7 +1,6 @@
 import { RefreshToken } from "@/domain/entities/refresh-token";
 import { RefreshTokenNotFoundError } from "@/domain/errors/refresh-token-not-found";
 import { RefreshTokenRepository } from "@/domain/repositories/refresh-token-repository";
-import { UsersRepository } from "@/domain/repositories/users-repository";
 import { GenerateToken } from "@/domain/services/generate-token";
 import dayjs from "dayjs";
 
@@ -10,10 +9,7 @@ interface GenerateRefreshTokenRequest {
 }
 
 export class GenerateRefreshTokenUseCase {
-  constructor(
-    private refreshTokenRepository: RefreshTokenRepository,
-    private usersRepository: UsersRepository
-  ) {}
+  constructor(private refreshTokenRepository: RefreshTokenRepository) {}
 
   async execute({ id }: GenerateRefreshTokenRequest) {
     const refreshToken = await this.refreshTokenRepository.findById(id);
@@ -22,16 +18,21 @@ export class GenerateRefreshTokenUseCase {
       throw new RefreshTokenNotFoundError();
     }
 
-    const expiresIn = dayjs().add(7, "day").unix();
+    const currentTimestamp = dayjs().unix();
 
-    const user = await this.usersRepository.findById(refreshToken.userId);
+    if (refreshToken.expiresIn <= currentTimestamp) {
+      await this.refreshTokenRepository.delete(refreshToken.id);
+      throw new RefreshTokenNotFoundError();
+    }
+
+    const expiresIn = dayjs().add(7, "day").unix();
 
     const accessToken = GenerateToken.generate({
       userId: refreshToken.userId,
     });
 
     const newRefreshToken = RefreshToken.create({
-      userId: user!.id,
+      userId: refreshToken.userId,
       expiresIn,
     });
 

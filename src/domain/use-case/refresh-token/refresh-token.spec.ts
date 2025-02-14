@@ -1,4 +1,4 @@
-import { RefreshTokenUseCase } from "./refresh-token-use-case";
+import { RefreshTokenUseCase } from "./refresh-token";
 import { InMemoryRefreshTokenRepository } from "@/test/in-memory-refresh-token";
 
 let sut: RefreshTokenUseCase;
