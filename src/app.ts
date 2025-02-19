@@ -2,6 +2,7 @@ import fastify from "fastify";
 import { ZodError } from "zod";
 import { env } from "./env";
 import cookie from "@fastify/cookie";
+import fastifyJwt from "@fastify/jwt";
 import { usersRoutes } from "./infra/http/routes/users.routes";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
@@ -15,14 +16,36 @@ const app = fastify({
   },
 });
 
-app.register(cors, {
-  origin: ["http://localhost:3000"],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization", "Accept"],
-  credentials: true,
+app.register(cookie);
+
+app.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
+  cookie: {
+    cookieName: "refreshToken",
+    signed: false,
+  },
+  sign: {
+    expiresIn: "6s",
+  },
+
+  verify: {
+    extractToken: (request) => {
+      console.log("Cookies no extractToken:", request.cookies);
+      if (request.url === "/refresh-token") {
+        return request.cookies && request.cookies.refreshToken;
+      } else {
+        return (
+          request.headers.authorization &&
+          request.headers.authorization.split(" ")[1]
+        );
+      }
+    },
+  },
 });
 
-app.register(cookie);
+app.register(cors, {
+  credentials: true,
+});
 
 app.register(fastifySwagger, {
   openapi: {
@@ -61,12 +84,6 @@ app.setErrorHandler((error, _, reply) => {
     });
   }
 
-  if (error.message.includes("jwt expired")) {
-    return reply.status(401).send({
-      message: "token is expired or not valid",
-    });
-  }
-
   if (env.NODE_ENV !== "production") {
     console.error(error);
   }
@@ -77,6 +94,11 @@ app.setErrorHandler((error, _, reply) => {
 app.register(usersRoutes);
 app.register(snackRoutes, { prefix: "snack" });
 app.register(favoritesRoutes, { prefix: "favorite" });
+
+app.addHook("preHandler", (req, res, next) => {
+  console.log("cookies send:", req.cookies);
+  next();
+});
 
 app.ready((err) => {
   if (err) throw err;

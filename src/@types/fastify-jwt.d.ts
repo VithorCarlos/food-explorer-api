@@ -1,10 +1,11 @@
 import { ROLE } from "@/domain/enums/role";
 import "@fastify/jwt";
 
-declare module "fastify" {
-  interface FastifyRequest {
+declare module "@fastify/jwt" {
+  export interface FastifyJWT {
     user: {
       sub: string;
+      role: ROLE;
     };
   }
 }

@@ -28,14 +28,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
             type: "object",
             properties: {
               accessToken: { type: "string" },
-              refreshToken: {
-                type: "object",
-                properties: {
-                  id: { type: "string" },
-                  expiresIn: { type: "integer" },
-                  userId: { type: "string" },
-                },
-              },
+              refreshToken: { type: "string" },
             },
           },
         },
@@ -44,35 +37,20 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
     authenticate
   );
 
-  fastify.post(
+  fastify.patch(
     "/refresh-token",
     {
       schema: {
-        security: [{ BearerAuth: [] }],
         description: "Refresh access token",
         tags: ["Authentication"],
         summary: "Refresh access token",
-        body: {
-          type: "object",
-          properties: {
-            id: { type: "string", default: "" },
-          },
-          required: ["id"],
-        },
         response: {
           200: {
             description: "Successful response",
             type: "object",
             properties: {
               accessToken: { type: "string" },
-              refreshToken: {
-                type: "object",
-                properties: {
-                  id: { type: "string" },
-                  expiresIn: { type: "integer" },
-                  userId: { type: "string" },
-                },
-              },
+              refreshToken: { type: "string" },
             },
           },
         },

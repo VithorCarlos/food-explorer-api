@@ -1,8 +1,4 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { makeRefreshTokenUseCase } from "../../factories/make-refresh-token-use-case";
-import { decode } from "jsonwebtoken";
-import { z } from "zod";
-import { makeGenerateRefreshTokenUseCase } from "../../factories/make-generate-refresh-token-use-case";
 import { RefreshTokenNotFoundError } from "@/domain/errors/refresh-token-not-found";
 
 export const refreshToken = async (
@@ -10,21 +6,44 @@ export const refreshToken = async (
   reply: FastifyReply
 ) => {
   try {
-    const refreshTokenSchema = z.object({
-      id: z.string(),
-    });
+    await request.jwtVerify({ onlyCookie: true });
 
-    const { id } = refreshTokenSchema.parse(request.body);
+    const { role, sub } = request.user;
 
-    const refreshTokenUseCase = makeGenerateRefreshTokenUseCase();
+    const accessToken = await reply.jwtSign(
+      {
+        role,
+      },
+      {
+        sign: {
+          sub,
+        },
+      }
+    );
 
-    const refreshToken = await refreshTokenUseCase.execute({
-      id,
-    });
+    const refreshToken = await reply.jwtSign(
+      {
+        role,
+      },
+      {
+        sign: {
+          sub: request.user.sub,
+          expiresIn: "7d",
+        },
+      }
+    );
 
-    if (refreshToken?.accessToken) {
-      return reply.status(200).send(refreshToken);
-    }
+    return reply
+      .setCookie("refreshToken", refreshToken, {
+        path: "/",
+        secure: true,
+        httpOnly: true,
+        sameSite: true,
+      })
+      .status(200)
+      .send({
+        accessToken,
+      });
   } catch (error) {
     if (error instanceof RefreshTokenNotFoundError) {
       reply.status(401).send({ message: "refresh token not found" });

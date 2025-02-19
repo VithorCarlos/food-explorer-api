@@ -9,7 +9,7 @@ export class GenerateToken {
   static generate({ userId }: GenerateTokenProps) {
     const token = sign({ userId }, env.JWT_SECRET, {
       subject: userId,
-      expiresIn: "20s",
+      expiresIn: "6s",
     });
 
     return token;
