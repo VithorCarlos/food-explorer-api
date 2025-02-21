@@ -9,6 +9,7 @@ import fastifySwaggerUi from "@fastify/swagger-ui";
 import cors from "@fastify/cors";
 import { snackRoutes } from "./infra/http/routes/snacks.routes";
 import { favoritesRoutes } from "./infra/http/routes/favorites.routes";
+import { TOKEN } from "./domain/enums/token";
 
 const app = fastify({
   logger: {
@@ -21,24 +22,23 @@ app.register(cookie);
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
   cookie: {
-    cookieName: "refreshToken",
+    cookieName: TOKEN.REFRESH_TOKEN,
     signed: false,
   },
   sign: {
-    expiresIn: "6s",
+    expiresIn: "15m",
   },
 
   verify: {
     extractToken: (request) => {
-      console.log("Cookies no extractToken:", request.cookies);
-      if (request.url === "/refresh-token") {
-        return request.cookies && request.cookies.refreshToken;
-      } else {
-        return (
-          request.headers.authorization &&
-          request.headers.authorization.split(" ")[1]
-        );
-      }
+      // if (request.url === "/refresh-token") {
+      // return request.cookies && request.cookies.refreshToken;
+      // } else {
+      return (
+        request.headers.authorization &&
+        request.headers.authorization.split(" ")[1]
+      );
+      // }
     },
   },
 });

@@ -1,12 +1,14 @@
 import { FastifyReply, FastifyRequest } from "fastify";
+
 import { RefreshTokenNotFoundError } from "@/domain/errors/refresh-token-not-found";
+import { TOKEN } from "@/domain/enums/token";
 
 export const refreshToken = async (
   request: FastifyRequest,
   reply: FastifyReply
 ) => {
   try {
-    await request.jwtVerify({ onlyCookie: true });
+    await request.jwtVerify();
 
     const { role, sub } = request.user;
 
@@ -32,9 +34,8 @@ export const refreshToken = async (
         },
       }
     );
-
     return reply
-      .setCookie("refreshToken", refreshToken, {
+      .setCookie(TOKEN.REFRESH_TOKEN, refreshToken, {
         path: "/",
         secure: true,
         httpOnly: true,
@@ -43,6 +44,7 @@ export const refreshToken = async (
       .status(200)
       .send({
         accessToken,
+        refreshToken,
       });
   } catch (error) {
     if (error instanceof RefreshTokenNotFoundError) {

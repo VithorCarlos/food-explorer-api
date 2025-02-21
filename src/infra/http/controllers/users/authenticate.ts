@@ -3,6 +3,7 @@ import { z } from "zod";
 import { makeAuthenticateUseCase } from "../../factories/make-authenticate-use-case";
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 import { UserInvalidCredential } from "@/domain/errors/user-invalid-crendential";
+import { TOKEN } from "@/domain/enums/token";
 
 export const authenticate = async (
   request: FastifyRequest,
@@ -47,14 +48,14 @@ export const authenticate = async (
     );
 
     reply
-      .setCookie("refreshToken", refreshToken, {
+      .setCookie(TOKEN.REFRESH_TOKEN, refreshToken, {
+        maxAge: 7 * 24 * 60 * 60,
         path: "/",
         secure: true,
         httpOnly: true,
-        sameSite: true,
       })
       .status(200)
-      .send({ accessToken });
+      .send({ accessToken, refreshToken });
   } catch (error) {
     if (error instanceof UserDoesNotExists) {
       reply.status(400).send({ message: error.message });
