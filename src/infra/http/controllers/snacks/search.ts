@@ -17,7 +17,7 @@ export const searchSnack = async (
   const { page, perPage, title, ingredients } = searchSchema.parse(
     request.query
   );
-  console.log("query =<>>", title, ingredients);
+
   try {
     const searchSnacksUseCase = makeSearchSnacksUseCase();
 

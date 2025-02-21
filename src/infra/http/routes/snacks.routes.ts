@@ -6,6 +6,7 @@ import { updateSnack } from "../controllers/snacks/update";
 import { deleteSnack } from "../controllers/snacks/delete";
 import { searchSnack } from "../controllers/snacks/search";
 import { verifyJWT } from "../middleware/verify-jwt";
+import { findOneSnack } from "../controllers/snacks/find-one";
 
 export const snackRoutes = async (fastify: FastifyInstance) => {
   fastify.get(
@@ -29,6 +30,26 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
       preHandler: [verifyJWT],
     },
     searchSnack
+  );
+
+  fastify.get(
+    "/:id",
+    {
+      schema: {
+        security: [{ BearerAuth: [] }],
+        description: "Find one snack",
+        tags: ["Snacks"],
+        summary: "Find one snack",
+        params: {
+          type: "object",
+          properties: {
+            id: { type: "string" },
+          },
+        },
+      },
+      preHandler: [verifyJWT],
+    },
+    findOneSnack
   );
 
   fastify.post(
