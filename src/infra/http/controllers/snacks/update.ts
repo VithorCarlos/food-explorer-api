@@ -4,6 +4,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { makeUpdateSnackUseCase } from "../../factories/make-update-snack-use-case";
 import { SnackDoesNotExists } from "@/domain/errors/snack-does-not-exists";
 import { SnackNotFoundForThisUser } from "@/domain/errors/snack-not-found-for-this-user";
+import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
 
 export const updateSnack = async (
   request: FastifyRequest,
@@ -14,7 +15,7 @@ export const updateSnack = async (
     title: z.string().optional(),
     description: z.string().optional(),
     imageUrl: z.string().url().optional(),
-    category: z.string().optional(),
+    category: z.nativeEnum(FOOD_CATEGORIES).optional(),
     ingredients: z.string().array().optional(),
     price: z.number().optional(),
   });

@@ -27,7 +27,7 @@ export const searchSnack = async (
       title,
       ingredients,
     });
-    console.log(filteredSnacks);
+
     const snanks = filteredSnacks.map(PrismaSnackAdapter.toPrisma);
 
     reply.status(201).send(snanks);

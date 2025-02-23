@@ -3,6 +3,7 @@ import { SnackDoesNotExists } from "@/domain/errors/snack-does-not-exists";
 import { z } from "zod";
 import { SnackNotFoundForThisUser } from "@/domain/errors/snack-not-found-for-this-user";
 import { makeFindOneSnackUseCase } from "../../factories/make-find-one-snack-use-case";
+import { PrismaSnackAdapter } from "@/infra/database/adapters/prisma-snack-adapter";
 
 export const findOneSnack = async (
   request: FastifyRequest,
@@ -17,9 +18,11 @@ export const findOneSnack = async (
   try {
     const findOneSnackUseCase = makeFindOneSnackUseCase();
 
-    const snack = await findOneSnackUseCase.execute({
+    const { snack: snackResponse } = await findOneSnackUseCase.execute({
       id,
     });
+
+    const snack = PrismaSnackAdapter.toPrisma(snackResponse);
 
     reply.status(200).send({ snack });
   } catch (error) {

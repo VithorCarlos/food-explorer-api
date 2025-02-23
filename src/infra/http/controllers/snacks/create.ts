@@ -2,6 +2,7 @@ import { z } from "zod";
 import { makeCreateSnackUseCase } from "../../factories/make-create-snack-use-case";
 import { PrismaSnackAdapter } from "@/infra/database/adapters/prisma-snack-adapter";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
 
 export const createSnack = async (
   request: FastifyRequest,
@@ -11,7 +12,7 @@ export const createSnack = async (
     title: z.string(),
     description: z.string(),
     imageUrl: z.string().url(),
-    category: z.string(),
+    category: z.nativeEnum(FOOD_CATEGORIES),
     ingredients: z.string().array(),
     price: z.number(),
   });

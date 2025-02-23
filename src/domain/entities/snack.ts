@@ -1,13 +1,14 @@
 import { BaseEntity } from "../../shared/entity/base-identity";
 import { Optional } from "@/shared/optional";
 import { randomUUID } from "node:crypto";
+import { FOOD_CATEGORIES } from "../enums/food-categories";
 
 export interface SnackProps {
   id: string;
   title: string;
   description: string;
   imageUrl: string;
-  category: string;
+  category: FOOD_CATEGORIES;
   ingredients: string[];
   price: number;
   userId: string;
@@ -18,7 +19,7 @@ export interface SnackProps {
 interface SaveSnacksProps {
   title?: string;
   description?: string;
-  category?: string;
+  category?: FOOD_CATEGORIES;
   ingredients?: string[];
   price?: number;
   imageUrl?: string;

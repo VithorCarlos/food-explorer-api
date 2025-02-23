@@ -1,3 +1,4 @@
+import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
 import { SnackDoesNotExists } from "@/domain/errors/snack-does-not-exists";
 import { SnackNotFoundForThisUser } from "@/domain/errors/snack-not-found-for-this-user";
 import { SnacksRepository } from "@/domain/repositories/snacks-repository";
@@ -8,7 +9,7 @@ interface UdpateSnackRequest {
   title?: string;
   description?: string;
   imageUrl?: string;
-  category?: string;
+  category?: FOOD_CATEGORIES;
   ingredients?: string[];
   price?: number;
 }

@@ -7,6 +7,7 @@ import { deleteSnack } from "../controllers/snacks/delete";
 import { searchSnack } from "../controllers/snacks/search";
 import { verifyJWT } from "../middleware/verify-jwt";
 import { findOneSnack } from "../controllers/snacks/find-one";
+import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
 
 export const snackRoutes = async (fastify: FastifyInstance) => {
   fastify.get(
@@ -64,7 +65,11 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
           type: "object",
           properties: {
             title: { type: "string", default: "Mozzarella pizza" },
-            category: { type: "string", default: "snacks" },
+            category: {
+              type: "string",
+              enum: Object.values(FOOD_CATEGORIES),
+              default: FOOD_CATEGORIES.MEATS,
+            },
             ingredients: {
               type: "array",
               default: ["cheese", "tomato", "onion"],
@@ -97,6 +102,18 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
         },
       },
       preHandler: [verifyJWT, verifyRole(ROLE.ADMIN)],
+      // preValidation: (request, reply, done) => {
+      //   const { category } = request.body as { category: FOOD_CATEGORIES };
+      //   if (!Object.values(FOOD_CATEGORIES).includes(category)) {
+      //     return reply.status(400).send({
+      //       statusCode: 400,
+      //       message: `Invalid category. Allowed values are: ${Object.values(
+      //         FOOD_CATEGORIES
+      //       ).join(", ")}`,
+      //     });
+      //   }
+      //   done();
+      // },
     },
     createSnack
   );

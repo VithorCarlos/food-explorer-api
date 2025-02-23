@@ -10,6 +10,7 @@ import cors from "@fastify/cors";
 import { snackRoutes } from "./infra/http/routes/snacks.routes";
 import { favoritesRoutes } from "./infra/http/routes/favorites.routes";
 import { TOKEN } from "./domain/enums/token";
+import { globalErrorHandler } from "./infra/http/middleware/global-error-handler";
 
 const app = fastify({
   logger: {
@@ -76,29 +77,11 @@ app.register(fastifySwaggerUi, {
   transformSpecificationClone: true,
 });
 
-app.setErrorHandler((error, _, reply) => {
-  if (error instanceof ZodError) {
-    return reply.status(400).send({
-      message: "Validation error.",
-      issues: error.format(),
-    });
-  }
-
-  if (env.NODE_ENV !== "production") {
-    console.error(error);
-  }
-
-  return reply.status(500).send({ message: "Internal server error." });
-});
-
 app.register(usersRoutes);
 app.register(snackRoutes, { prefix: "snack" });
 app.register(favoritesRoutes, { prefix: "favorite" });
 
-app.addHook("preHandler", (req, res, next) => {
-  console.log("cookies send:", req.cookies);
-  next();
-});
+app.setErrorHandler(globalErrorHandler);
 
 app.ready((err) => {
   if (err) throw err;
