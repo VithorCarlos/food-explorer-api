@@ -1,5 +1,6 @@
 import { PaginationParams } from "@/shared/pagination-params";
 import { Snack } from "../entities/snack";
+import { FOOD_CATEGORIES } from "../enums/food-categories";
 
 export interface FindSnacksProps {
   id: string;
@@ -8,6 +9,7 @@ export interface FindSnacksProps {
 
 export interface SearchManySnacksParams extends PaginationParams {
   title?: string;
+  category: string;
   ingredients?: string[];
 }
 

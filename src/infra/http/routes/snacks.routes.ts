@@ -24,6 +24,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
             page: { type: "integer", default: 1 },
             perPage: { type: "integer", default: 10 },
             title: { type: "string" },
+            category: { type: "string" },
             ingredients: { type: "array" },
           },
         },
@@ -91,9 +92,10 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
             description: "Successful response",
             type: "object",
             properties: {
+              id: { type: "string" },
               title: { type: "string" },
               category: { type: "string" },
-              ingredients: { type: "array" },
+              ingredients: { type: "array", default: [] },
               price: { type: "integer" },
               description: { type: "string" },
               imageUrl: { type: "string" },
@@ -102,18 +104,6 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
         },
       },
       preHandler: [verifyJWT, verifyRole(ROLE.ADMIN)],
-      // preValidation: (request, reply, done) => {
-      //   const { category } = request.body as { category: FOOD_CATEGORIES };
-      //   if (!Object.values(FOOD_CATEGORIES).includes(category)) {
-      //     return reply.status(400).send({
-      //       statusCode: 400,
-      //       message: `Invalid category. Allowed values are: ${Object.values(
-      //         FOOD_CATEGORIES
-      //       ).join(", ")}`,
-      //     });
-      //   }
-      //   done();
-      // },
     },
     createSnack
   );
@@ -132,7 +122,10 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
             id: { type: "string" },
             title: { type: "string" },
             category: { type: "string" },
-            ingredients: { type: "array" },
+            ingredients: {
+              type: "array",
+              default: [],
+            },
             price: { type: "integer" },
             description: { type: "string" },
             imageUrl: { type: "string" },
@@ -146,7 +139,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
               id: { type: "string" },
               title: { type: "string" },
               category: { type: "string" },
-              ingredients: { type: "array" },
+              ingredients: { type: "array", default: [] },
               price: { type: "integer" },
               description: { type: "string" },
               imageUrl: { type: "string" },

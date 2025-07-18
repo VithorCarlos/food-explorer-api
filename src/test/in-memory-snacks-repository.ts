@@ -20,6 +20,7 @@ export class InMemorySnacksRepository implements SnacksRepository {
   async searchMany({
     page,
     perPage,
+    category,
     title,
     ingredients,
   }: SearchManySnacksParams) {
@@ -29,6 +30,10 @@ export class InMemorySnacksRepository implements SnacksRepository {
 
     return this.items
       .filter((item) => {
+        if (category && item.category !== category) {
+          return false;
+        }
+
         if (title) {
           return item.title.includes(title);
         }

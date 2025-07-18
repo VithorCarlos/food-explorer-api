@@ -9,12 +9,13 @@ export const searchSnack = async (
 ) => {
   const searchSchema = z.object({
     page: z.number().optional(),
+    category: z.string(),
     perPage: z.number().optional(),
     title: z.string().optional(),
     ingredients: z.string().array().optional(),
   });
 
-  const { page, perPage, title, ingredients } = searchSchema.parse(
+  const { page, perPage, category, title, ingredients } = searchSchema.parse(
     request.query
   );
 
@@ -24,6 +25,7 @@ export const searchSnack = async (
     const { snacks: filteredSnacks } = await searchSnacksUseCase.execute({
       page,
       perPage,
+      category,
       title,
       ingredients,
     });

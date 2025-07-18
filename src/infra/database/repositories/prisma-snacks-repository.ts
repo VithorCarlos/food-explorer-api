@@ -5,7 +5,6 @@ import {
 } from "@/domain/repositories/snacks-repository";
 import { PrismaSnackAdapter } from "../adapters/prisma-snack-adapter";
 import { prisma } from "../prisma";
-import { Prisma } from "@prisma/client";
 
 export class PrismaSnacksRepository implements SnacksRepository {
   async findById(id: string) {
@@ -21,6 +20,7 @@ export class PrismaSnacksRepository implements SnacksRepository {
   async searchMany({
     page,
     perPage,
+    category,
     title,
     ingredients,
   }: SearchManySnacksParams) {
@@ -44,6 +44,7 @@ export class PrismaSnacksRepository implements SnacksRepository {
 
     const snacks = await prisma.snacks.findMany({
       where: {
+        category,
         ...(searchConditions.length > 0 && {
           OR: searchConditions,
         }),

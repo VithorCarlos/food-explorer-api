@@ -22,7 +22,6 @@ export const updateSnack = async (
 
   const { id, title, category, ingredients, price, description, imageUrl } =
     updateSchema.parse(request.body);
-
   const userId = request.user.sub;
 
   try {
