@@ -9,7 +9,7 @@ export interface FindSnacksProps {
 
 export interface SearchManySnacksParams extends PaginationParams {
   title?: string;
-  category: string;
+  category?: string;
   ingredients?: string[];
 }
 

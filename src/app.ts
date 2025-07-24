@@ -1,5 +1,4 @@
 import fastify from "fastify";
-import { ZodError } from "zod";
 import { env } from "./env";
 import cookie from "@fastify/cookie";
 import fastifyJwt from "@fastify/jwt";
@@ -11,11 +10,17 @@ import { snackRoutes } from "./infra/http/routes/snacks.routes";
 import { favoritesRoutes } from "./infra/http/routes/favorites.routes";
 import { TOKEN } from "./domain/enums/token";
 import { globalErrorHandler } from "./infra/http/middleware/global-error-handler";
+import multipart, { ajvFilePlugin } from "@fastify/multipart";
+import { uploadRoutes } from "./infra/http/routes/upload.routes";
 
 const app = fastify({
   logger: {
     level: "warn",
   },
+});
+
+app.register(multipart, {
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2mb
 });
 
 app.register(cookie);
@@ -80,6 +85,7 @@ app.register(fastifySwaggerUi, {
 app.register(usersRoutes);
 app.register(snackRoutes, { prefix: "snack" });
 app.register(favoritesRoutes, { prefix: "favorite" });
+app.register(uploadRoutes, { prefix: "upload" });
 
 app.setErrorHandler(globalErrorHandler);
 
