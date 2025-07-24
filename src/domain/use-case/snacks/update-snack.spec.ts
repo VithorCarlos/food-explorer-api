@@ -5,6 +5,7 @@ import { InMemoryUsersRepository } from "@/test/in-memory-users-repository";
 import { makeUser } from "@/test/factories/make-user";
 import { SnackDoesNotExists } from "@/domain/errors/snack-does-not-exists";
 import { SnackNotFoundForThisUser } from "@/domain/errors/snack-not-found-for-this-user";
+import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
 
 let sut: UdpateSnackUseCase;
 let inMemorySnacksRepository: InMemorySnacksRepository;
@@ -56,12 +57,12 @@ describe("Update snack", () => {
     const { snack } = await sut.execute({
       id: "snack-01",
       userId: "user-01",
-      category: "pizza",
+      category: FOOD_CATEGORIES.PIZZA,
     });
 
     expect(snack).toEqual(
       expect.objectContaining({
-        category: "pizza",
+        category: FOOD_CATEGORIES.PIZZA,
       })
     );
 

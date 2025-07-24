@@ -5,7 +5,7 @@ interface SearchSnackRequest {
   page?: number;
   perPage?: number;
   title?: string;
-  category: string;
+  category?: string;
   ingredients?: string[];
 }
 
