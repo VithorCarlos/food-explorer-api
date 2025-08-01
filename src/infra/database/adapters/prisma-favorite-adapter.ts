@@ -1,5 +1,5 @@
 import { Favorite } from "@/domain/entities/favorite";
-import { favorites as RowFavorites } from "@prisma/client";
+import { favorites as RowFavorites } from "@/prisma/generated";
 
 export interface CustomBindProps {
   favoriteId: string;
@@ -10,7 +10,6 @@ export interface CustomBindProps {
   ingredients: string[];
   price: number;
   description: string;
-  imageUrl: string;
   updated_at: Date;
 }
 
@@ -40,7 +39,6 @@ export class PrismaFavoriteAdapter {
     userId,
     price,
     description,
-    imageUrl,
     updated_at,
   }: CustomBindProps) {
     return {
@@ -52,7 +50,6 @@ export class PrismaFavoriteAdapter {
       userId,
       price,
       description,
-      imageUrl,
       updated_at,
     };
   }

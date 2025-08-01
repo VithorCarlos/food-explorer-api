@@ -38,14 +38,13 @@ describe("Update user", () => {
   it("It should not be possible to update a non-existent user", async () => {
     const { name, email, password } = makeUser();
 
-    expect(
-      async () =>
-        await sut.execute({
-          userId: "user-1",
-          name,
-          email,
-          password,
-        })
+    await expect(
+      sut.execute({
+        userId: "user-1",
+        name,
+        email,
+        password,
+      })
     ).rejects.toThrowError(UserDoesNotExists);
   });
 
@@ -54,14 +53,13 @@ describe("Update user", () => {
 
     await inMemoryUsersRepository.create(user);
 
-    expect(
-      async () =>
-        await sut.execute({
-          userId: user.id,
-          name: user.name,
-          email: "johndoe@gmail.com",
-          password: user.password,
-        })
+    await expect(
+      sut.execute({
+        userId: user.id,
+        name: user.name,
+        email: "johndoe@gmail.com",
+        password: user.password,
+      })
     ).rejects.toThrowError(EmailAlreadyExists);
   });
 });

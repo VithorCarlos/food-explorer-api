@@ -11,13 +11,12 @@ export const createSnack = async (
   const createSchema = z.object({
     title: z.string(),
     description: z.string(),
-    imageUrl: z.string().url(),
     category: z.nativeEnum(FOOD_CATEGORIES),
     ingredients: z.string().array(),
     price: z.number(),
   });
 
-  const { title, category, ingredients, price, description, imageUrl } =
+  const { title, category, ingredients, price, description } =
     createSchema.parse(request.body);
 
   const userId = request.user.sub;
@@ -32,7 +31,6 @@ export const createSnack = async (
       userId,
       price,
       description,
-      imageUrl,
     });
 
     const snack = PrismaSnackAdapter.toPrisma(createdSnack);

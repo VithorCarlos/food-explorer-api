@@ -30,7 +30,6 @@ describe("Update snack", () => {
       userId: "user-01",
       title: "my new snack title",
       description: "my new snack description",
-      imageUrl: "https://image-url.com.br",
       price: 500,
     });
 
@@ -38,7 +37,6 @@ describe("Update snack", () => {
       expect.objectContaining({
         title: "my new snack title",
         description: "my new snack description",
-        imageUrl: "https://image-url.com.br",
         price: 500,
       })
     );
@@ -104,13 +102,12 @@ describe("Update snack", () => {
   it("Should not be possible to update a non-existent snack", async () => {
     const snack = makeSnack({}, "user-01");
 
-    expect(
-      async () =>
-        await sut.execute({
-          id: "unknow-snack",
-          userId: snack.userId,
-          title: snack.title,
-        })
+    await expect(
+      sut.execute({
+        id: "unknow-snack",
+        userId: snack.userId,
+        title: snack.title,
+      })
     ).rejects.toThrowError(SnackDoesNotExists);
   });
 
@@ -119,13 +116,12 @@ describe("Update snack", () => {
 
     await inMemorySnacksRepository.create(snack);
 
-    expect(
-      async () =>
-        await sut.execute({
-          id: "snack-01",
-          userId: "different-user-id-for-this-snack",
-          title: snack.title,
-        })
+    await expect(
+      sut.execute({
+        id: "snack-01",
+        userId: "different-user-id-for-this-snack",
+        title: snack.title,
+      })
     ).rejects.toThrowError(SnackNotFoundForThisUser);
   });
 });

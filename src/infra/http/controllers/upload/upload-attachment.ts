@@ -1,11 +1,9 @@
 import { FileTooLargeError } from "@/domain/errors/file-too-large";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { pipeline } from "node:stream";
-import { promisify } from "node:util";
-import fs from "node:fs";
-import path from "node:path";
-import sharp from "sharp";
+
 import { InvalidAttachmentTypeError } from "@/domain/errors/invalid-attachment-type";
+import { makeUploadAttachmentUseCase } from "../../factories/make-upload-attachment-use-case";
+import { AttachmentNotFoundError } from "@/domain/errors/attachment-not-found";
 
 export const uploadAttachment = async (
   request: FastifyRequest,
@@ -14,49 +12,37 @@ export const uploadAttachment = async (
   try {
     const data = await request.file();
 
-    const pump = promisify(pipeline);
-
     if (!data) {
-      return reply.status(400).send({ message: "Nenhum arquivo enviado" });
+      throw new AttachmentNotFoundError();
     }
-
-    const uploadDir = path.join("tmp", "uploads");
-
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-
-    const extension = path.extname(data.filename);
-    const filename = `${data.filename}-${Date.now()}${extension}`;
-    const filepath = path.resolve("tmp/uploads", filename);
-
-    const transformer = sharp()
-      .resize({ width: 800 })
-      .jpeg({ quality: 85 })
-      .webp({ quality: 80 })
-      .png({ quality: 85, compressionLevel: 8 });
-
-    await pump(data.file, transformer, fs.createWriteStream(filepath));
 
     if (data.file.truncated) {
-      return reply
-        .status(400)
-        .send({ message: "Arquivo muito grande (truncado)" });
+      throw new FileTooLargeError();
     }
 
-    const fileBuffer = fs.readFileSync(filepath);
-    fs.unlinkSync(filepath);
+    const uploadAttachmentUseCase = makeUploadAttachmentUseCase();
+    const fileBuffer = await data.toBuffer();
 
-    reply.status(201).send({ filename, filepath });
-  } catch (error) {
-    console.log(error);
+    const { attachment } = await uploadAttachmentUseCase.execute({
+      body: fileBuffer,
+      fileName: data.filename,
+      fileType: data.mimetype,
+    });
+
+    reply.status(201).send({ attachmentId: attachment.id });
+  } catch (error: any) {
+    if (error instanceof AttachmentNotFoundError) {
+      reply.status(400).send({ message: error.message });
+    }
+
     if (error instanceof InvalidAttachmentTypeError) {
       reply.status(400).send({ message: error.message });
     }
 
-    if (error instanceof FileTooLargeError) {
-      reply.status(400).send({ message: error.message });
+    if (error.code === "FST_REQ_FILE_TOO_LARGE") {
+      reply.status(400).send({ message: new FileTooLargeError().message });
     }
+
     throw error;
   }
 };

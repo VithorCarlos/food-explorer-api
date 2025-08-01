@@ -37,13 +37,12 @@ describe("Create user", () => {
       password,
     });
 
-    expect(
-      async () =>
-        await sut.execute({
-          name,
-          email,
-          password,
-        })
+    await expect(
+      sut.execute({
+        name,
+        email,
+        password,
+      })
     ).rejects.toBeInstanceOf(UserAlreadyExists);
   });
 });

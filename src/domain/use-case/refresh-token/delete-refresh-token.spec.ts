@@ -31,12 +31,11 @@ describe("Delete refresh token", () => {
     expect(inMemoryRefreshTokenRepository.items).toHaveLength(0);
   });
 
-  it("Should not be able to delete refresh token if not exists", () => {
-    expect(
-      async () =>
-        await sut.execute({
-          userId: "user-01",
-        })
+  it("Should not be able to delete refresh token if not exists", async () => {
+    await expect(
+      sut.execute({
+        userId: "user-01",
+      })
     ).rejects.toThrowError(RefreshTokenNotFoundError);
   });
 });

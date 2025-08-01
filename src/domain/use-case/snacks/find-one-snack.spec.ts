@@ -27,11 +27,10 @@ describe("Find one snack", () => {
   });
 
   it("It should not be possible to find one a non-existent snack", async () => {
-    expect(
-      async () =>
-        await sut.execute({
-          id: "snack-01",
-        })
+    await expect(
+      sut.execute({
+        id: "snack-01",
+      })
     ).rejects.toThrowError(SnackDoesNotExists);
   });
 });

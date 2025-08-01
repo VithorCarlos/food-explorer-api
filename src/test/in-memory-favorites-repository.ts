@@ -42,7 +42,6 @@ export class InMemoryFavoritesRepository implements FavoritesRepository {
       ingredients: mockSnack.ingredients,
       price: mockSnack.price,
       description: mockSnack.description,
-      imageUrl: mockSnack.imageUrl,
       updated_at: new Date(),
     }));
   }

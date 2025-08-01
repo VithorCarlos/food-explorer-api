@@ -6,6 +6,7 @@ export interface AttachmentProps {
   id: string;
   title: string;
   url: string;
+  created_at?: Date;
 }
 
 export class Attachment extends BaseEntity<AttachmentProps> {
@@ -18,11 +19,19 @@ export class Attachment extends BaseEntity<AttachmentProps> {
     return attachment;
   }
 
+  get id() {
+    return this.props.id;
+  }
+
   get title() {
     return this.props.title;
   }
 
   get url() {
     return this.props.url;
+  }
+
+  get created_at() {
+    return this.props.created_at;
   }
 }

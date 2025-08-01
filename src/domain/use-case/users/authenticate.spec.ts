@@ -35,13 +35,12 @@ describe("Authenticate test", () => {
     );
   });
 
-  it("Should not be able to authenticate if user doesn't exists", () => {
-    expect(
-      async () =>
-        await sut.execute({
-          email: "johndoe@gmail.com",
-          password: "123test",
-        })
+  it("Should not be able to authenticate if user doesn't exists", async () => {
+    await expect(
+      sut.execute({
+        email: "johndoe@gmail.com",
+        password: "123test",
+      })
     ).rejects.toBeInstanceOf(UserDoesNotExists);
   });
 
@@ -56,12 +55,11 @@ describe("Authenticate test", () => {
 
     inMemoryUsersRepository.create(makedUser);
 
-    expect(
-      async () =>
-        await sut.execute({
-          email: "johndoe@gmail.com",
-          password: wrong_password,
-        })
+    await expect(
+      sut.execute({
+        email: "johndoe@gmail.com",
+        password: wrong_password,
+      })
     ).rejects.toBeInstanceOf(UserInvalidCredential);
   });
 });

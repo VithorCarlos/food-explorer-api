@@ -37,12 +37,11 @@ describe("Generate refresh token", () => {
     expect(refreshToken?.accessToken).toEqual(expect.any(String));
   });
 
-  it("Should not be able to create refresh token if not exists", () => {
-    expect(
-      async () =>
-        await sut.execute({
-          id: "refresh-01",
-        })
+  it("Should not be able to create refresh token if not exists", async () => {
+    await expect(
+      sut.execute({
+        id: "refresh-01",
+      })
     ).rejects.toThrowError(RefreshTokenNotFoundError);
   });
 });

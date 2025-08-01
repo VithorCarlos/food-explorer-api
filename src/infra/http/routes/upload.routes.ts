@@ -16,7 +16,8 @@ export const uploadRoutes = async (fastify: FastifyInstance) => {
           type: "object",
           properties: {
             file: {
-              isFile: true,
+              type: "file",
+              description: "file to upload",
             },
           },
           required: ["file"],

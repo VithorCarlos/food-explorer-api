@@ -80,12 +80,8 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
               type: "string",
               default: "A delicious pizza with melted cheese",
             },
-            imageUrl: {
-              type: "string",
-              default: "https://image-url.com.br/pizza.png",
-            },
           },
-          required: ["title", "category", "price", "description", "imageUrl"],
+          required: ["title", "category", "price", "description"],
         },
         response: {
           200: {
@@ -98,7 +94,6 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
               ingredients: { type: "array", default: [] },
               price: { type: "integer" },
               description: { type: "string" },
-              imageUrl: { type: "string" },
             },
           },
         },
@@ -128,7 +123,6 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
             },
             price: { type: "integer" },
             description: { type: "string" },
-            imageUrl: { type: "string" },
           },
         },
         response: {
@@ -142,7 +136,6 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
               ingredients: { type: "array", default: [] },
               price: { type: "integer" },
               description: { type: "string" },
-              imageUrl: { type: "string" },
             },
           },
         },

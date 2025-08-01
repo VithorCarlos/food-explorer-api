@@ -32,12 +32,11 @@ describe("Delete snack", () => {
   });
 
   it("It should not be possible to delete a non-existent snack", async () => {
-    expect(
-      async () =>
-        await sut.execute({
-          id: "snack-01",
-          userId: "user-02",
-        })
+    await expect(
+      sut.execute({
+        id: "snack-01",
+        userId: "user-02",
+      })
     ).rejects.toThrowError(SnackDoesNotExists);
   });
 
@@ -46,12 +45,11 @@ describe("Delete snack", () => {
 
     await inMemorySnacksRepository.create(snack);
 
-    expect(
-      async () =>
-        await sut.execute({
-          id: "snack-01",
-          userId: "different-user-id-for-this-snack",
-        })
+    await expect(
+      sut.execute({
+        id: "snack-01",
+        userId: "different-user-id-for-this-snack",
+      })
     ).rejects.toThrowError(SnackNotFoundForThisUser);
   });
 });

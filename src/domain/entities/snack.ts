@@ -2,12 +2,13 @@ import { BaseEntity } from "../../shared/entity/base-identity";
 import { Optional } from "@/shared/optional";
 import { randomUUID } from "node:crypto";
 import { FOOD_CATEGORIES } from "../enums/food-categories";
+import { Attachment } from "./attachment";
 
 export interface SnackProps {
   id: string;
   title: string;
   description: string;
-  imageUrl: string;
+  attachment?: Attachment;
   category: FOOD_CATEGORIES;
   ingredients: string[];
   price: number;
@@ -22,7 +23,7 @@ interface SaveSnacksProps {
   category?: FOOD_CATEGORIES;
   ingredients?: string[];
   price?: number;
-  imageUrl?: string;
+  attachment?: Attachment;
 }
 
 export class Snack extends BaseEntity<SnackProps> {
@@ -48,8 +49,8 @@ export class Snack extends BaseEntity<SnackProps> {
     return this.props.description;
   }
 
-  get imageUrl() {
-    return this.props.imageUrl;
+  get attachment() {
+    return this.props.attachment;
   }
 
   get category() {
@@ -86,7 +87,7 @@ export class Snack extends BaseEntity<SnackProps> {
     category,
     ingredients,
     price,
-    imageUrl,
+    attachment,
   }: SaveSnacksProps) {
     this.props.title = title ?? this.title;
 
@@ -98,7 +99,7 @@ export class Snack extends BaseEntity<SnackProps> {
 
     this.props.price = price ?? this.price;
 
-    this.props.imageUrl = imageUrl ?? this.imageUrl;
+    this.props.attachment = attachment ?? this.attachment;
 
     this.touch();
   }

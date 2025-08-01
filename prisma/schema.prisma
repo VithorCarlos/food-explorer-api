@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  output   = "../prisma/generated"
 }
 
 datasource db {
@@ -17,6 +18,11 @@ enum ROLE {
   ADMIN
   CLIENT
   RESTAURANT
+}
+
+enum RESOURSE_TYPE {
+  USER 
+  SNACK
 }
 
 model users {
@@ -38,7 +44,6 @@ model snacks {
   id          String   @unique @default(uuid())
   title       String
   description String
-  imageUrl    String
   category    String
   ingredients String[]
   price       Float
@@ -69,3 +74,22 @@ model refresh_tokens {
 
   expiresIn Int
 }
+
+model attachment {
+  id String @unique @default(uuid())
+  title String
+  url String
+  created_at DateTime @default(now())
+
+  links       attachment_link[]
+}
+
+model attachment_link {
+  id String @unique @default(uuid())
+  attachmentId  String
+  resourceId    String?
+  resourceType RESOURSE_TYPE?
+
+  attachment attachment @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
+}
+

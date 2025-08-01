@@ -8,7 +8,9 @@ import { prisma } from "../prisma";
 
 export class PrismaSnacksRepository implements SnacksRepository {
   async findById(id: string) {
-    const snack = await prisma.snacks.findFirst({ where: { id } });
+    const snack = await prisma.snacks.findFirst({
+      where: { id },
+    });
 
     if (!snack) {
       return null;
@@ -62,7 +64,9 @@ export class PrismaSnacksRepository implements SnacksRepository {
 
   async create(data: Snack) {
     const snack = PrismaSnackAdapter.toPrisma(data);
-    await prisma.snacks.create({ data: snack });
+    await prisma.snacks.create({
+      data: snack,
+    });
   }
 
   async update(data: Snack) {
@@ -79,7 +83,14 @@ export class PrismaSnacksRepository implements SnacksRepository {
         ingredients: snack.ingredients,
         price: snack.price,
         description: snack.description,
-        imageUrl: snack.imageUrl,
+        ...(data.attachment?.id && {
+          attachment: {
+            update: {
+              title: data.attachment.title,
+              url: data.attachment.url,
+            },
+          },
+        }),
         updated_at: snack.updated_at,
       },
     });

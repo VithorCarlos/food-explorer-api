@@ -52,7 +52,6 @@ export class PrismaFavoritesRepository implements FavoritesRepository {
         userId: snack.userId,
         price: snack.price,
         description: snack.description,
-        imageUrl: snack.imageUrl,
         updated_at: snack.updated_at,
       })
     );

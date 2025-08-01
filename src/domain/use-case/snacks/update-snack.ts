@@ -8,7 +8,6 @@ interface UdpateSnackRequest {
   userId: string;
   title?: string;
   description?: string;
-  imageUrl?: string;
   category?: FOOD_CATEGORIES;
   ingredients?: string[];
   price?: number;
@@ -20,7 +19,6 @@ export class UdpateSnackUseCase {
   async execute({
     title,
     description,
-    imageUrl,
     category,
     ingredients,
     price,
@@ -43,7 +41,6 @@ export class UdpateSnackUseCase {
       ...(category && { category }),
       ...(ingredients && { ingredients }),
       ...(price && { price }),
-      ...(imageUrl && { imageUrl }),
     });
 
     await this.snacksRepository.update(snack);

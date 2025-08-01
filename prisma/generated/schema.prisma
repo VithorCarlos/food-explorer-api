@@ -1,0 +1,94 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../prisma/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ROLE {
+  ADMIN
+  CLIENT
+  RESTAURANT
+}
+
+enum RESOURSE_TYPE {
+  USER
+  SNACK
+}
+
+model users {
+  id       String @unique @default(uuid())
+  name     String
+  email    String @unique
+  password String
+  role     ROLE   @default(CLIENT)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  snacks        snacks[]
+  favorite      favorites[]
+  refresh_token refresh_tokens?
+}
+
+model snacks {
+  id          String   @unique @default(uuid())
+  title       String
+  description String
+  category    String
+  ingredients String[]
+  price       Float
+
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  user   users  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  favorite favorites[]
+}
+
+model favorites {
+  id String @unique @default(uuid())
+
+  user   users  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  snack   snacks @relation(fields: [snackId], references: [id], onDelete: Cascade)
+  snackId String
+}
+
+model refresh_tokens {
+  id     String @unique @default(uuid())
+  userId String @unique
+  user   users  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  expiresIn Int
+}
+
+model attachment {
+  id         String   @unique @default(uuid())
+  title      String
+  url        String
+  created_at DateTime @default(now())
+
+  links attachment_link[]
+}
+
+model attachment_link {
+  id           String         @unique @default(uuid())
+  attachmentId String
+  resourceId   String?
+  resourceType RESOURSE_TYPE?
+
+  attachment attachment @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
+}

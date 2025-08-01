@@ -25,11 +25,10 @@ describe("Delete user", () => {
   });
 
   it("It should not be possible to delete a non-existent user", async () => {
-    expect(
-      async () =>
-        await sut.execute({
-          userId: "user-1",
-        })
+    await expect(
+      sut.execute({
+        userId: "user-1",
+      })
     ).rejects.toThrowError(UserDoesNotExists);
   });
 });
