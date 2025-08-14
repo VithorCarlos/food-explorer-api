@@ -17,10 +17,7 @@ const schema = z.object({
 const _env = schema.safeParse(process.env);
 
 if (_env.error) {
-  console.error(
-    "❌ Invalid environment variables",
-    _env.error.formErrors.fieldErrors
-  );
+  console.error("❌ Invalid environment variables", _env.error.issues);
   throw new Error("❌ Invalid environment variables");
 }
 

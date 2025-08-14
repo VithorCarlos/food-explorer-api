@@ -1,6 +1,6 @@
 import { Snack } from "@/domain/entities/snack";
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
-import { snacks as RowSnacks } from "@/prisma/generated";
+import { snacks as RowSnacks } from "@prisma/client";
 
 export class PrismaSnackAdapter {
   static toPrisma({

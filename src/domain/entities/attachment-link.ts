@@ -1,6 +1,6 @@
 import { BaseEntity } from "@/shared/entity/base-identity";
 import { Optional } from "@/shared/optional";
-import { $Enums } from "@/prisma/generated";
+import { $Enums } from "@prisma/client";
 import { randomUUID } from "node:crypto";
 
 interface AttachmentLinkProps {
@@ -8,15 +8,15 @@ interface AttachmentLinkProps {
   attachmentId: string;
   resourceId: string;
   resourceType: $Enums.RESOURSE_TYPE;
-  linkedAt?: Date;
+  linked_at?: Date;
 }
 
 export class AttachmentLink extends BaseEntity<AttachmentLinkProps> {
-  static create(props: Optional<AttachmentLinkProps, "id" | "linkedAt">) {
+  static create(props: Optional<AttachmentLinkProps, "id" | "linked_at">) {
     return new AttachmentLink({
       ...props,
       id: props.id ?? randomUUID(),
-      linkedAt: props.linkedAt ?? new Date(),
+      linked_at: props.linked_at ?? new Date(),
     });
   }
 
@@ -32,7 +32,7 @@ export class AttachmentLink extends BaseEntity<AttachmentLinkProps> {
     return this.props.resourceType;
   }
 
-  get linkedAt() {
-    return this.props.linkedAt;
+  get linked_at() {
+    return this.props.linked_at;
   }
 }

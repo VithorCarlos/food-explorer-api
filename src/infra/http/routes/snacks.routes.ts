@@ -81,7 +81,13 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
               default: "A delicious pizza with melted cheese",
             },
           },
-          required: ["title", "category", "price", "description"],
+          required: [
+            "title",
+            "category",
+            "price",
+            "description",
+            "attachmentId",
+          ],
         },
         response: {
           200: {
@@ -94,6 +100,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
               ingredients: { type: "array", default: [] },
               price: { type: "integer" },
               description: { type: "string" },
+              attachmentId: { type: "string" },
             },
           },
         },

@@ -1,6 +1,6 @@
 import { BaseEntity } from "@/shared/entity/base-identity";
 import { Optional } from "@/shared/optional";
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
 
 interface RefreshTokenProps {
   id: string;

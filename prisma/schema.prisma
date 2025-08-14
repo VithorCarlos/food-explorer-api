@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../prisma/generated"
 }
 
 datasource db {
@@ -80,6 +79,7 @@ model attachment {
   title String
   url String
   created_at DateTime @default(now())
+  expires_at  DateTime?
 
   links       attachment_link[]
 }
@@ -89,7 +89,9 @@ model attachment_link {
   attachmentId  String
   resourceId    String?
   resourceType RESOURSE_TYPE?
+  linked_at  DateTime?
 
   attachment attachment @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
+  
 }
 

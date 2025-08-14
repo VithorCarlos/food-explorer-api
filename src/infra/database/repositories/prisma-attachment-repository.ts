@@ -1,39 +1,44 @@
 import { prisma } from "../prisma";
 import { PrismaAttachmentAdapter } from "../adapters/prisma-attachment-adapter";
 import { Attachment } from "@/domain/entities/attachment";
-import {
-  AttachmentLinkWithAttachment,
-  AttachmentRepository,
-} from "@/domain/repositories/attachment-repository";
+import { AttachmentRepository } from "@/domain/repositories/attachment-repository";
+import { AttachmentLink } from "@/domain/entities/attachment-link";
+import { PrismaAttachmentLinkAdapter } from "../adapters/prisma-attachment-link-adater";
 
 export class PrismaAttachmentRepository implements AttachmentRepository {
   async create(attachment: Attachment) {
-    const attachmentLink = PrismaAttachmentAdapter.toPrisma(attachment);
+    const attachmentData = PrismaAttachmentAdapter.toPrisma(attachment);
 
     await prisma.attachment.create({
-      data: {
-        id: attachmentLink.id,
-        title: attachmentLink.title,
-        url: attachmentLink.url,
-      },
+      data: attachmentData,
     });
   }
 
-  async findByResource({
-    resourceId,
-    resourceType,
-  }: AttachmentLinkWithAttachment): Promise<Attachment[]> {
-    const attachments = await prisma.attachment.findMany({
-      where: {
-        links: {
-          some: {
-            resourceId,
-            resourceType,
-          },
-        },
-      },
-    });
+  async createLink(link: AttachmentLink): Promise<void> {
+    const attachmentLink = PrismaAttachmentLinkAdapter.toPrisma(link);
 
-    return attachments.map(PrismaAttachmentAdapter.toDomain);
+    console.log({ attachmentLink });
+
+    await prisma.attachment_link.create({
+      data: attachmentLink,
+    });
   }
+
+  // async findByResource({
+  //   resourceId,
+  //   resourceType,
+  // }: AttachmentLinkWithAttachment): Promise<Attachment[]> {
+  //   const attachments = await prisma.attachment.findMany({
+  //     where: {
+  //       links: {
+  //         some: {
+  //           resourceId,
+  //           resourceType,
+  //         },
+  //       },
+  //     },
+  //   });
+
+  //   return attachments.map(PrismaAttachmentAdapter.toDomain);
+  // }
 }

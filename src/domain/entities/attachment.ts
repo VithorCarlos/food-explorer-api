@@ -7,6 +7,7 @@ export interface AttachmentProps {
   title: string;
   url: string;
   created_at?: Date;
+  expires_at: Date | null;
 }
 
 export class Attachment extends BaseEntity<AttachmentProps> {
@@ -14,6 +15,7 @@ export class Attachment extends BaseEntity<AttachmentProps> {
     const attachment = new Attachment({
       ...props,
       id: props.id || randomUUID(),
+      created_at: props.created_at ?? new Date(),
     });
 
     return attachment;
@@ -32,6 +34,10 @@ export class Attachment extends BaseEntity<AttachmentProps> {
   }
 
   get created_at() {
+    return this.props.created_at;
+  }
+
+  get expires_at() {
     return this.props.created_at;
   }
 }

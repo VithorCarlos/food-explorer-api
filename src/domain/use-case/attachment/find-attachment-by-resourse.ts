@@ -1,6 +1,6 @@
 import { AttachmentNotFoundError } from "@/domain/errors/attachment-not-found";
 import { AttachmentRepository } from "@/domain/repositories/attachment-repository";
-import { $Enums } from "@/prisma/generated";
+import { $Enums } from "@prisma/client";
 
 interface FindAttachmentByResourceRequest {
   resourceId: string;

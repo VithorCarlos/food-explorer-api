@@ -1,14 +1,10 @@
 import { Attachment } from "../entities/attachment";
-import { $Enums } from "@/prisma/generated";
-
-export interface AttachmentLinkWithAttachment extends Attachment {
-  resourceId?: string;
-  resourceType?: $Enums.RESOURSE_TYPE;
-}
+import { AttachmentLink } from "../entities/attachment-link";
 
 export interface AttachmentRepository {
-  create(attachment: AttachmentLinkWithAttachment): Promise<void>;
-  findByResource(
-    attachmentLink: AttachmentLinkWithAttachment
-  ): Promise<Attachment[]>;
+  create(attachment: Attachment): Promise<void>;
+  createLink(link: AttachmentLink): Promise<void>;
+  // findByResource(
+  //   attachmentLink: AttachmentLinkWithAttachment
+  // ): Promise<Attachment[]>;
 }

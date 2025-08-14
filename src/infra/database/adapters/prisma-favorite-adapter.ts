@@ -1,5 +1,5 @@
 import { Favorite } from "@/domain/entities/favorite";
-import { favorites as RowFavorites } from "@/prisma/generated";
+import { favorites as RowFavorites } from "@prisma/client";
 
 export interface CustomBindProps {
   favoriteId: string;

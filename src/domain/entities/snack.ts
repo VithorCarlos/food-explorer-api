@@ -2,13 +2,13 @@ import { BaseEntity } from "../../shared/entity/base-identity";
 import { Optional } from "@/shared/optional";
 import { randomUUID } from "node:crypto";
 import { FOOD_CATEGORIES } from "../enums/food-categories";
-import { Attachment } from "./attachment";
+import { AttachmentLink } from "./attachment-link";
 
 export interface SnackProps {
   id: string;
   title: string;
   description: string;
-  attachment?: Attachment;
+  attachment?: AttachmentLink;
   category: FOOD_CATEGORIES;
   ingredients: string[];
   price: number;
@@ -23,7 +23,7 @@ interface SaveSnacksProps {
   category?: FOOD_CATEGORIES;
   ingredients?: string[];
   price?: number;
-  attachment?: Attachment;
+  attachment?: AttachmentLink;
 }
 
 export class Snack extends BaseEntity<SnackProps> {

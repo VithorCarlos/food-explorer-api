@@ -1,7 +1,9 @@
+import { AttachmentLink } from "@/domain/entities/attachment-link";
 import { Snack } from "@/domain/entities/snack";
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
 import { AttachmentRepository } from "@/domain/repositories/attachment-repository";
 import { SnacksRepository } from "@/domain/repositories/snacks-repository";
+import { $Enums } from "@prisma/client";
 
 interface CreateSnackRequest {
   title: string;
@@ -10,6 +12,7 @@ interface CreateSnackRequest {
   ingredients: string[];
   price: number;
   userId: string;
+  attachmentId: string;
 }
 
 export class CreateSnackUseCase {
@@ -25,6 +28,7 @@ export class CreateSnackUseCase {
     ingredients,
     price,
     userId,
+    attachmentId,
   }: CreateSnackRequest) {
     const snack = Snack.create({
       title,
@@ -35,7 +39,18 @@ export class CreateSnackUseCase {
       userId,
     });
 
-    // await this.attachmentRepository.create({attachment})
+    if (attachmentId) {
+      const attachmentLink = AttachmentLink.create({
+        attachmentId,
+        resourceId: snack.id,
+        resourceType: $Enums.RESOURSE_TYPE.SNACK,
+      });
+
+      snack.update({ attachment: attachmentLink });
+
+      await this.attachmentRepository.createLink(attachmentLink);
+    }
+
     await this.snacksRepository.create(snack);
 
     return { snack };

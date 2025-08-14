@@ -67,6 +67,15 @@ export class PrismaSnacksRepository implements SnacksRepository {
     await prisma.snacks.create({
       data: snack,
     });
+
+    if (snack.attachment) {
+      await prisma.attachment.update({
+        where: { id: snack.attachment?.attachmentId },
+        data: {
+          expires_at: null,
+        },
+      });
+    }
   }
 
   async update(data: Snack) {
@@ -83,20 +92,39 @@ export class PrismaSnacksRepository implements SnacksRepository {
         ingredients: snack.ingredients,
         price: snack.price,
         description: snack.description,
-        ...(data.attachment?.id && {
-          attachment: {
-            update: {
-              title: data.attachment.title,
-              url: data.attachment.url,
-            },
-          },
-        }),
         updated_at: snack.updated_at,
       },
     });
+
+    if (data.attachment && data.attachment.attachmentId) {
+      const resourceId = data.attachment.resourceId;
+
+      await prisma.attachment_link.deleteMany({
+        where: {
+          resourceId,
+          resourceType: "SNACK",
+        },
+      });
+    }
   }
 
   async delete(id: string) {
+    const attachment = await prisma.attachment_link.findFirst({
+      where: {
+        resourceId: id,
+        resourceType: "SNACK",
+      },
+      select: {
+        attachmentId: true,
+      },
+    });
+
+    if (attachment) {
+      await prisma.attachment.delete({
+        where: { id: attachment.attachmentId },
+      });
+    }
+
     await prisma.snacks.delete({
       where: {
         id,

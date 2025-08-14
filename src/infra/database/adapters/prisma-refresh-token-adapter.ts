@@ -1,5 +1,5 @@
 import { RefreshToken } from "@/domain/entities/refresh-token";
-import { refresh_tokens as RowRefreshTokens } from "@/prisma/generated";
+import { refresh_tokens as RowRefreshTokens } from "@prisma/client";
 
 export class PrismaRefreshTokenAdapter {
   static toPrisma({ id, expiresIn, userId }: RefreshToken) {

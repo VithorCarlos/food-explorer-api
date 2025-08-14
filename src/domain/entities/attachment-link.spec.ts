@@ -9,6 +9,7 @@ describe("Attachment entity", () => {
       title: "sample.png",
       url: "https://sample-image.png",
       created_at: new Date(),
+      expires_at: new Date(Date.now() + 1000 * 60 * 60),
     });
 
     const attachmentLink = AttachmentLink.create({
@@ -16,9 +17,9 @@ describe("Attachment entity", () => {
       attachmentId: attachment.id,
       resourceId: "1",
       resourceType: "SNACK",
-      linkedAt: attachment.created_at,
+      linked_at: new Date(),
     });
 
-    expect(attachment).toBeDefined();
+    expect(attachmentLink).toBeDefined();
   });
 });

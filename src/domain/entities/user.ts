@@ -1,4 +1,4 @@
-import { $Enums } from "@/prisma/generated";
+import { $Enums } from "@prisma/client";
 import { BaseEntity } from "../../shared/entity/base-identity";
 import { ROLE } from "../enums/role";
 import { Optional } from "@/shared/optional";
