@@ -1,5 +1,5 @@
-import { InMemoryUsersRepository } from "@/test/in-memory-users-repository";
-import { makeUser } from "@/test/factories/make-user";
+import { InMemoryUsersRepository } from "test/in-memory-users-repository";
+import { makeUser } from "test/factories/make-user";
 import { UpdateUserUseCase } from "./update-user";
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 import { EmailAlreadyExists } from "@/domain/errors/email-already-exists";
@@ -26,7 +26,7 @@ describe("Update user", () => {
     });
 
     expect(user).toEqual(
-      expect.objectContaining({ name: "John Doe", email: "johndoe@gmail.com" })
+      expect.objectContaining({ name: "John Doe", email: "johndoe@gmail.com" }),
     );
 
     expect(user.id).toEqual(expect.any(String));
@@ -44,7 +44,7 @@ describe("Update user", () => {
         name,
         email,
         password,
-      })
+      }),
     ).rejects.toThrowError(UserDoesNotExists);
   });
 
@@ -59,7 +59,7 @@ describe("Update user", () => {
         name: user.name,
         email: "johndoe@gmail.com",
         password: user.password,
-      })
+      }),
     ).rejects.toThrowError(EmailAlreadyExists);
   });
 });

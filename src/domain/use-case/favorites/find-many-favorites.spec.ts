@@ -1,5 +1,5 @@
-import { InMemoryFavoritesRepository } from "@/test/in-memory-favorites-repository";
-import { makeFavorite } from "@/test/factories/make-favorite";
+import { InMemoryFavoritesRepository } from "test/in-memory-favorites-repository";
+import { makeFavorite } from "test/factories/make-favorite";
 import { FindManyFavoriteUseCase } from "./find-many-favorites";
 
 let sut: FindManyFavoriteUseCase;
@@ -18,7 +18,7 @@ describe("Find many favorites", () => {
           id: `favorite-${i}`,
           userId: "user-01",
           snackId: `snack-${i}`,
-        })
+        }),
       );
     }
 

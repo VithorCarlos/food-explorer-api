@@ -1,5 +1,5 @@
 import { GenerateRefreshTokenUseCase } from "./generate-refresh-token";
-import { InMemoryRefreshTokenRepository } from "@/test/in-memory-refresh-token";
+import { InMemoryRefreshTokenRepository } from "test/in-memory-refresh-token";
 import { RefreshToken } from "@/domain/entities/refresh-token";
 import dayjs from "dayjs";
 import { RefreshTokenNotFoundError } from "@/domain/errors/refresh-token-not-found";
@@ -41,7 +41,7 @@ describe("Generate refresh token", () => {
     await expect(
       sut.execute({
         id: "refresh-01",
-      })
+      }),
     ).rejects.toThrowError(RefreshTokenNotFoundError);
   });
 });

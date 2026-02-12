@@ -1,5 +1,5 @@
 import { AttachmentLink } from "@/domain/entities/attachment-link";
-import { attachment_link as RowAttachmentLink } from "@prisma/client";
+import { attachment_link as RowAttachmentLink } from "generated/prisma/client";
 
 export class PrismaAttachmentLinkAdapter {
   static toPrisma({

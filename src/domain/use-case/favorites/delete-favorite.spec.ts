@@ -1,10 +1,10 @@
-import { InMemoryFavoritesRepository } from "@/test/in-memory-favorites-repository";
+import { InMemoryFavoritesRepository } from "test/in-memory-favorites-repository";
 import { DeleteFavoriteUseCase } from "./delete-favorite";
 import { FavoriteDoesNotExists } from "@/domain/errors/favorite-does-not-exists";
-import { makeFavorite } from "@/test/factories/make-favorite";
+import { makeFavorite } from "test/factories/make-favorite";
 import { FavoriteNotFoundForThisUser } from "@/domain/errors/favorite-not-found-for-this-user";
-import { InMemoryUsersRepository } from "@/test/in-memory-users-repository";
-import { makeUser } from "@/test/factories/make-user";
+import { InMemoryUsersRepository } from "test/in-memory-users-repository";
+import { makeUser } from "test/factories/make-user";
 
 let sut: DeleteFavoriteUseCase;
 let inMemoryFavoritesRepository: InMemoryFavoritesRepository;
@@ -25,7 +25,7 @@ describe("Delete favorite", () => {
         id: "favorite-01",
         userId: "user-01",
         snackId: "snack-01",
-      })
+      }),
     );
 
     await inMemoryFavoritesRepository.create(
@@ -33,7 +33,7 @@ describe("Delete favorite", () => {
         id: "favorite-02",
         userId: "user-02",
         snackId: "snack-02",
-      })
+      }),
     );
 
     await sut.execute({
@@ -50,7 +50,7 @@ describe("Delete favorite", () => {
       sut.execute({
         id: "favorite-01",
         userId: "user-01",
-      })
+      }),
     ).rejects.toThrowError(FavoriteDoesNotExists);
   });
 
@@ -67,7 +67,7 @@ describe("Delete favorite", () => {
       sut.execute({
         id: "favorite-01",
         userId: "different-user-id-for-this-snack",
-      })
+      }),
     ).rejects.toThrowError(FavoriteNotFoundForThisUser);
   });
 });

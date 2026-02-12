@@ -1,6 +1,6 @@
 import { CreateSnackUseCase } from "./create-snack";
-import { InMemorySnacksRepository } from "@/test/in-memory-snacks-repository";
-import { makeSnack } from "@/test/factories/make-snack";
+import { InMemorySnacksRepository } from "test/in-memory-snacks-repository";
+import { makeSnack } from "test/factories/make-snack";
 
 let sut: CreateSnackUseCase;
 let inMemorySnacksRepository: InMemorySnacksRepository;

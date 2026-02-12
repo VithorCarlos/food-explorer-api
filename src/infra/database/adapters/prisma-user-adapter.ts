@@ -1,5 +1,5 @@
 import { User } from "@/domain/entities/user";
-import { users as RowUsers } from "@prisma/client";
+import { users as RowUsers } from "generated/prisma/client";
 
 export class PrismaUserAdapter {
   static toPrisma({ id, name, email, password, updated_at, role }: User) {

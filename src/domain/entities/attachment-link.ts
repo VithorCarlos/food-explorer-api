@@ -1,6 +1,6 @@
 import { BaseEntity } from "@/shared/entity/base-identity";
 import { Optional } from "@/shared/optional";
-import { $Enums } from "@prisma/client";
+import { $Enums } from "generated/prisma/client";
 import { randomUUID } from "node:crypto";
 
 interface AttachmentLinkProps {

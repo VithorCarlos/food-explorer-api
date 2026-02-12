@@ -1,6 +1,6 @@
 import { RefreshToken } from "@/domain/entities/refresh-token";
 import { DeleteRefreshTokenUseCase } from "./delete-refresh-token";
-import { InMemoryRefreshTokenRepository } from "@/test/in-memory-refresh-token";
+import { InMemoryRefreshTokenRepository } from "test/in-memory-refresh-token";
 import dayjs from "dayjs";
 import { RefreshTokenNotFoundError } from "@/domain/errors/refresh-token-not-found";
 
@@ -35,7 +35,7 @@ describe("Delete refresh token", () => {
     await expect(
       sut.execute({
         userId: "user-01",
-      })
+      }),
     ).rejects.toThrowError(RefreshTokenNotFoundError);
   });
 });

@@ -1,7 +1,7 @@
-import { InMemoryUploadAttachment } from "@/test/in-memory-upload-attachment-repository";
+import { InMemoryUploadAttachment } from "test/in-memory-upload-attachment-repository";
 import { FindAttachmentByResourceUseCase } from "./find-attachment-by-resourse";
-import { InMemorySnacksRepository } from "@/test/in-memory-snacks-repository";
-import { makeSnack } from "@/test/factories/make-snack";
+import { InMemorySnacksRepository } from "test/in-memory-snacks-repository";
+import { makeSnack } from "test/factories/make-snack";
 import { Attachment } from "@/domain/entities/attachment";
 import { AttachmentNotFoundError } from "@/domain/errors/attachment-not-found";
 
@@ -35,13 +35,13 @@ describe("Find attachment by resource", () => {
     });
 
     expect(attachments[0]).toEqual(
-      expect.objectContaining({ title: "food.png" })
+      expect.objectContaining({ title: "food.png" }),
     );
 
     expect(attachments[0]).toEqual(
       expect.objectContaining({
         title: inMemoryUploadAttachment.items[0].title,
-      })
+      }),
     );
 
     expect(attachments).toHaveLength(1);
@@ -52,7 +52,7 @@ describe("Find attachment by resource", () => {
       sut.execute({
         resourceId: "1",
         resourceType: "SNACK",
-      })
+      }),
     ).rejects.toThrowError(AttachmentNotFoundError);
   });
 });

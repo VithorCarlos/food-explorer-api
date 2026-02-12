@@ -1,5 +1,5 @@
-import { InMemoryUsersRepository } from "@/test/in-memory-users-repository";
-import { makeUser } from "@/test/factories/make-user";
+import { InMemoryUsersRepository } from "test/in-memory-users-repository";
+import { makeUser } from "test/factories/make-user";
 import { DeleteUserUseCase } from "./delete-user";
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 
@@ -28,7 +28,7 @@ describe("Delete user", () => {
     await expect(
       sut.execute({
         userId: "user-1",
-      })
+      }),
     ).rejects.toThrowError(UserDoesNotExists);
   });
 });

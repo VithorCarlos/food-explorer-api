@@ -1,6 +1,6 @@
-import { InMemorySnacksRepository } from "@/test/in-memory-snacks-repository";
+import { InMemorySnacksRepository } from "test/in-memory-snacks-repository";
 import { SearchSnackUseCase } from "./search-snack";
-import { makeSnack } from "@/test/factories/make-snack";
+import { makeSnack } from "test/factories/make-snack";
 
 let sut: SearchSnackUseCase;
 let inMemorySnacksRepository: InMemorySnacksRepository;
@@ -17,8 +17,8 @@ describe("Search many snacks", () => {
             title: `snack-${i}`,
             ingredients: [`cheese-${i}`, `capchup-${i}`],
           },
-          "user-01"
-        )
+          "user-01",
+        ),
       );
     }
   });
@@ -55,8 +55,8 @@ describe("Search many snacks", () => {
           title: "Snack Doe",
           ingredients: ["rice", "sugar"],
         },
-        "user-01"
-      )
+        "user-01",
+      ),
     );
 
     const { snacks } = await sut.execute({
@@ -67,7 +67,7 @@ describe("Search many snacks", () => {
     expect(snacks).toHaveLength(1);
 
     expect(snacks[0].ingredients).toEqual(
-      expect.arrayContaining(["rice", "sugar"])
+      expect.arrayContaining(["rice", "sugar"]),
     );
 
     expect(snacks[0].title).toEqual("Snack Doe");
@@ -80,8 +80,8 @@ describe("Search many snacks", () => {
           title: "Snack Doe",
           ingredients: ["rice", "sugar"],
         },
-        "user-01"
-      )
+        "user-01",
+      ),
     );
 
     const { snacks } = await sut.execute({
@@ -93,7 +93,7 @@ describe("Search many snacks", () => {
     expect(snacks).toHaveLength(1);
 
     expect(snacks[0].ingredients).toEqual(
-      expect.arrayContaining(["rice", "sugar"])
+      expect.arrayContaining(["rice", "sugar"]),
     );
 
     expect(snacks[0].title).toEqual("Snack Doe");

@@ -7,6 +7,7 @@ const schema = z.object({
     .default("development"),
   PORT: z.coerce.number().default(3333),
   DATABASE_URL: z.string(),
+  DATABASE_SCHEMA: z.string(),
   JWT_SECRET: z.string(),
   CLOUDFARE_ACCOUNT_ID: z.string(),
   AWS_BUCKET_NAME: z.string(),

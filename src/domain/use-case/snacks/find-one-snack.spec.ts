@@ -1,5 +1,5 @@
-import { InMemorySnacksRepository } from "@/test/in-memory-snacks-repository";
-import { makeSnack } from "@/test/factories/make-snack";
+import { InMemorySnacksRepository } from "test/in-memory-snacks-repository";
+import { makeSnack } from "test/factories/make-snack";
 import { SnackDoesNotExists } from "@/domain/errors/snack-does-not-exists";
 import { FindOneSnackUseCase } from "./find-one-snack";
 
@@ -30,7 +30,7 @@ describe("Find one snack", () => {
     await expect(
       sut.execute({
         id: "snack-01",
-      })
+      }),
     ).rejects.toThrowError(SnackDoesNotExists);
   });
 });

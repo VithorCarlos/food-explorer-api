@@ -1,5 +1,5 @@
-import { InMemorySnacksRepository } from "@/test/in-memory-snacks-repository";
-import { makeSnack } from "@/test/factories/make-snack";
+import { InMemorySnacksRepository } from "test/in-memory-snacks-repository";
+import { makeSnack } from "test/factories/make-snack";
 import { DeleteSnackUseCase } from "./delete-snack";
 import { SnackDoesNotExists } from "@/domain/errors/snack-does-not-exists";
 import { SnackNotFoundForThisUser } from "@/domain/errors/snack-not-found-for-this-user";
@@ -15,11 +15,11 @@ describe("Delete snack", () => {
 
   it("Should be able to delete an snack", async () => {
     await inMemorySnacksRepository.create(
-      makeSnack({ id: "snack-01" }, "user-01")
+      makeSnack({ id: "snack-01" }, "user-01"),
     );
 
     await inMemorySnacksRepository.create(
-      makeSnack({ id: "snack-02" }, "user-02")
+      makeSnack({ id: "snack-02" }, "user-02"),
     );
 
     await sut.execute({
@@ -36,7 +36,7 @@ describe("Delete snack", () => {
       sut.execute({
         id: "snack-01",
         userId: "user-02",
-      })
+      }),
     ).rejects.toThrowError(SnackDoesNotExists);
   });
 
@@ -49,7 +49,7 @@ describe("Delete snack", () => {
       sut.execute({
         id: "snack-01",
         userId: "different-user-id-for-this-snack",
-      })
+      }),
     ).rejects.toThrowError(SnackNotFoundForThisUser);
   });
 });

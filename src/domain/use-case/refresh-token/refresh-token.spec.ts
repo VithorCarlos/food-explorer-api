@@ -1,5 +1,5 @@
 import { RefreshTokenUseCase } from "./refresh-token";
-import { InMemoryRefreshTokenRepository } from "@/test/in-memory-refresh-token";
+import { InMemoryRefreshTokenRepository } from "test/in-memory-refresh-token";
 
 let sut: RefreshTokenUseCase;
 let inMemoryRefreshTokenRepository: InMemoryRefreshTokenRepository;
@@ -16,7 +16,7 @@ describe("Create refresh token", () => {
     });
 
     expect(refreshToken).toEqual(
-      expect.objectContaining({ userId: "user-01" })
+      expect.objectContaining({ userId: "user-01" }),
     );
     expect(refreshToken.id).toEqual(expect.any(String));
 

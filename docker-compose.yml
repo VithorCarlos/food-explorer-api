@@ -3,9 +3,9 @@ services:
     container_name: postgres
     image: bitnami/postgresql
     environment:
-      - POSTGRESQL_DATABASE=food-explorer
-      - POSTGRESQL_USERNAME=docker
-      - POSTGRESQL_PASSWORD=docker
+      - POSTGRES_DATABASE=food-explorer
+      - POSTGRES_USERNAME=docker
+      - POSTGRES_PASSWORD=docker
     ports:
       - 5432:5432
     networks:

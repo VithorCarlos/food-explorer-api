@@ -5,12 +5,13 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client"
+  output     = "../generated/prisma"
+  engineType = "client"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum ROLE {
@@ -20,26 +21,28 @@ enum ROLE {
 }
 
 enum RESOURSE_TYPE {
-  USER 
+  USER
   SNACK
 }
 
-model users {
+model User {
   id       String @unique @default(uuid())
   name     String
   email    String @unique
   password String
   role     ROLE   @default(CLIENT)
 
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  snacks        snacks[]
-  favorite      favorites[]
-  refresh_token refresh_tokens?
+  snacks       Snack[]
+  favorite     Favorite[]
+  refreshToken RefreshToken?
+
+  @@map("users")
 }
 
-model snacks {
+model Snack {
   id          String   @unique @default(uuid())
   title       String
   description String
@@ -47,51 +50,59 @@ model snacks {
   ingredients String[]
   price       Float
 
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  user   users  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
 
-  favorite favorites[]
+  favorite Favorite[]
+
+  @@map("snacks")
 }
 
-model favorites {
+model Favorite {
   id String @unique @default(uuid())
 
-  user   users  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
 
-  snack   snacks @relation(fields: [snackId], references: [id], onDelete: Cascade)
-  snackId String
+  snack   Snack  @relation(fields: [snackId], references: [id], onDelete: Cascade)
+  snackId String @map("snack_id")
+
+  @@map("favorites")
 }
 
-model refresh_tokens {
+model RefreshToken {
   id     String @unique @default(uuid())
-  userId String @unique
-  user   users  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  expiresIn Int
+  expiresIn Int @map("expires_in")
+
+  @@map("refresh_tokens")
 }
 
-model attachment {
-  id String @unique @default(uuid())
-  title String
-  url String
-  created_at DateTime @default(now())
-  expires_at  DateTime?
+model Attachment {
+  id        String    @unique @default(uuid())
+  title     String
+  url       String
+  createdAt DateTime  @default(now()) @map("created_at")
+  expiresAt DateTime? @map("expires_at")
 
-  links       attachment_link[]
+  links AttachmentLink[]
+
+  @@map("attachment")
 }
 
-model attachment_link {
-  id String @unique @default(uuid())
-  attachmentId  String
-  resourceId    String?
-  resourceType RESOURSE_TYPE?
-  linked_at  DateTime?
+model AttachmentLink {
+  id           String         @unique @default(uuid())
+  attachmentId String         @map("attachment_id")
+  resourceId   String?        @map("resource_id")
+  resourceType RESOURSE_TYPE? @map("resource_type")
+  linkedAt     DateTime?      @map("linked_at")
 
-  attachment attachment @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
-  
+  attachment Attachment @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
+
+  @@map("attachment_link")
 }
-

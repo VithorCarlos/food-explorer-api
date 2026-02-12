@@ -1,7 +1,7 @@
 import { InvalidAttachmentTypeError } from "@/domain/errors/invalid-attachment-type";
 import { CreateAttachmentUseCase } from "./create-attachment";
-import { InMemoryUploadAttachment } from "@/test/in-memory-upload-attachment-repository";
-import { FakerUploader } from "@/test/storage/faker-uploader";
+import { FakerUploader } from "test/storage/faker-uploader";
+import { InMemoryUploadAttachment } from "test/in-memory-upload-attachment-repository";
 
 let sut: CreateAttachmentUseCase;
 let inMemoryUploadAttachment: InMemoryUploadAttachment;
@@ -26,11 +26,11 @@ describe("Upload and create attachment", () => {
     expect(attachment).toEqual(
       expect.objectContaining({
         title: inMemoryUploadAttachment.items[0].title,
-      })
+      }),
     );
     expect(fakeUploader.uploads).toHaveLength(1);
     expect(fakeUploader.uploads[0]).toEqual(
-      expect.objectContaining({ fileName: "food.png" })
+      expect.objectContaining({ fileName: "food.png" }),
     );
   });
 
@@ -40,7 +40,7 @@ describe("Upload and create attachment", () => {
         fileName: "food.pdf",
         fileType: "image/pdf",
         body: Buffer.from(""),
-      })
+      }),
     ).rejects.toThrowError(InvalidAttachmentTypeError);
   });
 });

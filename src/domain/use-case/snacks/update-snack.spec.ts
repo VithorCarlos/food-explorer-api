@@ -1,8 +1,8 @@
-import { InMemorySnacksRepository } from "@/test/in-memory-snacks-repository";
+import { InMemorySnacksRepository } from "test/in-memory-snacks-repository";
 import { UdpateSnackUseCase } from "./update-snack";
-import { makeSnack } from "@/test/factories/make-snack";
-import { InMemoryUsersRepository } from "@/test/in-memory-users-repository";
-import { makeUser } from "@/test/factories/make-user";
+import { makeSnack } from "test/factories/make-snack";
+import { InMemoryUsersRepository } from "test/in-memory-users-repository";
+import { makeUser } from "test/factories/make-user";
 import { SnackDoesNotExists } from "@/domain/errors/snack-does-not-exists";
 import { SnackNotFoundForThisUser } from "@/domain/errors/snack-not-found-for-this-user";
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
@@ -38,7 +38,7 @@ describe("Update snack", () => {
         title: "my new snack title",
         description: "my new snack description",
         price: 500,
-      })
+      }),
     );
 
     expect(snack.id).toEqual("snack-01");
@@ -61,7 +61,7 @@ describe("Update snack", () => {
     expect(snack).toEqual(
       expect.objectContaining({
         category: FOOD_CATEGORIES.PIZZA,
-      })
+      }),
     );
 
     expect(snack.id).toEqual("snack-01");
@@ -92,7 +92,7 @@ describe("Update snack", () => {
           "Whip cream",
           "Fold together cream and egg yolks",
         ],
-      })
+      }),
     );
 
     expect(snack.id).toEqual("snack-01");
@@ -107,7 +107,7 @@ describe("Update snack", () => {
         id: "unknow-snack",
         userId: snack.userId,
         title: snack.title,
-      })
+      }),
     ).rejects.toThrowError(SnackDoesNotExists);
   });
 
@@ -121,7 +121,7 @@ describe("Update snack", () => {
         id: "snack-01",
         userId: "different-user-id-for-this-snack",
         title: snack.title,
-      })
+      }),
     ).rejects.toThrowError(SnackNotFoundForThisUser);
   });
 });

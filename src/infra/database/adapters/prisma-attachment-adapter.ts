@@ -1,5 +1,5 @@
 import { Attachment } from "@/domain/entities/attachment";
-import { attachment as RowAttachments } from "@prisma/client";
+import { attachment as RowAttachments } from "generated/prisma/client";
 
 export class PrismaAttachmentAdapter {
   static toPrisma({ id, title, url, expires_at, created_at }: Attachment) {

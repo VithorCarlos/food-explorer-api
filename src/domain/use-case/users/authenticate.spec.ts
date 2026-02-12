@@ -1,6 +1,6 @@
-import { InMemoryUsersRepository } from "@/test/in-memory-users-repository";
+import { InMemoryUsersRepository } from "test/in-memory-users-repository";
 import { AuthenticateUserUseCase } from "./authenticate";
-import { makeUser } from "@/test/factories/make-user";
+import { makeUser } from "test/factories/make-user";
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 import { UserInvalidCredential } from "@/domain/errors/user-invalid-crendential";
 import { hash } from "bcryptjs";
@@ -31,7 +31,7 @@ describe("Authenticate test", () => {
     });
 
     expect(user).toEqual(
-      expect.objectContaining({ email: "johndoe@gmail.com" })
+      expect.objectContaining({ email: "johndoe@gmail.com" }),
     );
   });
 
@@ -40,7 +40,7 @@ describe("Authenticate test", () => {
       sut.execute({
         email: "johndoe@gmail.com",
         password: "123test",
-      })
+      }),
     ).rejects.toBeInstanceOf(UserDoesNotExists);
   });
 
@@ -59,7 +59,7 @@ describe("Authenticate test", () => {
       sut.execute({
         email: "johndoe@gmail.com",
         password: wrong_password,
-      })
+      }),
     ).rejects.toBeInstanceOf(UserInvalidCredential);
   });
 });

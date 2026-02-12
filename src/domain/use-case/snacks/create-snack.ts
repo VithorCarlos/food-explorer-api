@@ -3,7 +3,7 @@ import { Snack } from "@/domain/entities/snack";
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
 import { AttachmentRepository } from "@/domain/repositories/attachment-repository";
 import { SnacksRepository } from "@/domain/repositories/snacks-repository";
-import { $Enums } from "@prisma/client";
+import { $Enums } from "generated/prisma/client";
 
 interface CreateSnackRequest {
   title: string;
@@ -18,7 +18,7 @@ interface CreateSnackRequest {
 export class CreateSnackUseCase {
   constructor(
     private snacksRepository: SnacksRepository,
-    private attachmentRepository: AttachmentRepository
+    private attachmentRepository: AttachmentRepository,
   ) {}
 
   async execute({
