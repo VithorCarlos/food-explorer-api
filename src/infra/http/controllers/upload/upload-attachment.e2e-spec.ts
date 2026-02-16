@@ -1,12 +1,18 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
-import { app } from "@/app";
 import request from "supertest";
-import { makeAuthenticateUseCase } from "../../factories/make-authenticate-use-case";
 import path from "node:path";
-import { makeRegisterUserUseCase } from "../../factories/make-register-user-use-case";
+import { PrismaService } from "@/infra/database/prisma";
+import { buildApp } from "@/app";
+import { FastifyInstance } from "fastify";
 
 describe("Upload Attachement (e2e)", () => {
+  let app: FastifyInstance;
+  let prisma: PrismaService;
+
   beforeAll(async () => {
+    app = await buildApp();
+    prisma = new PrismaService();
+
     await app.ready();
   });
 
@@ -15,29 +21,20 @@ describe("Upload Attachement (e2e)", () => {
   });
 
   it("should be able to upload an attachment", async () => {
-    const registerUseCase = makeRegisterUserUseCase();
-    const authenticateUseCase = makeAuthenticateUseCase();
-
     const email = "johndoe@gmail.com";
-    const password = "johndoe@gmail.com";
+    const password = "12345";
 
-    await registerUseCase.execute({
-      name: "john doe",
-      email,
-      password,
-    });
-
-    const { user } = await authenticateUseCase.execute({
-      email,
-      password,
+    const user = await prisma.user.create({
+      data: {
+        name: "john doe",
+        email,
+        password,
+      },
     });
 
     const accessToken = app.jwt.sign({ sub: user.id, role: user.role });
 
-    const filePath = path.resolve(
-      process.cwd(),
-      "src/test/e2e/sample-upload.jpeg"
-    );
+    const filePath = path.resolve(process.cwd(), "test/e2e/sample-upload.jpeg");
 
     const response = await request(app.server)
       .post(`/upload`)

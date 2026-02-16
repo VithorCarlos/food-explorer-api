@@ -1,11 +1,13 @@
 import { RefreshToken } from "@/domain/entities/refresh-token";
 import { RefreshTokenRepository } from "@/domain/repositories/refresh-token-repository";
-import { prisma } from "../prisma";
+import { PrismaService } from "../prisma";
 import { PrismaRefreshTokenAdapter } from "../adapters/prisma-refresh-token-adapter";
 
 export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
+  constructor(private prisma: PrismaService) {}
+
   async findById(id: string) {
-    const refreshToken = await prisma.refresh_tokens.findFirst({
+    const refreshToken = await this.prisma.refreshToken.findFirst({
       where: { id },
     });
 
@@ -17,7 +19,7 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
   }
 
   async findByUserId(userId: string) {
-    const refreshToken = await prisma.refresh_tokens.findFirst({
+    const refreshToken = await this.prisma.refreshToken.findFirst({
       where: { userId },
     });
 
@@ -29,7 +31,7 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
   }
 
   async delete(id: string) {
-    await prisma.refresh_tokens.delete({
+    await this.prisma.refreshToken.delete({
       where: {
         id,
       },
@@ -39,6 +41,6 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
   async create(data: RefreshToken) {
     const refreshToken = PrismaRefreshTokenAdapter.toPrisma(data);
 
-    await prisma.refresh_tokens.create({ data: refreshToken });
+    await this.prisma.refreshToken.create({ data: refreshToken });
   }
 }

@@ -1,11 +1,13 @@
 import { UsersRepository } from "@/domain/repositories/users-repository";
 import { User } from "@/domain/entities/user";
 import { PrismaUserAdapter } from "../adapters/prisma-user-adapter";
-import { prisma } from "../prisma";
+import { PrismaService } from "../prisma";
 
 export class PrismaUsersRepository implements UsersRepository {
+  constructor(private prisma: PrismaService) {}
+
   async findById(id: string) {
-    const user = await prisma.users.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: {
         id,
       },
@@ -19,7 +21,7 @@ export class PrismaUsersRepository implements UsersRepository {
   }
 
   async findByEmail(email: string) {
-    const user = await prisma.users.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: {
         email,
       },
@@ -35,13 +37,13 @@ export class PrismaUsersRepository implements UsersRepository {
   async create(data: User) {
     const user = PrismaUserAdapter.toPrisma(data);
 
-    await prisma.users.create({ data: user });
+    await this.prisma.user.create({ data: user });
   }
 
   async update(data: User) {
     const user = PrismaUserAdapter.toPrisma(data);
 
-    await prisma.users.update({
+    await this.prisma.user.update({
       where: {
         id: user.id,
       },
@@ -49,13 +51,13 @@ export class PrismaUsersRepository implements UsersRepository {
         name: user.name,
         password: user.password,
         email: user.email,
-        updated_at: user.updated_at,
+        updatedAt: user.updated_at,
       },
     });
   }
 
   async delete(id: string) {
-    await prisma.users.delete({
+    await this.prisma.user.delete({
       where: {
         id,
       },

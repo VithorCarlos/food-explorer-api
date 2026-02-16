@@ -13,8 +13,8 @@ export interface SnackProps {
   ingredients: string[];
   price: number;
   userId: string;
-  created_at: Date;
-  updated_at?: Date;
+  createdAt: Date;
+  updatedAt?: Date;
 }
 
 interface SaveSnacksProps {
@@ -27,11 +27,11 @@ interface SaveSnacksProps {
 }
 
 export class Snack extends BaseEntity<SnackProps> {
-  static create(props: Optional<SnackProps, "id" | "created_at">) {
+  static create(props: Optional<SnackProps, "id" | "createdAt">) {
     const snack = new Snack({
       ...props,
       id: props.id || randomUUID(),
-      created_at: props.created_at ?? new Date(),
+      createdAt: props.createdAt ?? new Date(),
     });
 
     return snack;
@@ -69,16 +69,16 @@ export class Snack extends BaseEntity<SnackProps> {
     return this.props.userId;
   }
 
-  get created_at() {
-    return this.props.created_at;
+  get createdAt() {
+    return this.props.createdAt;
   }
 
-  get updated_at() {
-    return this.props.updated_at;
+  get updatedAt() {
+    return this.props.updatedAt;
   }
 
   private touch() {
-    this.props.updated_at = new Date();
+    this.props.updatedAt = new Date();
   }
 
   public update({

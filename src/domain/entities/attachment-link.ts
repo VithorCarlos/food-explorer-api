@@ -3,20 +3,20 @@ import { Optional } from "@/shared/optional";
 import { $Enums } from "generated/prisma/client";
 import { randomUUID } from "node:crypto";
 
-interface AttachmentLinkProps {
+export interface AttachmentLinkProps {
   id: string;
   attachmentId: string;
   resourceId: string;
   resourceType: $Enums.RESOURSE_TYPE;
-  linked_at?: Date;
+  linkedAt: Date;
 }
 
 export class AttachmentLink extends BaseEntity<AttachmentLinkProps> {
-  static create(props: Optional<AttachmentLinkProps, "id" | "linked_at">) {
+  static create(props: Optional<AttachmentLinkProps, "id" | "linkedAt">) {
     return new AttachmentLink({
       ...props,
       id: props.id ?? randomUUID(),
-      linked_at: props.linked_at ?? new Date(),
+      linkedAt: props.linkedAt ?? new Date(),
     });
   }
 
@@ -32,7 +32,7 @@ export class AttachmentLink extends BaseEntity<AttachmentLinkProps> {
     return this.props.resourceType;
   }
 
-  get linked_at() {
-    return this.props.linked_at;
+  get linkedAt() {
+    return this.props.linkedAt;
   }
 }

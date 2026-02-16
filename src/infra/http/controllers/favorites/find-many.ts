@@ -7,7 +7,7 @@ import { PrismaFavoriteAdapter } from "@/infra/database/adapters/prisma-favorite
 
 export const findManyFavorites = async (
   request: FastifyRequest,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) => {
   const userId = request.user.sub;
 
@@ -19,7 +19,9 @@ export const findManyFavorites = async (
   const { page, perPage } = findManySchema.parse(request.query);
 
   try {
-    const findManyFavoriteUseCase = makeFindManyFavoriteUseCase();
+    const findManyFavoriteUseCase = makeFindManyFavoriteUseCase(
+      request.server.prisma,
+    );
 
     const { favorites: filteredFavorites } =
       await findManyFavoriteUseCase.execute({
@@ -29,7 +31,7 @@ export const findManyFavorites = async (
       });
 
     const favorites = filteredFavorites.map((favorite) =>
-      PrismaFavoriteAdapter.toBind(favorite)
+      PrismaFavoriteAdapter.toBind(favorite),
     );
 
     reply.status(200).send({ favorites });

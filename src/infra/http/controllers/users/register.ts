@@ -5,11 +5,11 @@ import { makeRegisterUserUseCase } from "../../factories/make-register-user-use-
 
 export const registerUser = async (
   request: FastifyRequest,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) => {
   const registerSchema = z.object({
     name: z.string(),
-    email: z.string().email(),
+    email: z.email(),
     password: z.string(),
   });
 

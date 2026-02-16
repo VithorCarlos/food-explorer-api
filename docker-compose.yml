@@ -1,17 +1,18 @@
 services:
   db:
-    container_name: postgres
+    container_name: postgres_food_explorer
     image: bitnami/postgresql
-    environment:
-      - POSTGRES_DATABASE=food-explorer
-      - POSTGRES_USERNAME=docker
-      - POSTGRES_PASSWORD=docker
     ports:
       - 5432:5432
+    environment:
+      POSTGRES_DB: food-explorer
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      PG_DATA: /data/postgres
     networks:
       - backend
     volumes:
-      - db_vol:/var/lib/postgres/data
+      - ./data/pg:/data/postgres
 
 networks:
   backend:

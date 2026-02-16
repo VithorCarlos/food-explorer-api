@@ -7,17 +7,17 @@ import { TOKEN } from "@/domain/enums/token";
 
 export const authenticate = async (
   request: FastifyRequest,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) => {
   const authenticationSchema = z.object({
-    email: z.string().email(),
+    email: z.email(),
     password: z.string(),
   });
 
   const { email, password } = authenticationSchema.parse(request.body);
 
   try {
-    const authenticateUseCase = makeAuthenticateUseCase();
+    const authenticateUseCase = makeAuthenticateUseCase(request.server.prisma);
 
     const { user } = await authenticateUseCase.execute({
       email,
@@ -32,7 +32,7 @@ export const authenticate = async (
         sign: {
           sub: user.id,
         },
-      }
+      },
     );
 
     const refreshToken = await reply.jwtSign(
@@ -44,7 +44,7 @@ export const authenticate = async (
           sub: user.id,
           expiresIn: "7d",
         },
-      }
+      },
     );
 
     reply

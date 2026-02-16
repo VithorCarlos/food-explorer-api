@@ -28,7 +28,7 @@ export * from "./enums"
  * ```
  * const prisma = new PrismaClient()
  * // Fetch zero or more Users
- * const users = await prisma.users.findMany()
+ * const users = await prisma.user.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -38,32 +38,32 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
- * Model users
+ * Model User
  * 
  */
-export type users = Prisma.usersModel
+export type User = Prisma.UserModel
 /**
- * Model snacks
+ * Model Snack
  * 
  */
-export type snacks = Prisma.snacksModel
+export type Snack = Prisma.SnackModel
 /**
- * Model favorites
+ * Model Favorite
  * 
  */
-export type favorites = Prisma.favoritesModel
+export type Favorite = Prisma.FavoriteModel
 /**
- * Model refresh_tokens
+ * Model RefreshToken
  * 
  */
-export type refresh_tokens = Prisma.refresh_tokensModel
+export type RefreshToken = Prisma.RefreshTokenModel
 /**
- * Model attachment
+ * Model Attachment
  * 
  */
-export type attachment = Prisma.attachmentModel
+export type Attachment = Prisma.AttachmentModel
 /**
- * Model attachment_link
+ * Model AttachmentLink
  * 
  */
-export type attachment_link = Prisma.attachment_linkModel
+export type AttachmentLink = Prisma.AttachmentLinkModel

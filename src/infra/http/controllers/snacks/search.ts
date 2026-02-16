@@ -5,7 +5,7 @@ import { PrismaSnackAdapter } from "@/infra/database/adapters/prisma-snack-adapt
 
 export const searchSnack = async (
   request: FastifyRequest,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) => {
   const searchSchema = z.object({
     page: z.number().optional(),
@@ -16,11 +16,11 @@ export const searchSnack = async (
   });
 
   const { page, perPage, category, title, ingredients } = searchSchema.parse(
-    request.query
+    request.query,
   );
 
   try {
-    const searchSnacksUseCase = makeSearchSnacksUseCase();
+    const searchSnacksUseCase = makeSearchSnacksUseCase(request.server.prisma);
 
     const { snacks: filteredSnacks } = await searchSnacksUseCase.execute({
       page,

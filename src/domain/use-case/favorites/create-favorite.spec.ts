@@ -1,7 +1,7 @@
-import { InMemorySnacksRepository } from "test/in-memory-snacks-repository";
+import { InMemorySnacksRepository } from "test/repositories/in-memory-snacks-repository";
 import { CreateFavoriteUseCase } from "./create-favorite";
-import { InMemoryFavoritesRepository } from "test/in-memory-favorites-repository";
-import { InMemoryUsersRepository } from "test/in-memory-users-repository";
+import { InMemoryFavoritesRepository } from "test/repositories/in-memory-favorites-repository";
+import { InMemoryUsersRepository } from "test/repositories/in-memory-users-repository";
 import { makeUser } from "test/factories/make-user";
 import { makeSnack } from "test/factories/make-snack";
 

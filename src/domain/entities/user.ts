@@ -10,8 +10,8 @@ export interface UserProps {
   email: string;
   password: string;
   role: $Enums.ROLE;
-  created_at: Date;
-  updated_at?: Date;
+  createdAt: Date;
+  udpatedAt?: Date;
 }
 
 interface SaveUserProps {
@@ -21,11 +21,11 @@ interface SaveUserProps {
 }
 
 export class User extends BaseEntity<UserProps> {
-  static create(props: Optional<UserProps, "id" | "created_at" | "role">) {
+  static create(props: Optional<UserProps, "id" | "createdAt" | "role">) {
     return new User({
       ...props,
       id: props.id ?? randomUUID(),
-      created_at: props.created_at ?? new Date(),
+      createdAt: props.createdAt ?? new Date(),
       role: props.role ?? ROLE.CLIENT,
     });
   }
@@ -50,16 +50,16 @@ export class User extends BaseEntity<UserProps> {
     return this.props.role;
   }
 
-  get created_at() {
-    return this.props.created_at;
+  get createdAt() {
+    return this.props.createdAt;
   }
 
-  get updated_at() {
-    return this.props.updated_at;
+  get udpatedAt() {
+    return this.props.udpatedAt;
   }
 
   private touch() {
-    this.props.updated_at = new Date();
+    this.props.udpatedAt = new Date();
   }
 
   public update({ name, password, email }: SaveUserProps) {

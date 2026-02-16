@@ -8,7 +8,7 @@ import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
 
 export const updateSnack = async (
   request: FastifyRequest,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) => {
   const updateSchema = z.object({
     id: z.string(),
@@ -24,7 +24,7 @@ export const updateSnack = async (
   const userId = request.user.sub;
 
   try {
-    const updateSnackUseCase = makeUpdateSnackUseCase();
+    const updateSnackUseCase = makeUpdateSnackUseCase(request.server.prisma);
 
     const { snack: updatedSnack } = await updateSnackUseCase.execute({
       id,

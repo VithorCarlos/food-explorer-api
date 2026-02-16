@@ -1,13 +1,16 @@
 import { BaseEntity } from "../../shared/entity/base-identity";
 import { Optional } from "@/shared/optional";
+import dayjs from "dayjs";
+import { ATTACHMENT_STATUS } from "generated/prisma/enums";
 import { randomUUID } from "node:crypto";
 
 export interface AttachmentProps {
   id: string;
   title: string;
   url: string;
-  created_at?: Date;
-  expires_at: Date | null;
+  createdAt?: Date;
+  expiresAt?: Date | null;
+  status: ATTACHMENT_STATUS;
 }
 
 export class Attachment extends BaseEntity<AttachmentProps> {
@@ -15,7 +18,8 @@ export class Attachment extends BaseEntity<AttachmentProps> {
     const attachment = new Attachment({
       ...props,
       id: props.id || randomUUID(),
-      created_at: props.created_at ?? new Date(),
+      createdAt: props.createdAt ?? new Date(),
+      expiresAt: dayjs().add(1, "day").toDate() ?? props.expiresAt,
     });
 
     return attachment;
@@ -33,11 +37,15 @@ export class Attachment extends BaseEntity<AttachmentProps> {
     return this.props.url;
   }
 
-  get created_at() {
-    return this.props.created_at;
+  get createdAt() {
+    return this.props.createdAt;
   }
 
-  get expires_at() {
-    return this.props.created_at;
+  get expiresAt() {
+    return this.props.expiresAt;
+  }
+
+  get status() {
+    return this.props.status;
   }
 }

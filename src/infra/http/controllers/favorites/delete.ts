@@ -6,7 +6,7 @@ import { FavoriteNotFoundForThisUser } from "@/domain/errors/favorite-not-found-
 
 export const deleteFavorite = async (
   request: FastifyRequest,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) => {
   const userId = request.user.sub;
 
@@ -17,7 +17,9 @@ export const deleteFavorite = async (
   const { id } = deleteSchema.parse(request.body);
 
   try {
-    const deleteFavoriteUseCase = makeDeleteFavoriteUseCase();
+    const deleteFavoriteUseCase = makeDeleteFavoriteUseCase(
+      request.server.prisma,
+    );
 
     await deleteFavoriteUseCase.execute({
       id,

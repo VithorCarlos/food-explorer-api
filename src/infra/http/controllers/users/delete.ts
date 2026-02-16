@@ -5,13 +5,15 @@ import { makeDeleteRefreshTokenUseCase } from "../../factories/make-delete-refre
 
 export const deleteUser = async (
   request: FastifyRequest,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) => {
   const userId = request.user.sub;
 
   try {
-    const deleteUserUseCase = makeDeleteUserUseCase();
-    const deleteRefreshTokenUserUseCase = makeDeleteRefreshTokenUseCase();
+    const deleteUserUseCase = makeDeleteUserUseCase(request.server.prisma);
+    const deleteRefreshTokenUserUseCase = makeDeleteRefreshTokenUseCase(
+      request.server.prisma,
+    );
 
     await deleteUserUseCase.execute({
       userId,

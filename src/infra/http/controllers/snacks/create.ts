@@ -6,7 +6,7 @@ import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
 
 export const createSnack = async (
   request: FastifyRequest,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) => {
   const createSchema = z.object({
     title: z.string(),
@@ -23,7 +23,7 @@ export const createSnack = async (
   const userId = request.user.sub;
 
   try {
-    const createSnackUseCase = makeCreateSnackUseCase();
+    const createSnackUseCase = makeCreateSnackUseCase(request.server.prisma);
 
     const { snack: createdSnack } = await createSnackUseCase.execute({
       title,

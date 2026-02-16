@@ -1,12 +1,14 @@
-import { prisma } from "../prisma";
 import { FavoritesRepository } from "@/domain/repositories/favorites-repository";
 import { PrismaFavoriteAdapter } from "../adapters/prisma-favorite-adapter";
 import { PaginationParams } from "@/shared/pagination-params";
 import { Favorite } from "@/domain/entities/favorite";
+import { PrismaService } from "../prisma";
 
 export class PrismaFavoritesRepository implements FavoritesRepository {
+  constructor(private prisma: PrismaService) {}
+
   async findById(id: string) {
-    const favorite = await prisma.favorites.findFirst({ where: { id } });
+    const favorite = await this.prisma.favorite.findFirst({ where: { id } });
 
     if (!favorite) {
       return null;
@@ -16,7 +18,7 @@ export class PrismaFavoritesRepository implements FavoritesRepository {
   }
 
   async findBySnackId(snackId: string) {
-    const favorite = await prisma.favorites.findFirst({
+    const favorite = await this.prisma.favorite.findFirst({
       where: {
         snackId,
       },
@@ -30,7 +32,7 @@ export class PrismaFavoritesRepository implements FavoritesRepository {
   }
 
   async findMany({ page, perPage }: PaginationParams, userId: string) {
-    const favorites = await prisma.favorites.findMany({
+    const favorites = await this.prisma.favorite.findMany({
       where: { userId },
       skip: (page - 1) * perPage,
       include: { snack: true },
@@ -52,18 +54,18 @@ export class PrismaFavoritesRepository implements FavoritesRepository {
         userId: snack.userId,
         price: snack.price,
         description: snack.description,
-        updated_at: snack.updated_at,
-      })
+        updated_at: snack.updatedAt,
+      }),
     );
   }
 
   async create(data: Favorite) {
     const favorite = PrismaFavoriteAdapter.toPrisma(data);
-    await prisma.favorites.create({ data: favorite });
+    await this.prisma.favorite.create({ data: favorite });
   }
 
   async delete(id: string) {
-    await prisma.favorites.delete({
+    await this.prisma.favorite.delete({
       where: {
         id,
       },

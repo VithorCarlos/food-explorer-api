@@ -1,50 +1,63 @@
-import { InMemoryUploadAttachment } from "test/in-memory-upload-attachment-repository";
 import { FindAttachmentByResourceUseCase } from "./find-attachment-by-resourse";
-import { InMemorySnacksRepository } from "test/in-memory-snacks-repository";
+import { InMemorySnacksRepository } from "test/repositories/in-memory-snacks-repository";
 import { makeSnack } from "test/factories/make-snack";
-import { Attachment } from "@/domain/entities/attachment";
 import { AttachmentNotFoundError } from "@/domain/errors/attachment-not-found";
+import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
+import { InMemoryAttachmentLinkRepository } from "test/repositories/in-memory-attachment-link-repository";
+import { makeAttachment } from "test/factories/make-attachment";
+import { makeAttachmentLink } from "test/factories/make-attachment-link";
 
 let sut: FindAttachmentByResourceUseCase;
-let inMemoryUploadAttachment: InMemoryUploadAttachment;
 let inMemorySnackRepository: InMemorySnacksRepository;
+let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
+let inMemoryAttachmentLinkRepository: InMemoryAttachmentLinkRepository;
 
 describe("Find attachment by resource", () => {
   beforeEach(() => {
-    inMemoryUploadAttachment = new InMemoryUploadAttachment();
     inMemorySnackRepository = new InMemorySnacksRepository();
-    sut = new FindAttachmentByResourceUseCase(inMemoryUploadAttachment);
+    inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
+    inMemoryAttachmentLinkRepository = new InMemoryAttachmentLinkRepository();
+    sut = new FindAttachmentByResourceUseCase(inMemoryAttachmentLinkRepository);
   });
 
   it("Should be able to find an attachment by resource", async () => {
     const snack = makeSnack();
 
-    const attachment = Attachment.create({
-      title: "food.png",
-      url: "image/png",
-      created_at: new Date(),
+    const attachment = makeAttachment({ title: "food.png" });
+
+    const attachmentLink = makeAttachmentLink(attachment.id, {
+      resourceId: snack.id,
+      resourceType: "SNACK",
     });
 
     await inMemorySnackRepository.create(snack);
 
-    await inMemoryUploadAttachment.create(attachment);
+    await inMemoryAttachmentRepository.create(attachment);
 
-    const { attachments } = await sut.execute({
+    await inMemoryAttachmentLinkRepository.createLink(attachmentLink);
+
+    const { attachmentLinks } = await sut.execute({
       resourceId: inMemorySnackRepository.items[0].id,
       resourceType: "SNACK",
     });
 
-    expect(attachments[0]).toEqual(
+    expect(inMemoryAttachmentRepository.items[0]).toEqual(
       expect.objectContaining({ title: "food.png" }),
     );
 
-    expect(attachments[0]).toEqual(
+    expect(attachmentLinks[0]).toEqual(
       expect.objectContaining({
-        title: inMemoryUploadAttachment.items[0].title,
+        attachmentId: inMemoryAttachmentRepository.items[0].id,
       }),
     );
 
-    expect(attachments).toHaveLength(1);
+    expect(attachmentLinks[0]).toEqual(
+      expect.objectContaining({
+        resourceId: inMemorySnackRepository.items[0].id,
+      }),
+    );
+
+    expect(attachmentLinks).toHaveLength(1);
   });
 
   it("Should not be possible to find unexistent attachment", async () => {

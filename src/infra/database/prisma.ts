@@ -1,16 +1,18 @@
-import { env } from "@/env";
+// src/infra/database/prisma/prisma.ts
+
 import { PrismaClient } from "generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
-const databaseUrl = env.DATABASE_URL;
-const databaseSchema = env.DATABASE_SCHEMA;
+export class PrismaService extends PrismaClient {
+  constructor() {
+    const adapter = new PrismaPg(
+      { connectionString: process.env.DATABASE_URL },
+      { schema: process.env.DATABASE_SCHEMA },
+    );
 
-const adapter = new PrismaPg(
-  { connectionString: databaseUrl },
-  { schema: databaseSchema },
-);
-
-export const prisma = new PrismaClient({
-  adapter,
-  log: ["error", "warn"],
-});
+    super({
+      adapter,
+      log: ["error", "warn"],
+    });
+  }
+}

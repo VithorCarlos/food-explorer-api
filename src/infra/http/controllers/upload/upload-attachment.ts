@@ -7,7 +7,7 @@ import { AttachmentNotFoundError } from "@/domain/errors/attachment-not-found";
 
 export const uploadAttachment = async (
   request: FastifyRequest,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) => {
   try {
     const data = await request.file();
@@ -20,7 +20,9 @@ export const uploadAttachment = async (
       throw new FileTooLargeError();
     }
 
-    const uploadAttachmentUseCase = makeUploadAttachmentUseCase();
+    const uploadAttachmentUseCase = makeUploadAttachmentUseCase(
+      request.server.prisma,
+    );
     const fileBuffer = await data.toBuffer();
 
     const { attachment } = await uploadAttachmentUseCase.execute({

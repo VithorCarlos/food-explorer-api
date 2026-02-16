@@ -7,7 +7,7 @@ import { PrismaSnackAdapter } from "@/infra/database/adapters/prisma-snack-adapt
 
 export const findOneSnack = async (
   request: FastifyRequest,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) => {
   const findoneSchema = z.object({
     id: z.string(),
@@ -16,7 +16,7 @@ export const findOneSnack = async (
   const { id } = findoneSchema.parse(request.params);
 
   try {
-    const findOneSnackUseCase = makeFindOneSnackUseCase();
+    const findOneSnackUseCase = makeFindOneSnackUseCase(request.server.prisma);
 
     const { snack: snackResponse } = await findOneSnackUseCase.execute({
       id,

@@ -6,7 +6,7 @@ import { SnackNotFoundForThisUser } from "@/domain/errors/snack-not-found-for-th
 
 export const deleteSnack = async (
   request: FastifyRequest,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) => {
   const userId = request.user.sub;
   const deleteSchema = z.object({
@@ -16,7 +16,7 @@ export const deleteSnack = async (
   const { id } = deleteSchema.parse(request.body);
 
   try {
-    const deleteSnackUseCase = makeDeleteSnackUseCase();
+    const deleteSnackUseCase = makeDeleteSnackUseCase(request.server.prisma);
 
     await deleteSnackUseCase.execute({
       id,

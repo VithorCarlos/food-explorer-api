@@ -1,4 +1,4 @@
-import { InMemorySnacksRepository } from "test/in-memory-snacks-repository";
+import { InMemorySnacksRepository } from "test/repositories/in-memory-snacks-repository";
 import { makeSnack } from "test/factories/make-snack";
 import { DeleteSnackUseCase } from "./delete-snack";
 import { SnackDoesNotExists } from "@/domain/errors/snack-does-not-exists";

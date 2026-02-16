@@ -4,11 +4,13 @@ import {
   SnacksRepository,
 } from "@/domain/repositories/snacks-repository";
 import { PrismaSnackAdapter } from "../adapters/prisma-snack-adapter";
-import { prisma } from "../prisma";
+import { PrismaService } from "../prisma";
 
 export class PrismaSnacksRepository implements SnacksRepository {
+  constructor(private prisma: PrismaService) {}
+
   async findById(id: string) {
-    const snack = await prisma.snacks.findFirst({
+    const snack = await this.prisma.snack.findFirst({
       where: { id },
     });
 
@@ -44,7 +46,7 @@ export class PrismaSnacksRepository implements SnacksRepository {
       });
     }
 
-    const snacks = await prisma.snacks.findMany({
+    const snacks = await this.prisma.snack.findMany({
       where: {
         category,
         ...(searchConditions.length > 0 && {
@@ -64,15 +66,15 @@ export class PrismaSnacksRepository implements SnacksRepository {
 
   async create(data: Snack) {
     const snack = PrismaSnackAdapter.toPrisma(data);
-    await prisma.snacks.create({
+    await this.prisma.snack.create({
       data: snack,
     });
 
     if (snack.attachment) {
-      await prisma.attachment.update({
+      await this.prisma.attachment.update({
         where: { id: snack.attachment?.attachmentId },
         data: {
-          expires_at: null,
+          expiresAt: null,
         },
       });
     }
@@ -81,7 +83,7 @@ export class PrismaSnacksRepository implements SnacksRepository {
   async update(data: Snack) {
     const snack = PrismaSnackAdapter.toPrisma(data);
 
-    await prisma.snacks.update({
+    await this.prisma.snack.update({
       where: {
         id: data.id,
         userId: data.userId,
@@ -92,14 +94,14 @@ export class PrismaSnacksRepository implements SnacksRepository {
         ingredients: snack.ingredients,
         price: snack.price,
         description: snack.description,
-        updated_at: snack.updated_at,
+        updatedAt: snack.updated_at,
       },
     });
 
     if (data.attachment && data.attachment.attachmentId) {
       const resourceId = data.attachment.resourceId;
 
-      await prisma.attachment_link.deleteMany({
+      await this.prisma.attachmentLink.deleteMany({
         where: {
           resourceId,
           resourceType: "SNACK",
@@ -109,7 +111,7 @@ export class PrismaSnacksRepository implements SnacksRepository {
   }
 
   async delete(id: string) {
-    const attachment = await prisma.attachment_link.findFirst({
+    const attachment = await this.prisma.attachmentLink.findFirst({
       where: {
         resourceId: id,
         resourceType: "SNACK",
@@ -120,12 +122,12 @@ export class PrismaSnacksRepository implements SnacksRepository {
     });
 
     if (attachment) {
-      await prisma.attachment.delete({
+      await this.prisma.attachment.delete({
         where: { id: attachment.attachmentId },
       });
     }
 
-    await prisma.snacks.delete({
+    await this.prisma.snack.delete({
       where: {
         id,
       },

@@ -51,12 +51,12 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  users: 'users',
-  snacks: 'snacks',
-  favorites: 'favorites',
-  refresh_tokens: 'refresh_tokens',
-  attachment: 'attachment',
-  attachment_link: 'attachment_link'
+  User: 'User',
+  Snack: 'Snack',
+  Favorite: 'Favorite',
+  RefreshToken: 'RefreshToken',
+  Attachment: 'Attachment',
+  AttachmentLink: 'AttachmentLink'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -75,72 +75,73 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const UsersScalarFieldEnum = {
+export const UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
   password: 'password',
   role: 'role',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
-export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const SnacksScalarFieldEnum = {
+export const SnackScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
   category: 'category',
   ingredients: 'ingredients',
   price: 'price',
-  created_at: 'created_at',
-  updated_at: 'updated_at',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   userId: 'userId'
 } as const
 
-export type SnacksScalarFieldEnum = (typeof SnacksScalarFieldEnum)[keyof typeof SnacksScalarFieldEnum]
+export type SnackScalarFieldEnum = (typeof SnackScalarFieldEnum)[keyof typeof SnackScalarFieldEnum]
 
 
-export const FavoritesScalarFieldEnum = {
+export const FavoriteScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   snackId: 'snackId'
 } as const
 
-export type FavoritesScalarFieldEnum = (typeof FavoritesScalarFieldEnum)[keyof typeof FavoritesScalarFieldEnum]
+export type FavoriteScalarFieldEnum = (typeof FavoriteScalarFieldEnum)[keyof typeof FavoriteScalarFieldEnum]
 
 
-export const Refresh_tokensScalarFieldEnum = {
+export const RefreshTokenScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   expiresIn: 'expiresIn'
 } as const
 
-export type Refresh_tokensScalarFieldEnum = (typeof Refresh_tokensScalarFieldEnum)[keyof typeof Refresh_tokensScalarFieldEnum]
+export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
 
 
 export const AttachmentScalarFieldEnum = {
   id: 'id',
   title: 'title',
   url: 'url',
-  created_at: 'created_at',
-  expires_at: 'expires_at'
+  createdAt: 'createdAt',
+  expiresAt: 'expiresAt',
+  status: 'status'
 } as const
 
 export type AttachmentScalarFieldEnum = (typeof AttachmentScalarFieldEnum)[keyof typeof AttachmentScalarFieldEnum]
 
 
-export const Attachment_linkScalarFieldEnum = {
+export const AttachmentLinkScalarFieldEnum = {
   id: 'id',
   attachmentId: 'attachmentId',
   resourceId: 'resourceId',
   resourceType: 'resourceType',
-  linked_at: 'linked_at'
+  linkedAt: 'linkedAt'
 } as const
 
-export type Attachment_linkScalarFieldEnum = (typeof Attachment_linkScalarFieldEnum)[keyof typeof Attachment_linkScalarFieldEnum]
+export type AttachmentLinkScalarFieldEnum = (typeof AttachmentLinkScalarFieldEnum)[keyof typeof AttachmentLinkScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -1,5 +1,5 @@
 import { RefreshTokenUseCase } from "./refresh-token";
-import { InMemoryRefreshTokenRepository } from "test/in-memory-refresh-token";
+import { InMemoryRefreshTokenRepository } from "test/repositories/in-memory-refresh-token";
 
 let sut: RefreshTokenUseCase;
 let inMemoryRefreshTokenRepository: InMemoryRefreshTokenRepository;

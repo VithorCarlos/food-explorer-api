@@ -1,5 +1,6 @@
 import { Attachment } from "@/domain/entities/attachment";
 import { InvalidAttachmentTypeError } from "@/domain/errors/invalid-attachment-type";
+import { AttachmentLinkRepository } from "@/domain/repositories/attachment-link-repository";
 import { AttachmentRepository } from "@/domain/repositories/attachment-repository";
 import { Uploader } from "@/domain/storage/uploader";
 import dayjs from "dayjs";
@@ -13,7 +14,7 @@ interface CreateAttachmentRequest {
 export class CreateAttachmentUseCase {
   constructor(
     private attachmentRepository: AttachmentRepository,
-    private uploader: Uploader
+    private uploader: Uploader,
   ) {}
 
   async execute({ fileName, fileType, body }: CreateAttachmentRequest) {
@@ -25,12 +26,10 @@ export class CreateAttachmentUseCase {
 
     const { url } = await this.uploader.upload({ fileName, fileType, body });
 
-    const expires_at = dayjs().add(1, "day").toDate();
-
     const attachment = Attachment.create({
       title: fileName,
       url,
-      expires_at,
+      status: "PENDING",
     });
 
     await this.attachmentRepository.create(attachment);

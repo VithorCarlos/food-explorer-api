@@ -1,5 +1,5 @@
 import { GenerateRefreshTokenUseCase } from "./generate-refresh-token";
-import { InMemoryRefreshTokenRepository } from "test/in-memory-refresh-token";
+import { InMemoryRefreshTokenRepository } from "test/repositories/in-memory-refresh-token";
 import { RefreshToken } from "@/domain/entities/refresh-token";
 import dayjs from "dayjs";
 import { RefreshTokenNotFoundError } from "@/domain/errors/refresh-token-not-found";

@@ -1,7 +1,7 @@
 import { Favorite } from "@/domain/entities/favorite";
 import { FavoritesRepository } from "@/domain/repositories/favorites-repository";
 import { PaginationParams } from "@/shared/pagination-params";
-import { makeSnack } from "./factories/make-snack";
+import { makeSnack } from "../factories/make-snack";
 
 export class InMemoryFavoritesRepository implements FavoritesRepository {
   public items: Favorite[] = [];

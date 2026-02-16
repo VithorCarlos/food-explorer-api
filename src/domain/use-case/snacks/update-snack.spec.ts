@@ -1,7 +1,7 @@
-import { InMemorySnacksRepository } from "test/in-memory-snacks-repository";
+import { InMemorySnacksRepository } from "test/repositories/in-memory-snacks-repository";
 import { UdpateSnackUseCase } from "./update-snack";
 import { makeSnack } from "test/factories/make-snack";
-import { InMemoryUsersRepository } from "test/in-memory-users-repository";
+import { InMemoryUsersRepository } from "test/repositories/in-memory-users-repository";
 import { makeUser } from "test/factories/make-user";
 import { SnackDoesNotExists } from "@/domain/errors/snack-does-not-exists";
 import { SnackNotFoundForThisUser } from "@/domain/errors/snack-not-found-for-this-user";

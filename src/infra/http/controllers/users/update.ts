@@ -5,11 +5,11 @@ import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 
 export const updateUser = async (
   request: FastifyRequest,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) => {
   const registerSchema = z.object({
     name: z.string().optional(),
-    email: z.string().email().optional(),
+    email: z.email().optional(),
     password: z.string().optional(),
   });
 
@@ -30,7 +30,7 @@ export const updateUser = async (
       user: {
         name: user.name,
         email: user.email,
-        updated_at: user.updated_at,
+        updatedAt: user.udpatedAt,
       },
     });
   } catch (error) {

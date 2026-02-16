@@ -4,7 +4,7 @@
 // biome-ignore-all lint: generated file
 // @ts-nocheck 
 /*
- * This file exports the `attachment` model and its related types.
+ * This file exports the `Attachment` model and its related types.
  *
  * 🟢 You can import this file directly.
  */
@@ -13,10 +13,10 @@ import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
 /**
- * Model attachment
+ * Model Attachment
  * 
  */
-export type attachmentModel = runtime.Types.Result.DefaultSelection<Prisma.$attachmentPayload>
+export type AttachmentModel = runtime.Types.Result.DefaultSelection<Prisma.$AttachmentPayload>
 
 export type AggregateAttachment = {
   _count: AttachmentCountAggregateOutputType | null
@@ -28,24 +28,27 @@ export type AttachmentMinAggregateOutputType = {
   id: string | null
   title: string | null
   url: string | null
-  created_at: Date | null
-  expires_at: Date | null
+  createdAt: Date | null
+  expiresAt: Date | null
+  status: $Enums.ATTACHMENT_STATUS | null
 }
 
 export type AttachmentMaxAggregateOutputType = {
   id: string | null
   title: string | null
   url: string | null
-  created_at: Date | null
-  expires_at: Date | null
+  createdAt: Date | null
+  expiresAt: Date | null
+  status: $Enums.ATTACHMENT_STATUS | null
 }
 
 export type AttachmentCountAggregateOutputType = {
   id: number
   title: number
   url: number
-  created_at: number
-  expires_at: number
+  createdAt: number
+  expiresAt: number
+  status: number
   _all: number
 }
 
@@ -54,60 +57,63 @@ export type AttachmentMinAggregateInputType = {
   id?: true
   title?: true
   url?: true
-  created_at?: true
-  expires_at?: true
+  createdAt?: true
+  expiresAt?: true
+  status?: true
 }
 
 export type AttachmentMaxAggregateInputType = {
   id?: true
   title?: true
   url?: true
-  created_at?: true
-  expires_at?: true
+  createdAt?: true
+  expiresAt?: true
+  status?: true
 }
 
 export type AttachmentCountAggregateInputType = {
   id?: true
   title?: true
   url?: true
-  created_at?: true
-  expires_at?: true
+  createdAt?: true
+  expiresAt?: true
+  status?: true
   _all?: true
 }
 
 export type AttachmentAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Filter which attachment to aggregate.
+   * Filter which Attachment to aggregate.
    */
-  where?: Prisma.attachmentWhereInput
+  where?: Prisma.AttachmentWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of attachments to fetch.
+   * Determine the order of Attachments to fetch.
    */
-  orderBy?: Prisma.attachmentOrderByWithRelationInput | Prisma.attachmentOrderByWithRelationInput[]
+  orderBy?: Prisma.AttachmentOrderByWithRelationInput | Prisma.AttachmentOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
    * Sets the start position
    */
-  cursor?: Prisma.attachmentWhereUniqueInput
+  cursor?: Prisma.AttachmentWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` attachments from the position of the cursor.
+   * Take `±n` Attachments from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` attachments.
+   * Skip the first `n` Attachments.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Count returned attachments
+   * Count returned Attachments
   **/
   _count?: true | AttachmentCountAggregateInputType
   /**
@@ -135,11 +141,11 @@ export type GetAttachmentAggregateType<T extends AttachmentAggregateArgs> = {
 
 
 
-export type attachmentGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.attachmentWhereInput
-  orderBy?: Prisma.attachmentOrderByWithAggregationInput | Prisma.attachmentOrderByWithAggregationInput[]
+export type AttachmentGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AttachmentWhereInput
+  orderBy?: Prisma.AttachmentOrderByWithAggregationInput | Prisma.AttachmentOrderByWithAggregationInput[]
   by: Prisma.AttachmentScalarFieldEnum[] | Prisma.AttachmentScalarFieldEnum
-  having?: Prisma.attachmentScalarWhereWithAggregatesInput
+  having?: Prisma.AttachmentScalarWhereWithAggregatesInput
   take?: number
   skip?: number
   _count?: AttachmentCountAggregateInputType | true
@@ -151,14 +157,15 @@ export type AttachmentGroupByOutputType = {
   id: string
   title: string
   url: string
-  created_at: Date
-  expires_at: Date | null
+  createdAt: Date
+  expiresAt: Date | null
+  status: $Enums.ATTACHMENT_STATUS
   _count: AttachmentCountAggregateOutputType | null
   _min: AttachmentMinAggregateOutputType | null
   _max: AttachmentMaxAggregateOutputType | null
 }
 
-type GetAttachmentGroupByPayload<T extends attachmentGroupByArgs> = Prisma.PrismaPromise<
+type GetAttachmentGroupByPayload<T extends AttachmentGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<AttachmentGroupByOutputType, T['by']> &
       {
@@ -173,214 +180,237 @@ type GetAttachmentGroupByPayload<T extends attachmentGroupByArgs> = Prisma.Prism
 
 
 
-export type attachmentWhereInput = {
-  AND?: Prisma.attachmentWhereInput | Prisma.attachmentWhereInput[]
-  OR?: Prisma.attachmentWhereInput[]
-  NOT?: Prisma.attachmentWhereInput | Prisma.attachmentWhereInput[]
-  id?: Prisma.StringFilter<"attachment"> | string
-  title?: Prisma.StringFilter<"attachment"> | string
-  url?: Prisma.StringFilter<"attachment"> | string
-  created_at?: Prisma.DateTimeFilter<"attachment"> | Date | string
-  expires_at?: Prisma.DateTimeNullableFilter<"attachment"> | Date | string | null
-  links?: Prisma.Attachment_linkListRelationFilter
+export type AttachmentWhereInput = {
+  AND?: Prisma.AttachmentWhereInput | Prisma.AttachmentWhereInput[]
+  OR?: Prisma.AttachmentWhereInput[]
+  NOT?: Prisma.AttachmentWhereInput | Prisma.AttachmentWhereInput[]
+  id?: Prisma.StringFilter<"Attachment"> | string
+  title?: Prisma.StringFilter<"Attachment"> | string
+  url?: Prisma.StringFilter<"Attachment"> | string
+  createdAt?: Prisma.DateTimeFilter<"Attachment"> | Date | string
+  expiresAt?: Prisma.DateTimeNullableFilter<"Attachment"> | Date | string | null
+  status?: Prisma.EnumATTACHMENT_STATUSFilter<"Attachment"> | $Enums.ATTACHMENT_STATUS
+  links?: Prisma.AttachmentLinkListRelationFilter
 }
 
-export type attachmentOrderByWithRelationInput = {
+export type AttachmentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   url?: Prisma.SortOrder
-  created_at?: Prisma.SortOrder
-  expires_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  links?: Prisma.attachment_linkOrderByRelationAggregateInput
+  createdAt?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  links?: Prisma.AttachmentLinkOrderByRelationAggregateInput
 }
 
-export type attachmentWhereUniqueInput = Prisma.AtLeast<{
+export type AttachmentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  AND?: Prisma.attachmentWhereInput | Prisma.attachmentWhereInput[]
-  OR?: Prisma.attachmentWhereInput[]
-  NOT?: Prisma.attachmentWhereInput | Prisma.attachmentWhereInput[]
-  title?: Prisma.StringFilter<"attachment"> | string
-  url?: Prisma.StringFilter<"attachment"> | string
-  created_at?: Prisma.DateTimeFilter<"attachment"> | Date | string
-  expires_at?: Prisma.DateTimeNullableFilter<"attachment"> | Date | string | null
-  links?: Prisma.Attachment_linkListRelationFilter
+  AND?: Prisma.AttachmentWhereInput | Prisma.AttachmentWhereInput[]
+  OR?: Prisma.AttachmentWhereInput[]
+  NOT?: Prisma.AttachmentWhereInput | Prisma.AttachmentWhereInput[]
+  title?: Prisma.StringFilter<"Attachment"> | string
+  url?: Prisma.StringFilter<"Attachment"> | string
+  createdAt?: Prisma.DateTimeFilter<"Attachment"> | Date | string
+  expiresAt?: Prisma.DateTimeNullableFilter<"Attachment"> | Date | string | null
+  status?: Prisma.EnumATTACHMENT_STATUSFilter<"Attachment"> | $Enums.ATTACHMENT_STATUS
+  links?: Prisma.AttachmentLinkListRelationFilter
 }, "id">
 
-export type attachmentOrderByWithAggregationInput = {
+export type AttachmentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   url?: Prisma.SortOrder
-  created_at?: Prisma.SortOrder
-  expires_at?: Prisma.SortOrderInput | Prisma.SortOrder
-  _count?: Prisma.attachmentCountOrderByAggregateInput
-  _max?: Prisma.attachmentMaxOrderByAggregateInput
-  _min?: Prisma.attachmentMinOrderByAggregateInput
+  createdAt?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  _count?: Prisma.AttachmentCountOrderByAggregateInput
+  _max?: Prisma.AttachmentMaxOrderByAggregateInput
+  _min?: Prisma.AttachmentMinOrderByAggregateInput
 }
 
-export type attachmentScalarWhereWithAggregatesInput = {
-  AND?: Prisma.attachmentScalarWhereWithAggregatesInput | Prisma.attachmentScalarWhereWithAggregatesInput[]
-  OR?: Prisma.attachmentScalarWhereWithAggregatesInput[]
-  NOT?: Prisma.attachmentScalarWhereWithAggregatesInput | Prisma.attachmentScalarWhereWithAggregatesInput[]
-  id?: Prisma.StringWithAggregatesFilter<"attachment"> | string
-  title?: Prisma.StringWithAggregatesFilter<"attachment"> | string
-  url?: Prisma.StringWithAggregatesFilter<"attachment"> | string
-  created_at?: Prisma.DateTimeWithAggregatesFilter<"attachment"> | Date | string
-  expires_at?: Prisma.DateTimeNullableWithAggregatesFilter<"attachment"> | Date | string | null
+export type AttachmentScalarWhereWithAggregatesInput = {
+  AND?: Prisma.AttachmentScalarWhereWithAggregatesInput | Prisma.AttachmentScalarWhereWithAggregatesInput[]
+  OR?: Prisma.AttachmentScalarWhereWithAggregatesInput[]
+  NOT?: Prisma.AttachmentScalarWhereWithAggregatesInput | Prisma.AttachmentScalarWhereWithAggregatesInput[]
+  id?: Prisma.StringWithAggregatesFilter<"Attachment"> | string
+  title?: Prisma.StringWithAggregatesFilter<"Attachment"> | string
+  url?: Prisma.StringWithAggregatesFilter<"Attachment"> | string
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Attachment"> | Date | string
+  expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Attachment"> | Date | string | null
+  status?: Prisma.EnumATTACHMENT_STATUSWithAggregatesFilter<"Attachment"> | $Enums.ATTACHMENT_STATUS
 }
 
-export type attachmentCreateInput = {
+export type AttachmentCreateInput = {
   id?: string
   title: string
   url: string
-  created_at?: Date | string
-  expires_at?: Date | string | null
-  links?: Prisma.attachment_linkCreateNestedManyWithoutAttachmentInput
+  createdAt?: Date | string
+  expiresAt?: Date | string | null
+  status?: $Enums.ATTACHMENT_STATUS
+  links?: Prisma.AttachmentLinkCreateNestedManyWithoutAttachmentInput
 }
 
-export type attachmentUncheckedCreateInput = {
+export type AttachmentUncheckedCreateInput = {
   id?: string
   title: string
   url: string
-  created_at?: Date | string
-  expires_at?: Date | string | null
-  links?: Prisma.attachment_linkUncheckedCreateNestedManyWithoutAttachmentInput
+  createdAt?: Date | string
+  expiresAt?: Date | string | null
+  status?: $Enums.ATTACHMENT_STATUS
+  links?: Prisma.AttachmentLinkUncheckedCreateNestedManyWithoutAttachmentInput
 }
 
-export type attachmentUpdateInput = {
+export type AttachmentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  links?: Prisma.attachment_linkUpdateManyWithoutAttachmentNestedInput
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumATTACHMENT_STATUSFieldUpdateOperationsInput | $Enums.ATTACHMENT_STATUS
+  links?: Prisma.AttachmentLinkUpdateManyWithoutAttachmentNestedInput
 }
 
-export type attachmentUncheckedUpdateInput = {
+export type AttachmentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  links?: Prisma.attachment_linkUncheckedUpdateManyWithoutAttachmentNestedInput
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumATTACHMENT_STATUSFieldUpdateOperationsInput | $Enums.ATTACHMENT_STATUS
+  links?: Prisma.AttachmentLinkUncheckedUpdateManyWithoutAttachmentNestedInput
 }
 
-export type attachmentCreateManyInput = {
+export type AttachmentCreateManyInput = {
   id?: string
   title: string
   url: string
-  created_at?: Date | string
-  expires_at?: Date | string | null
+  createdAt?: Date | string
+  expiresAt?: Date | string | null
+  status?: $Enums.ATTACHMENT_STATUS
 }
 
-export type attachmentUpdateManyMutationInput = {
+export type AttachmentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumATTACHMENT_STATUSFieldUpdateOperationsInput | $Enums.ATTACHMENT_STATUS
 }
 
-export type attachmentUncheckedUpdateManyInput = {
+export type AttachmentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumATTACHMENT_STATUSFieldUpdateOperationsInput | $Enums.ATTACHMENT_STATUS
 }
 
-export type attachmentCountOrderByAggregateInput = {
+export type AttachmentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   url?: Prisma.SortOrder
-  created_at?: Prisma.SortOrder
-  expires_at?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  status?: Prisma.SortOrder
 }
 
-export type attachmentMaxOrderByAggregateInput = {
+export type AttachmentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   url?: Prisma.SortOrder
-  created_at?: Prisma.SortOrder
-  expires_at?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  status?: Prisma.SortOrder
 }
 
-export type attachmentMinOrderByAggregateInput = {
+export type AttachmentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   url?: Prisma.SortOrder
-  created_at?: Prisma.SortOrder
-  expires_at?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  status?: Prisma.SortOrder
 }
 
 export type AttachmentScalarRelationFilter = {
-  is?: Prisma.attachmentWhereInput
-  isNot?: Prisma.attachmentWhereInput
+  is?: Prisma.AttachmentWhereInput
+  isNot?: Prisma.AttachmentWhereInput
 }
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
-export type attachmentCreateNestedOneWithoutLinksInput = {
-  create?: Prisma.XOR<Prisma.attachmentCreateWithoutLinksInput, Prisma.attachmentUncheckedCreateWithoutLinksInput>
-  connectOrCreate?: Prisma.attachmentCreateOrConnectWithoutLinksInput
-  connect?: Prisma.attachmentWhereUniqueInput
+export type EnumATTACHMENT_STATUSFieldUpdateOperationsInput = {
+  set?: $Enums.ATTACHMENT_STATUS
 }
 
-export type attachmentUpdateOneRequiredWithoutLinksNestedInput = {
-  create?: Prisma.XOR<Prisma.attachmentCreateWithoutLinksInput, Prisma.attachmentUncheckedCreateWithoutLinksInput>
-  connectOrCreate?: Prisma.attachmentCreateOrConnectWithoutLinksInput
-  upsert?: Prisma.attachmentUpsertWithoutLinksInput
-  connect?: Prisma.attachmentWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.attachmentUpdateToOneWithWhereWithoutLinksInput, Prisma.attachmentUpdateWithoutLinksInput>, Prisma.attachmentUncheckedUpdateWithoutLinksInput>
+export type AttachmentCreateNestedOneWithoutLinksInput = {
+  create?: Prisma.XOR<Prisma.AttachmentCreateWithoutLinksInput, Prisma.AttachmentUncheckedCreateWithoutLinksInput>
+  connectOrCreate?: Prisma.AttachmentCreateOrConnectWithoutLinksInput
+  connect?: Prisma.AttachmentWhereUniqueInput
 }
 
-export type attachmentCreateWithoutLinksInput = {
+export type AttachmentUpdateOneRequiredWithoutLinksNestedInput = {
+  create?: Prisma.XOR<Prisma.AttachmentCreateWithoutLinksInput, Prisma.AttachmentUncheckedCreateWithoutLinksInput>
+  connectOrCreate?: Prisma.AttachmentCreateOrConnectWithoutLinksInput
+  upsert?: Prisma.AttachmentUpsertWithoutLinksInput
+  connect?: Prisma.AttachmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AttachmentUpdateToOneWithWhereWithoutLinksInput, Prisma.AttachmentUpdateWithoutLinksInput>, Prisma.AttachmentUncheckedUpdateWithoutLinksInput>
+}
+
+export type AttachmentCreateWithoutLinksInput = {
   id?: string
   title: string
   url: string
-  created_at?: Date | string
-  expires_at?: Date | string | null
+  createdAt?: Date | string
+  expiresAt?: Date | string | null
+  status?: $Enums.ATTACHMENT_STATUS
 }
 
-export type attachmentUncheckedCreateWithoutLinksInput = {
+export type AttachmentUncheckedCreateWithoutLinksInput = {
   id?: string
   title: string
   url: string
-  created_at?: Date | string
-  expires_at?: Date | string | null
+  createdAt?: Date | string
+  expiresAt?: Date | string | null
+  status?: $Enums.ATTACHMENT_STATUS
 }
 
-export type attachmentCreateOrConnectWithoutLinksInput = {
-  where: Prisma.attachmentWhereUniqueInput
-  create: Prisma.XOR<Prisma.attachmentCreateWithoutLinksInput, Prisma.attachmentUncheckedCreateWithoutLinksInput>
+export type AttachmentCreateOrConnectWithoutLinksInput = {
+  where: Prisma.AttachmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.AttachmentCreateWithoutLinksInput, Prisma.AttachmentUncheckedCreateWithoutLinksInput>
 }
 
-export type attachmentUpsertWithoutLinksInput = {
-  update: Prisma.XOR<Prisma.attachmentUpdateWithoutLinksInput, Prisma.attachmentUncheckedUpdateWithoutLinksInput>
-  create: Prisma.XOR<Prisma.attachmentCreateWithoutLinksInput, Prisma.attachmentUncheckedCreateWithoutLinksInput>
-  where?: Prisma.attachmentWhereInput
+export type AttachmentUpsertWithoutLinksInput = {
+  update: Prisma.XOR<Prisma.AttachmentUpdateWithoutLinksInput, Prisma.AttachmentUncheckedUpdateWithoutLinksInput>
+  create: Prisma.XOR<Prisma.AttachmentCreateWithoutLinksInput, Prisma.AttachmentUncheckedCreateWithoutLinksInput>
+  where?: Prisma.AttachmentWhereInput
 }
 
-export type attachmentUpdateToOneWithWhereWithoutLinksInput = {
-  where?: Prisma.attachmentWhereInput
-  data: Prisma.XOR<Prisma.attachmentUpdateWithoutLinksInput, Prisma.attachmentUncheckedUpdateWithoutLinksInput>
+export type AttachmentUpdateToOneWithWhereWithoutLinksInput = {
+  where?: Prisma.AttachmentWhereInput
+  data: Prisma.XOR<Prisma.AttachmentUpdateWithoutLinksInput, Prisma.AttachmentUncheckedUpdateWithoutLinksInput>
 }
 
-export type attachmentUpdateWithoutLinksInput = {
+export type AttachmentUpdateWithoutLinksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumATTACHMENT_STATUSFieldUpdateOperationsInput | $Enums.ATTACHMENT_STATUS
 }
 
-export type attachmentUncheckedUpdateWithoutLinksInput = {
+export type AttachmentUncheckedUpdateWithoutLinksInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumATTACHMENT_STATUSFieldUpdateOperationsInput | $Enums.ATTACHMENT_STATUS
 }
 
 
@@ -410,79 +440,84 @@ export type AttachmentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.E
  * AttachmentCountOutputType without action
  */
 export type AttachmentCountOutputTypeCountLinksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.attachment_linkWhereInput
+  where?: Prisma.AttachmentLinkWhereInput
 }
 
 
-export type attachmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type AttachmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
   url?: boolean
-  created_at?: boolean
-  expires_at?: boolean
-  links?: boolean | Prisma.attachment$linksArgs<ExtArgs>
+  createdAt?: boolean
+  expiresAt?: boolean
+  status?: boolean
+  links?: boolean | Prisma.Attachment$linksArgs<ExtArgs>
   _count?: boolean | Prisma.AttachmentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attachment"]>
 
-export type attachmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type AttachmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
   url?: boolean
-  created_at?: boolean
-  expires_at?: boolean
+  createdAt?: boolean
+  expiresAt?: boolean
+  status?: boolean
 }, ExtArgs["result"]["attachment"]>
 
-export type attachmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type AttachmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
   url?: boolean
-  created_at?: boolean
-  expires_at?: boolean
+  createdAt?: boolean
+  expiresAt?: boolean
+  status?: boolean
 }, ExtArgs["result"]["attachment"]>
 
-export type attachmentSelectScalar = {
+export type AttachmentSelectScalar = {
   id?: boolean
   title?: boolean
   url?: boolean
-  created_at?: boolean
-  expires_at?: boolean
+  createdAt?: boolean
+  expiresAt?: boolean
+  status?: boolean
 }
 
-export type attachmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "url" | "created_at" | "expires_at", ExtArgs["result"]["attachment"]>
-export type attachmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  links?: boolean | Prisma.attachment$linksArgs<ExtArgs>
+export type AttachmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "url" | "createdAt" | "expiresAt" | "status", ExtArgs["result"]["attachment"]>
+export type AttachmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  links?: boolean | Prisma.Attachment$linksArgs<ExtArgs>
   _count?: boolean | Prisma.AttachmentCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type attachmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type attachmentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type AttachmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type AttachmentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
-export type $attachmentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  name: "attachment"
+export type $AttachmentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  name: "Attachment"
   objects: {
-    links: Prisma.$attachment_linkPayload<ExtArgs>[]
+    links: Prisma.$AttachmentLinkPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     title: string
     url: string
-    created_at: Date
-    expires_at: Date | null
+    createdAt: Date
+    expiresAt: Date | null
+    status: $Enums.ATTACHMENT_STATUS
   }, ExtArgs["result"]["attachment"]>
   composites: {}
 }
 
-export type attachmentGetPayload<S extends boolean | null | undefined | attachmentDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$attachmentPayload, S>
+export type AttachmentGetPayload<S extends boolean | null | undefined | AttachmentDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$AttachmentPayload, S>
 
-export type attachmentCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<attachmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+export type AttachmentCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+  Omit<AttachmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
     select?: AttachmentCountAggregateInputType | true
   }
 
-export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-  [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['attachment'], meta: { name: 'attachment' } }
+export interface AttachmentDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Attachment'], meta: { name: 'Attachment' } }
   /**
    * Find zero or one Attachment that matches the filter.
-   * @param {attachmentFindUniqueArgs} args - Arguments to find a Attachment
+   * @param {AttachmentFindUniqueArgs} args - Arguments to find a Attachment
    * @example
    * // Get one Attachment
    * const attachment = await prisma.attachment.findUnique({
@@ -491,12 +526,12 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    *   }
    * })
    */
-  findUnique<T extends attachmentFindUniqueArgs>(args: Prisma.SelectSubset<T, attachmentFindUniqueArgs<ExtArgs>>): Prisma.Prisma__attachmentClient<runtime.Types.Result.GetResult<Prisma.$attachmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  findUnique<T extends AttachmentFindUniqueArgs>(args: Prisma.SelectSubset<T, AttachmentFindUniqueArgs<ExtArgs>>): Prisma.Prisma__AttachmentClient<runtime.Types.Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
   /**
    * Find one Attachment that matches the filter or throw an error with `error.code='P2025'`
    * if no matches were found.
-   * @param {attachmentFindUniqueOrThrowArgs} args - Arguments to find a Attachment
+   * @param {AttachmentFindUniqueOrThrowArgs} args - Arguments to find a Attachment
    * @example
    * // Get one Attachment
    * const attachment = await prisma.attachment.findUniqueOrThrow({
@@ -505,13 +540,13 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    *   }
    * })
    */
-  findUniqueOrThrow<T extends attachmentFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, attachmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__attachmentClient<runtime.Types.Result.GetResult<Prisma.$attachmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  findUniqueOrThrow<T extends AttachmentFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, AttachmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__AttachmentClient<runtime.Types.Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Find the first Attachment that matches the filter.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {attachmentFindFirstArgs} args - Arguments to find a Attachment
+   * @param {AttachmentFindFirstArgs} args - Arguments to find a Attachment
    * @example
    * // Get one Attachment
    * const attachment = await prisma.attachment.findFirst({
@@ -520,14 +555,14 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    *   }
    * })
    */
-  findFirst<T extends attachmentFindFirstArgs>(args?: Prisma.SelectSubset<T, attachmentFindFirstArgs<ExtArgs>>): Prisma.Prisma__attachmentClient<runtime.Types.Result.GetResult<Prisma.$attachmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  findFirst<T extends AttachmentFindFirstArgs>(args?: Prisma.SelectSubset<T, AttachmentFindFirstArgs<ExtArgs>>): Prisma.Prisma__AttachmentClient<runtime.Types.Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
   /**
    * Find the first Attachment that matches the filter or
    * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {attachmentFindFirstOrThrowArgs} args - Arguments to find a Attachment
+   * @param {AttachmentFindFirstOrThrowArgs} args - Arguments to find a Attachment
    * @example
    * // Get one Attachment
    * const attachment = await prisma.attachment.findFirstOrThrow({
@@ -536,13 +571,13 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    *   }
    * })
    */
-  findFirstOrThrow<T extends attachmentFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, attachmentFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__attachmentClient<runtime.Types.Result.GetResult<Prisma.$attachmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  findFirstOrThrow<T extends AttachmentFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, AttachmentFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__AttachmentClient<runtime.Types.Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Find zero or more Attachments that matches the filter.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {attachmentFindManyArgs} args - Arguments to filter and select certain fields only.
+   * @param {AttachmentFindManyArgs} args - Arguments to filter and select certain fields only.
    * @example
    * // Get all Attachments
    * const attachments = await prisma.attachment.findMany()
@@ -554,11 +589,11 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    * const attachmentWithIdOnly = await prisma.attachment.findMany({ select: { id: true } })
    * 
    */
-  findMany<T extends attachmentFindManyArgs>(args?: Prisma.SelectSubset<T, attachmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$attachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+  findMany<T extends AttachmentFindManyArgs>(args?: Prisma.SelectSubset<T, AttachmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
   /**
    * Create a Attachment.
-   * @param {attachmentCreateArgs} args - Arguments to create a Attachment.
+   * @param {AttachmentCreateArgs} args - Arguments to create a Attachment.
    * @example
    * // Create one Attachment
    * const Attachment = await prisma.attachment.create({
@@ -568,11 +603,11 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    * })
    * 
    */
-  create<T extends attachmentCreateArgs>(args: Prisma.SelectSubset<T, attachmentCreateArgs<ExtArgs>>): Prisma.Prisma__attachmentClient<runtime.Types.Result.GetResult<Prisma.$attachmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  create<T extends AttachmentCreateArgs>(args: Prisma.SelectSubset<T, AttachmentCreateArgs<ExtArgs>>): Prisma.Prisma__AttachmentClient<runtime.Types.Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Create many Attachments.
-   * @param {attachmentCreateManyArgs} args - Arguments to create many Attachments.
+   * @param {AttachmentCreateManyArgs} args - Arguments to create many Attachments.
    * @example
    * // Create many Attachments
    * const attachment = await prisma.attachment.createMany({
@@ -582,11 +617,11 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    * })
    *     
    */
-  createMany<T extends attachmentCreateManyArgs>(args?: Prisma.SelectSubset<T, attachmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  createMany<T extends AttachmentCreateManyArgs>(args?: Prisma.SelectSubset<T, AttachmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
    * Create many Attachments and returns the data saved in the database.
-   * @param {attachmentCreateManyAndReturnArgs} args - Arguments to create many Attachments.
+   * @param {AttachmentCreateManyAndReturnArgs} args - Arguments to create many Attachments.
    * @example
    * // Create many Attachments
    * const attachment = await prisma.attachment.createManyAndReturn({
@@ -606,11 +641,11 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    * Read more here: https://pris.ly/d/null-undefined
    * 
    */
-  createManyAndReturn<T extends attachmentCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, attachmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$attachmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+  createManyAndReturn<T extends AttachmentCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, AttachmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Delete a Attachment.
-   * @param {attachmentDeleteArgs} args - Arguments to delete one Attachment.
+   * @param {AttachmentDeleteArgs} args - Arguments to delete one Attachment.
    * @example
    * // Delete one Attachment
    * const Attachment = await prisma.attachment.delete({
@@ -620,11 +655,11 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    * })
    * 
    */
-  delete<T extends attachmentDeleteArgs>(args: Prisma.SelectSubset<T, attachmentDeleteArgs<ExtArgs>>): Prisma.Prisma__attachmentClient<runtime.Types.Result.GetResult<Prisma.$attachmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  delete<T extends AttachmentDeleteArgs>(args: Prisma.SelectSubset<T, AttachmentDeleteArgs<ExtArgs>>): Prisma.Prisma__AttachmentClient<runtime.Types.Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Update one Attachment.
-   * @param {attachmentUpdateArgs} args - Arguments to update one Attachment.
+   * @param {AttachmentUpdateArgs} args - Arguments to update one Attachment.
    * @example
    * // Update one Attachment
    * const attachment = await prisma.attachment.update({
@@ -637,11 +672,11 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    * })
    * 
    */
-  update<T extends attachmentUpdateArgs>(args: Prisma.SelectSubset<T, attachmentUpdateArgs<ExtArgs>>): Prisma.Prisma__attachmentClient<runtime.Types.Result.GetResult<Prisma.$attachmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  update<T extends AttachmentUpdateArgs>(args: Prisma.SelectSubset<T, AttachmentUpdateArgs<ExtArgs>>): Prisma.Prisma__AttachmentClient<runtime.Types.Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Delete zero or more Attachments.
-   * @param {attachmentDeleteManyArgs} args - Arguments to filter Attachments to delete.
+   * @param {AttachmentDeleteManyArgs} args - Arguments to filter Attachments to delete.
    * @example
    * // Delete a few Attachments
    * const { count } = await prisma.attachment.deleteMany({
@@ -651,13 +686,13 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    * })
    * 
    */
-  deleteMany<T extends attachmentDeleteManyArgs>(args?: Prisma.SelectSubset<T, attachmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  deleteMany<T extends AttachmentDeleteManyArgs>(args?: Prisma.SelectSubset<T, AttachmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
    * Update zero or more Attachments.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {attachmentUpdateManyArgs} args - Arguments to update one or more rows.
+   * @param {AttachmentUpdateManyArgs} args - Arguments to update one or more rows.
    * @example
    * // Update many Attachments
    * const attachment = await prisma.attachment.updateMany({
@@ -670,11 +705,11 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    * })
    * 
    */
-  updateMany<T extends attachmentUpdateManyArgs>(args: Prisma.SelectSubset<T, attachmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  updateMany<T extends AttachmentUpdateManyArgs>(args: Prisma.SelectSubset<T, AttachmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
    * Update zero or more Attachments and returns the data updated in the database.
-   * @param {attachmentUpdateManyAndReturnArgs} args - Arguments to update many Attachments.
+   * @param {AttachmentUpdateManyAndReturnArgs} args - Arguments to update many Attachments.
    * @example
    * // Update many Attachments
    * const attachment = await prisma.attachment.updateManyAndReturn({
@@ -700,11 +735,11 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    * Read more here: https://pris.ly/d/null-undefined
    * 
    */
-  updateManyAndReturn<T extends attachmentUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, attachmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$attachmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+  updateManyAndReturn<T extends AttachmentUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, AttachmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one Attachment.
-   * @param {attachmentUpsertArgs} args - Arguments to update or create a Attachment.
+   * @param {AttachmentUpsertArgs} args - Arguments to update or create a Attachment.
    * @example
    * // Update or create a Attachment
    * const attachment = await prisma.attachment.upsert({
@@ -719,14 +754,14 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    *   }
    * })
    */
-  upsert<T extends attachmentUpsertArgs>(args: Prisma.SelectSubset<T, attachmentUpsertArgs<ExtArgs>>): Prisma.Prisma__attachmentClient<runtime.Types.Result.GetResult<Prisma.$attachmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  upsert<T extends AttachmentUpsertArgs>(args: Prisma.SelectSubset<T, AttachmentUpsertArgs<ExtArgs>>): Prisma.Prisma__AttachmentClient<runtime.Types.Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
   /**
    * Count the number of Attachments.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {attachmentCountArgs} args - Arguments to filter Attachments to count.
+   * @param {AttachmentCountArgs} args - Arguments to filter Attachments to count.
    * @example
    * // Count the number of Attachments
    * const count = await prisma.attachment.count({
@@ -735,8 +770,8 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    *   }
    * })
   **/
-  count<T extends attachmentCountArgs>(
-    args?: Prisma.Subset<T, attachmentCountArgs>,
+  count<T extends AttachmentCountArgs>(
+    args?: Prisma.Subset<T, AttachmentCountArgs>,
   ): Prisma.PrismaPromise<
     T extends runtime.Types.Utils.Record<'select', any>
       ? T['select'] extends true
@@ -775,7 +810,7 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    * Group by Attachment.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {attachmentGroupByArgs} args - Group by arguments.
+   * @param {AttachmentGroupByArgs} args - Group by arguments.
    * @example
    * // Group by city, order by createdAt, get count
    * const result = await prisma.user.groupBy({
@@ -790,14 +825,14 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
    * 
   **/
   groupBy<
-    T extends attachmentGroupByArgs,
+    T extends AttachmentGroupByArgs,
     HasSelectOrTake extends Prisma.Or<
       Prisma.Extends<'skip', Prisma.Keys<T>>,
       Prisma.Extends<'take', Prisma.Keys<T>>
     >,
     OrderByArg extends Prisma.True extends HasSelectOrTake
-      ? { orderBy: attachmentGroupByArgs['orderBy'] }
-      : { orderBy?: attachmentGroupByArgs['orderBy'] },
+      ? { orderBy: AttachmentGroupByArgs['orderBy'] }
+      : { orderBy?: AttachmentGroupByArgs['orderBy'] },
     OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>,
     ByFields extends Prisma.MaybeTupleToUnion<T['by']>,
     ByValid extends Prisma.Has<ByFields, OrderFields>,
@@ -846,22 +881,22 @@ export interface attachmentDelegate<ExtArgs extends runtime.Types.Extensions.Int
           ? never
           : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
       }[OrderFields]
-  >(args: Prisma.SubsetIntersection<T, attachmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAttachmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  >(args: Prisma.SubsetIntersection<T, AttachmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAttachmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
 /**
- * Fields of the attachment model
+ * Fields of the Attachment model
  */
-readonly fields: attachmentFieldRefs;
+readonly fields: AttachmentFieldRefs;
 }
 
 /**
- * The delegate class that acts as a "Promise-like" for attachment.
+ * The delegate class that acts as a "Promise-like" for Attachment.
  * Why is this prefixed with `Prisma__`?
  * Because we want to prevent naming conflicts as mentioned in
  * https://github.com/prisma/prisma-client-js/issues/707
  */
-export interface Prisma__attachmentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+export interface Prisma__AttachmentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  links<T extends Prisma.attachment$linksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.attachment$linksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$attachment_linkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  links<T extends Prisma.Attachment$linksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Attachment$linksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttachmentLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -888,439 +923,440 @@ export interface Prisma__attachmentClient<T, Null = never, ExtArgs extends runti
 
 
 /**
- * Fields of the attachment model
+ * Fields of the Attachment model
  */
-export interface attachmentFieldRefs {
-  readonly id: Prisma.FieldRef<"attachment", 'String'>
-  readonly title: Prisma.FieldRef<"attachment", 'String'>
-  readonly url: Prisma.FieldRef<"attachment", 'String'>
-  readonly created_at: Prisma.FieldRef<"attachment", 'DateTime'>
-  readonly expires_at: Prisma.FieldRef<"attachment", 'DateTime'>
+export interface AttachmentFieldRefs {
+  readonly id: Prisma.FieldRef<"Attachment", 'String'>
+  readonly title: Prisma.FieldRef<"Attachment", 'String'>
+  readonly url: Prisma.FieldRef<"Attachment", 'String'>
+  readonly createdAt: Prisma.FieldRef<"Attachment", 'DateTime'>
+  readonly expiresAt: Prisma.FieldRef<"Attachment", 'DateTime'>
+  readonly status: Prisma.FieldRef<"Attachment", 'ATTACHMENT_STATUS'>
 }
     
 
 // Custom InputTypes
 /**
- * attachment findUnique
+ * Attachment findUnique
  */
-export type attachmentFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AttachmentFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the attachment
+   * Select specific fields to fetch from the Attachment
    */
-  select?: Prisma.attachmentSelect<ExtArgs> | null
+  select?: Prisma.AttachmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the attachment
+   * Omit specific fields from the Attachment
    */
-  omit?: Prisma.attachmentOmit<ExtArgs> | null
+  omit?: Prisma.AttachmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.attachmentInclude<ExtArgs> | null
+  include?: Prisma.AttachmentInclude<ExtArgs> | null
   /**
-   * Filter, which attachment to fetch.
+   * Filter, which Attachment to fetch.
    */
-  where: Prisma.attachmentWhereUniqueInput
+  where: Prisma.AttachmentWhereUniqueInput
 }
 
 /**
- * attachment findUniqueOrThrow
+ * Attachment findUniqueOrThrow
  */
-export type attachmentFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AttachmentFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the attachment
+   * Select specific fields to fetch from the Attachment
    */
-  select?: Prisma.attachmentSelect<ExtArgs> | null
+  select?: Prisma.AttachmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the attachment
+   * Omit specific fields from the Attachment
    */
-  omit?: Prisma.attachmentOmit<ExtArgs> | null
+  omit?: Prisma.AttachmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.attachmentInclude<ExtArgs> | null
+  include?: Prisma.AttachmentInclude<ExtArgs> | null
   /**
-   * Filter, which attachment to fetch.
+   * Filter, which Attachment to fetch.
    */
-  where: Prisma.attachmentWhereUniqueInput
+  where: Prisma.AttachmentWhereUniqueInput
 }
 
 /**
- * attachment findFirst
+ * Attachment findFirst
  */
-export type attachmentFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AttachmentFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the attachment
+   * Select specific fields to fetch from the Attachment
    */
-  select?: Prisma.attachmentSelect<ExtArgs> | null
+  select?: Prisma.AttachmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the attachment
+   * Omit specific fields from the Attachment
    */
-  omit?: Prisma.attachmentOmit<ExtArgs> | null
+  omit?: Prisma.AttachmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.attachmentInclude<ExtArgs> | null
+  include?: Prisma.AttachmentInclude<ExtArgs> | null
   /**
-   * Filter, which attachment to fetch.
+   * Filter, which Attachment to fetch.
    */
-  where?: Prisma.attachmentWhereInput
+  where?: Prisma.AttachmentWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of attachments to fetch.
+   * Determine the order of Attachments to fetch.
    */
-  orderBy?: Prisma.attachmentOrderByWithRelationInput | Prisma.attachmentOrderByWithRelationInput[]
+  orderBy?: Prisma.AttachmentOrderByWithRelationInput | Prisma.AttachmentOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for searching for attachments.
+   * Sets the position for searching for Attachments.
    */
-  cursor?: Prisma.attachmentWhereUniqueInput
+  cursor?: Prisma.AttachmentWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` attachments from the position of the cursor.
+   * Take `±n` Attachments from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` attachments.
+   * Skip the first `n` Attachments.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
    * 
-   * Filter by unique combinations of attachments.
+   * Filter by unique combinations of Attachments.
    */
   distinct?: Prisma.AttachmentScalarFieldEnum | Prisma.AttachmentScalarFieldEnum[]
 }
 
 /**
- * attachment findFirstOrThrow
+ * Attachment findFirstOrThrow
  */
-export type attachmentFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AttachmentFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the attachment
+   * Select specific fields to fetch from the Attachment
    */
-  select?: Prisma.attachmentSelect<ExtArgs> | null
+  select?: Prisma.AttachmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the attachment
+   * Omit specific fields from the Attachment
    */
-  omit?: Prisma.attachmentOmit<ExtArgs> | null
+  omit?: Prisma.AttachmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.attachmentInclude<ExtArgs> | null
+  include?: Prisma.AttachmentInclude<ExtArgs> | null
   /**
-   * Filter, which attachment to fetch.
+   * Filter, which Attachment to fetch.
    */
-  where?: Prisma.attachmentWhereInput
+  where?: Prisma.AttachmentWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of attachments to fetch.
+   * Determine the order of Attachments to fetch.
    */
-  orderBy?: Prisma.attachmentOrderByWithRelationInput | Prisma.attachmentOrderByWithRelationInput[]
+  orderBy?: Prisma.AttachmentOrderByWithRelationInput | Prisma.AttachmentOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for searching for attachments.
+   * Sets the position for searching for Attachments.
    */
-  cursor?: Prisma.attachmentWhereUniqueInput
+  cursor?: Prisma.AttachmentWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` attachments from the position of the cursor.
+   * Take `±n` Attachments from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` attachments.
+   * Skip the first `n` Attachments.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
    * 
-   * Filter by unique combinations of attachments.
+   * Filter by unique combinations of Attachments.
    */
   distinct?: Prisma.AttachmentScalarFieldEnum | Prisma.AttachmentScalarFieldEnum[]
 }
 
 /**
- * attachment findMany
+ * Attachment findMany
  */
-export type attachmentFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AttachmentFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the attachment
+   * Select specific fields to fetch from the Attachment
    */
-  select?: Prisma.attachmentSelect<ExtArgs> | null
+  select?: Prisma.AttachmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the attachment
+   * Omit specific fields from the Attachment
    */
-  omit?: Prisma.attachmentOmit<ExtArgs> | null
+  omit?: Prisma.AttachmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.attachmentInclude<ExtArgs> | null
+  include?: Prisma.AttachmentInclude<ExtArgs> | null
   /**
-   * Filter, which attachments to fetch.
+   * Filter, which Attachments to fetch.
    */
-  where?: Prisma.attachmentWhereInput
+  where?: Prisma.AttachmentWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of attachments to fetch.
+   * Determine the order of Attachments to fetch.
    */
-  orderBy?: Prisma.attachmentOrderByWithRelationInput | Prisma.attachmentOrderByWithRelationInput[]
+  orderBy?: Prisma.AttachmentOrderByWithRelationInput | Prisma.AttachmentOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for listing attachments.
+   * Sets the position for listing Attachments.
    */
-  cursor?: Prisma.attachmentWhereUniqueInput
+  cursor?: Prisma.AttachmentWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` attachments from the position of the cursor.
+   * Take `±n` Attachments from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` attachments.
+   * Skip the first `n` Attachments.
    */
   skip?: number
   distinct?: Prisma.AttachmentScalarFieldEnum | Prisma.AttachmentScalarFieldEnum[]
 }
 
 /**
- * attachment create
+ * Attachment create
  */
-export type attachmentCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AttachmentCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the attachment
+   * Select specific fields to fetch from the Attachment
    */
-  select?: Prisma.attachmentSelect<ExtArgs> | null
+  select?: Prisma.AttachmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the attachment
+   * Omit specific fields from the Attachment
    */
-  omit?: Prisma.attachmentOmit<ExtArgs> | null
+  omit?: Prisma.AttachmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.attachmentInclude<ExtArgs> | null
+  include?: Prisma.AttachmentInclude<ExtArgs> | null
   /**
-   * The data needed to create a attachment.
+   * The data needed to create a Attachment.
    */
-  data: Prisma.XOR<Prisma.attachmentCreateInput, Prisma.attachmentUncheckedCreateInput>
+  data: Prisma.XOR<Prisma.AttachmentCreateInput, Prisma.AttachmentUncheckedCreateInput>
 }
 
 /**
- * attachment createMany
+ * Attachment createMany
  */
-export type attachmentCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AttachmentCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * The data used to create many attachments.
+   * The data used to create many Attachments.
    */
-  data: Prisma.attachmentCreateManyInput | Prisma.attachmentCreateManyInput[]
+  data: Prisma.AttachmentCreateManyInput | Prisma.AttachmentCreateManyInput[]
   skipDuplicates?: boolean
 }
 
 /**
- * attachment createManyAndReturn
+ * Attachment createManyAndReturn
  */
-export type attachmentCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AttachmentCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the attachment
+   * Select specific fields to fetch from the Attachment
    */
-  select?: Prisma.attachmentSelectCreateManyAndReturn<ExtArgs> | null
+  select?: Prisma.AttachmentSelectCreateManyAndReturn<ExtArgs> | null
   /**
-   * Omit specific fields from the attachment
+   * Omit specific fields from the Attachment
    */
-  omit?: Prisma.attachmentOmit<ExtArgs> | null
+  omit?: Prisma.AttachmentOmit<ExtArgs> | null
   /**
-   * The data used to create many attachments.
+   * The data used to create many Attachments.
    */
-  data: Prisma.attachmentCreateManyInput | Prisma.attachmentCreateManyInput[]
+  data: Prisma.AttachmentCreateManyInput | Prisma.AttachmentCreateManyInput[]
   skipDuplicates?: boolean
 }
 
 /**
- * attachment update
+ * Attachment update
  */
-export type attachmentUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AttachmentUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the attachment
+   * Select specific fields to fetch from the Attachment
    */
-  select?: Prisma.attachmentSelect<ExtArgs> | null
+  select?: Prisma.AttachmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the attachment
+   * Omit specific fields from the Attachment
    */
-  omit?: Prisma.attachmentOmit<ExtArgs> | null
+  omit?: Prisma.AttachmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.attachmentInclude<ExtArgs> | null
+  include?: Prisma.AttachmentInclude<ExtArgs> | null
   /**
-   * The data needed to update a attachment.
+   * The data needed to update a Attachment.
    */
-  data: Prisma.XOR<Prisma.attachmentUpdateInput, Prisma.attachmentUncheckedUpdateInput>
+  data: Prisma.XOR<Prisma.AttachmentUpdateInput, Prisma.AttachmentUncheckedUpdateInput>
   /**
-   * Choose, which attachment to update.
+   * Choose, which Attachment to update.
    */
-  where: Prisma.attachmentWhereUniqueInput
+  where: Prisma.AttachmentWhereUniqueInput
 }
 
 /**
- * attachment updateMany
+ * Attachment updateMany
  */
-export type attachmentUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AttachmentUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * The data used to update attachments.
+   * The data used to update Attachments.
    */
-  data: Prisma.XOR<Prisma.attachmentUpdateManyMutationInput, Prisma.attachmentUncheckedUpdateManyInput>
+  data: Prisma.XOR<Prisma.AttachmentUpdateManyMutationInput, Prisma.AttachmentUncheckedUpdateManyInput>
   /**
-   * Filter which attachments to update
+   * Filter which Attachments to update
    */
-  where?: Prisma.attachmentWhereInput
+  where?: Prisma.AttachmentWhereInput
   /**
-   * Limit how many attachments to update.
+   * Limit how many Attachments to update.
    */
   limit?: number
 }
 
 /**
- * attachment updateManyAndReturn
+ * Attachment updateManyAndReturn
  */
-export type attachmentUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AttachmentUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the attachment
+   * Select specific fields to fetch from the Attachment
    */
-  select?: Prisma.attachmentSelectUpdateManyAndReturn<ExtArgs> | null
+  select?: Prisma.AttachmentSelectUpdateManyAndReturn<ExtArgs> | null
   /**
-   * Omit specific fields from the attachment
+   * Omit specific fields from the Attachment
    */
-  omit?: Prisma.attachmentOmit<ExtArgs> | null
+  omit?: Prisma.AttachmentOmit<ExtArgs> | null
   /**
-   * The data used to update attachments.
+   * The data used to update Attachments.
    */
-  data: Prisma.XOR<Prisma.attachmentUpdateManyMutationInput, Prisma.attachmentUncheckedUpdateManyInput>
+  data: Prisma.XOR<Prisma.AttachmentUpdateManyMutationInput, Prisma.AttachmentUncheckedUpdateManyInput>
   /**
-   * Filter which attachments to update
+   * Filter which Attachments to update
    */
-  where?: Prisma.attachmentWhereInput
+  where?: Prisma.AttachmentWhereInput
   /**
-   * Limit how many attachments to update.
+   * Limit how many Attachments to update.
    */
   limit?: number
 }
 
 /**
- * attachment upsert
+ * Attachment upsert
  */
-export type attachmentUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AttachmentUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the attachment
+   * Select specific fields to fetch from the Attachment
    */
-  select?: Prisma.attachmentSelect<ExtArgs> | null
+  select?: Prisma.AttachmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the attachment
+   * Omit specific fields from the Attachment
    */
-  omit?: Prisma.attachmentOmit<ExtArgs> | null
+  omit?: Prisma.AttachmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.attachmentInclude<ExtArgs> | null
+  include?: Prisma.AttachmentInclude<ExtArgs> | null
   /**
-   * The filter to search for the attachment to update in case it exists.
+   * The filter to search for the Attachment to update in case it exists.
    */
-  where: Prisma.attachmentWhereUniqueInput
+  where: Prisma.AttachmentWhereUniqueInput
   /**
-   * In case the attachment found by the `where` argument doesn't exist, create a new attachment with this data.
+   * In case the Attachment found by the `where` argument doesn't exist, create a new Attachment with this data.
    */
-  create: Prisma.XOR<Prisma.attachmentCreateInput, Prisma.attachmentUncheckedCreateInput>
+  create: Prisma.XOR<Prisma.AttachmentCreateInput, Prisma.AttachmentUncheckedCreateInput>
   /**
-   * In case the attachment was found with the provided `where` argument, update it with this data.
+   * In case the Attachment was found with the provided `where` argument, update it with this data.
    */
-  update: Prisma.XOR<Prisma.attachmentUpdateInput, Prisma.attachmentUncheckedUpdateInput>
+  update: Prisma.XOR<Prisma.AttachmentUpdateInput, Prisma.AttachmentUncheckedUpdateInput>
 }
 
 /**
- * attachment delete
+ * Attachment delete
  */
-export type attachmentDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AttachmentDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the attachment
+   * Select specific fields to fetch from the Attachment
    */
-  select?: Prisma.attachmentSelect<ExtArgs> | null
+  select?: Prisma.AttachmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the attachment
+   * Omit specific fields from the Attachment
    */
-  omit?: Prisma.attachmentOmit<ExtArgs> | null
+  omit?: Prisma.AttachmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.attachmentInclude<ExtArgs> | null
+  include?: Prisma.AttachmentInclude<ExtArgs> | null
   /**
-   * Filter which attachment to delete.
+   * Filter which Attachment to delete.
    */
-  where: Prisma.attachmentWhereUniqueInput
+  where: Prisma.AttachmentWhereUniqueInput
 }
 
 /**
- * attachment deleteMany
+ * Attachment deleteMany
  */
-export type attachmentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AttachmentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Filter which attachments to delete
+   * Filter which Attachments to delete
    */
-  where?: Prisma.attachmentWhereInput
+  where?: Prisma.AttachmentWhereInput
   /**
-   * Limit how many attachments to delete.
+   * Limit how many Attachments to delete.
    */
   limit?: number
 }
 
 /**
- * attachment.links
+ * Attachment.links
  */
-export type attachment$linksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Attachment$linksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the attachment_link
+   * Select specific fields to fetch from the AttachmentLink
    */
-  select?: Prisma.attachment_linkSelect<ExtArgs> | null
+  select?: Prisma.AttachmentLinkSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the attachment_link
+   * Omit specific fields from the AttachmentLink
    */
-  omit?: Prisma.attachment_linkOmit<ExtArgs> | null
+  omit?: Prisma.AttachmentLinkOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.attachment_linkInclude<ExtArgs> | null
-  where?: Prisma.attachment_linkWhereInput
-  orderBy?: Prisma.attachment_linkOrderByWithRelationInput | Prisma.attachment_linkOrderByWithRelationInput[]
-  cursor?: Prisma.attachment_linkWhereUniqueInput
+  include?: Prisma.AttachmentLinkInclude<ExtArgs> | null
+  where?: Prisma.AttachmentLinkWhereInput
+  orderBy?: Prisma.AttachmentLinkOrderByWithRelationInput | Prisma.AttachmentLinkOrderByWithRelationInput[]
+  cursor?: Prisma.AttachmentLinkWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.Attachment_linkScalarFieldEnum | Prisma.Attachment_linkScalarFieldEnum[]
+  distinct?: Prisma.AttachmentLinkScalarFieldEnum | Prisma.AttachmentLinkScalarFieldEnum[]
 }
 
 /**
- * attachment without action
+ * Attachment without action
  */
-export type attachmentDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AttachmentDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the attachment
+   * Select specific fields to fetch from the Attachment
    */
-  select?: Prisma.attachmentSelect<ExtArgs> | null
+  select?: Prisma.AttachmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the attachment
+   * Omit specific fields from the Attachment
    */
-  omit?: Prisma.attachmentOmit<ExtArgs> | null
+  omit?: Prisma.AttachmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.attachmentInclude<ExtArgs> | null
+  include?: Prisma.AttachmentInclude<ExtArgs> | null
 }

@@ -8,10 +8,10 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/users'
-export type * from './models/snacks'
-export type * from './models/favorites'
-export type * from './models/refresh_tokens'
-export type * from './models/attachment'
-export type * from './models/attachment_link'
+export type * from './models/User'
+export type * from './models/Snack'
+export type * from './models/Favorite'
+export type * from './models/RefreshToken'
+export type * from './models/Attachment'
+export type * from './models/AttachmentLink'
 export type * from './commonInputTypes'

@@ -1,9 +1,9 @@
-import { InMemoryFavoritesRepository } from "test/in-memory-favorites-repository";
+import { InMemoryFavoritesRepository } from "test/repositories/in-memory-favorites-repository";
 import { DeleteFavoriteUseCase } from "./delete-favorite";
 import { FavoriteDoesNotExists } from "@/domain/errors/favorite-does-not-exists";
 import { makeFavorite } from "test/factories/make-favorite";
 import { FavoriteNotFoundForThisUser } from "@/domain/errors/favorite-not-found-for-this-user";
-import { InMemoryUsersRepository } from "test/in-memory-users-repository";
+import { InMemoryUsersRepository } from "test/repositories/in-memory-users-repository";
 import { makeUser } from "test/factories/make-user";
 
 let sut: DeleteFavoriteUseCase;

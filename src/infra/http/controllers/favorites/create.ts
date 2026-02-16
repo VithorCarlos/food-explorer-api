@@ -5,7 +5,7 @@ import { makeCreateFavoriteUseCase } from "../../factories/make-create-favorite-
 
 export const createFavorite = async (
   request: FastifyRequest,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) => {
   const createSchema = z.object({
     snackId: z.string(),
@@ -16,7 +16,9 @@ export const createFavorite = async (
   const userId = request.user.sub;
 
   try {
-    const createFavoriteUseCase = makeCreateFavoriteUseCase();
+    const createFavoriteUseCase = makeCreateFavoriteUseCase(
+      request.server.prisma,
+    );
 
     const createdFavorite = await createFavoriteUseCase.execute({
       userId,
@@ -25,7 +27,7 @@ export const createFavorite = async (
 
     if (createdFavorite?.favorite?.id) {
       const favorite = PrismaFavoriteAdapter.toPrisma(
-        createdFavorite?.favorite
+        createdFavorite?.favorite,
       );
 
       reply.status(201).send({ favorite });

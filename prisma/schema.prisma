@@ -20,6 +20,12 @@ enum ROLE {
   RESTAURANT
 }
 
+enum ATTACHMENT_STATUS {
+  PENDING
+  LINKED
+  EXPIRED
+}
+
 enum RESOURSE_TYPE {
   USER
   SNACK
@@ -90,17 +96,19 @@ model Attachment {
   createdAt DateTime  @default(now()) @map("created_at")
   expiresAt DateTime? @map("expires_at")
 
+  status ATTACHMENT_STATUS @default(PENDING)
+
   links AttachmentLink[]
 
   @@map("attachment")
 }
 
 model AttachmentLink {
-  id           String         @unique @default(uuid())
-  attachmentId String         @map("attachment_id")
-  resourceId   String?        @map("resource_id")
-  resourceType RESOURSE_TYPE? @map("resource_type")
-  linkedAt     DateTime?      @map("linked_at")
+  id           String        @unique @default(uuid())
+  attachmentId String        @map("attachment_id")
+  resourceId   String        @map("resource_id")
+  resourceType RESOURSE_TYPE @map("resource_type")
+  linkedAt     DateTime      @map("linked_at")
 
   attachment Attachment @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
 

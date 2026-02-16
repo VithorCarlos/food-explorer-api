@@ -1,16 +1,16 @@
 import { CreateAttachmentUseCase } from "@/domain/use-case/attachment/create-attachment";
+import { PrismaService } from "@/infra/database/prisma";
 import { PrismaAttachmentRepository } from "@/infra/database/repositories/prisma-attachment-repository";
-import { LocalStorage } from "@/infra/storage/local-storage";
 import { R2Storage } from "@/infra/storage/r2-storage";
 
-export function makeUploadAttachmentUseCase() {
-  const uploadAttachmentRepository = new PrismaAttachmentRepository();
+export function makeUploadAttachmentUseCase(prisma: PrismaService) {
+  const uploadAttachmentRepository = new PrismaAttachmentRepository(prisma);
 
   const r2Storage = new R2Storage();
 
   const uploadAttachmentUseCase = new CreateAttachmentUseCase(
     uploadAttachmentRepository,
-    r2Storage
+    r2Storage,
   );
 
   return uploadAttachmentUseCase;

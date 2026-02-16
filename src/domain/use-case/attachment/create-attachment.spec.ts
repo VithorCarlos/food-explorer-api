@@ -1,17 +1,20 @@
 import { InvalidAttachmentTypeError } from "@/domain/errors/invalid-attachment-type";
 import { CreateAttachmentUseCase } from "./create-attachment";
 import { FakerUploader } from "test/storage/faker-uploader";
-import { InMemoryUploadAttachment } from "test/in-memory-upload-attachment-repository";
+import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 
 let sut: CreateAttachmentUseCase;
-let inMemoryUploadAttachment: InMemoryUploadAttachment;
+let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
 let fakeUploader: FakerUploader;
 
 describe("Upload and create attachment", () => {
   beforeEach(() => {
-    inMemoryUploadAttachment = new InMemoryUploadAttachment();
+    inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
     fakeUploader = new FakerUploader();
-    sut = new CreateAttachmentUseCase(inMemoryUploadAttachment, fakeUploader);
+    sut = new CreateAttachmentUseCase(
+      inMemoryAttachmentRepository,
+      fakeUploader,
+    );
   });
 
   it("Should be able to upload and create an attachment", async () => {
@@ -25,7 +28,7 @@ describe("Upload and create attachment", () => {
 
     expect(attachment).toEqual(
       expect.objectContaining({
-        title: inMemoryUploadAttachment.items[0].title,
+        title: inMemoryAttachmentRepository.items[0].title,
       }),
     );
     expect(fakeUploader.uploads).toHaveLength(1);

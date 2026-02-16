@@ -18,6 +18,15 @@ export const ROLE = {
 export type ROLE = (typeof ROLE)[keyof typeof ROLE]
 
 
+export const ATTACHMENT_STATUS = {
+  PENDING: 'PENDING',
+  LINKED: 'LINKED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type ATTACHMENT_STATUS = (typeof ATTACHMENT_STATUS)[keyof typeof ATTACHMENT_STATUS]
+
+
 export const RESOURSE_TYPE = {
   USER: 'USER',
   SNACK: 'SNACK'

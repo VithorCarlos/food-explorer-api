@@ -1,4 +1,4 @@
-import { InMemoryFavoritesRepository } from "test/in-memory-favorites-repository";
+import { InMemoryFavoritesRepository } from "test/repositories/in-memory-favorites-repository";
 import { makeFavorite } from "test/factories/make-favorite";
 import { FindManyFavoriteUseCase } from "./find-many-favorites";
 

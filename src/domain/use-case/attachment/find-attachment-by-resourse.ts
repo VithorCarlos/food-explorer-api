@@ -1,5 +1,5 @@
 import { AttachmentNotFoundError } from "@/domain/errors/attachment-not-found";
-import { AttachmentRepository } from "@/domain/repositories/attachment-repository";
+import { AttachmentLinkRepository } from "@/domain/repositories/attachment-link-repository";
 import { $Enums } from "generated/prisma/client";
 
 interface FindAttachmentByResourceRequest {
@@ -8,18 +8,16 @@ interface FindAttachmentByResourceRequest {
 }
 
 export class FindAttachmentByResourceUseCase {
-  constructor(private attachmentRepository: AttachmentRepository) {}
+  constructor(private attachmentLinkRepository: AttachmentLinkRepository) {}
 
-  async execute({ resourceId, resourceType }: FindAttachmentByResourceRequest) {
-    const attachments = await this.attachmentRepository.findByResource(
-      resourceId,
-      resourceType,
-    );
+  async execute({ resourceId }: FindAttachmentByResourceRequest) {
+    const attachmentLinks =
+      await this.attachmentLinkRepository.findByResource(resourceId);
 
-    if (!attachments || attachments.length === 0) {
+    if (!attachmentLinks || attachmentLinks.length === 0) {
       throw new AttachmentNotFoundError();
     }
 
-    return { attachments };
+    return { attachmentLinks };
   }
 }

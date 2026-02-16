@@ -1,4 +1,4 @@
-import { InMemoryUsersRepository } from "test/in-memory-users-repository";
+import { InMemoryUsersRepository } from "test/repositories/in-memory-users-repository";
 import { makeUser } from "test/factories/make-user";
 import { UpdateUserUseCase } from "./update-user";
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";

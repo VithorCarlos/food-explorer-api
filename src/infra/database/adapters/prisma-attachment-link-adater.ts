@@ -1,18 +1,18 @@
 import { AttachmentLink } from "@/domain/entities/attachment-link";
-import { attachment_link as RowAttachmentLink } from "generated/prisma/client";
+import { AttachmentLink as RowAttachmentLink } from "generated/prisma/client";
 
 export class PrismaAttachmentLinkAdapter {
   static toPrisma({
     attachmentId,
     resourceId,
     resourceType,
-    linked_at,
+    linkedAt,
   }: AttachmentLink) {
     return {
       attachmentId,
       resourceId,
       resourceType,
-      linked_at,
+      linkedAt,
     };
   }
 
@@ -21,12 +21,14 @@ export class PrismaAttachmentLinkAdapter {
     attachmentId,
     resourceId,
     resourceType,
+    linkedAt,
   }: RowAttachmentLink) {
     return AttachmentLink.create({
       id,
       attachmentId,
       resourceId,
-      resourceType,
+      resourceType: resourceType,
+      linkedAt: linkedAt ?? null,
     });
   }
 }
