@@ -6,6 +6,8 @@ import { makeUser } from "test/factories/make-user";
 import { makeSnack } from "test/factories/make-snack";
 import { InMemoryAttachmentLinkRepository } from "test/repositories/in-memory-attachment-link-repository";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
+import { makeFavorite } from "test/factories/make-favorite";
+import { SnackNotFoundForThisUser } from "@/domain/errors/snack-not-found-for-this-user";
 
 let sut: CreateFavoriteUseCase;
 let inMemoryFavoritesRepository: InMemoryFavoritesRepository;
@@ -24,7 +26,10 @@ describe("Create favorite", () => {
     );
     inMemoryUsersRepository = new InMemoryUsersRepository();
 
-    sut = new CreateFavoriteUseCase(inMemoryFavoritesRepository);
+    sut = new CreateFavoriteUseCase(
+      inMemoryFavoritesRepository,
+      inMemorySnacksRepository,
+    );
   });
 
   it("Should be able to create a new favorite", async () => {
@@ -54,5 +59,26 @@ describe("Create favorite", () => {
     expect(inMemoryFavoritesRepository.items[0].snackId.toString()).toEqual(
       "snack-01",
     );
+  });
+
+  it("should not be able to create a favorite to an-existent snack", async () => {
+    const favorite = makeFavorite(
+      {
+        snackId: new UniqueEntityId("snack-01"),
+        userId: new UniqueEntityId("user-01"),
+      },
+      new UniqueEntityId("favorite-01"),
+    );
+    const createUser = makeUser({ id: new UniqueEntityId("user-01") });
+
+    await inMemoryFavoritesRepository.create(favorite);
+    await inMemoryUsersRepository.create(createUser);
+
+    await expect(
+      sut.execute({
+        snackId: "no existent",
+        userId: createUser.id.toString(),
+      }),
+    ).rejects.toThrowError(SnackNotFoundForThisUser);
   });
 });

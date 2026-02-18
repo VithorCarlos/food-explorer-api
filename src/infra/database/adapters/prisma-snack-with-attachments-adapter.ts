@@ -1,6 +1,7 @@
 import { SnackWithAttachment } from "@/domain/entities/value-objects/snack-with-attachment";
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
 import { env } from "@/env";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 
 interface PrismaSnackWithAttachmentRaw {
   snack_id: string;
@@ -16,22 +17,20 @@ interface PrismaSnackWithAttachmentRaw {
 }
 
 export class PrismaSnackWithAttachmentsAdapter {
-  static toDomain(
-    snacksWithAttachmentsRaw: PrismaSnackWithAttachmentRaw,
-  ): SnackWithAttachment {
+  static toDomain(raw: PrismaSnackWithAttachmentRaw): SnackWithAttachment {
     return SnackWithAttachment.create({
-      snackId: snacksWithAttachmentsRaw.snack_id,
-      attachmentUrl: snacksWithAttachmentsRaw.attachment_url
-        ? `${env.CLOUDFARE_PUBLIC_CDN}/${snacksWithAttachmentsRaw.attachment_url}`
+      snackId: new UniqueEntityId(raw.snack_id),
+      attachmentUrl: raw.attachment_url
+        ? `${env.CLOUDFARE_PUBLIC_CDN}/${raw.attachment_url}`
         : null,
-      userId: snacksWithAttachmentsRaw.user_id,
-      title: snacksWithAttachmentsRaw.title,
-      category: snacksWithAttachmentsRaw.category as FOOD_CATEGORIES,
-      description: snacksWithAttachmentsRaw.description,
-      ingredients: snacksWithAttachmentsRaw.ingredients,
-      price: snacksWithAttachmentsRaw.price,
-      createdAt: snacksWithAttachmentsRaw.created_at,
-      updatedAt: snacksWithAttachmentsRaw.updated_at,
+      userId: new UniqueEntityId(raw.user_id),
+      title: raw.title,
+      category: raw.category as FOOD_CATEGORIES,
+      description: raw.description,
+      ingredients: raw.ingredients,
+      price: raw.price,
+      createdAt: raw.created_at,
+      updatedAt: raw.updated_at,
     });
   }
 }

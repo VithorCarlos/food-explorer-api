@@ -1,4 +1,5 @@
 import { FavoritesRepository } from "@/domain/repositories/favorites-repository";
+import { SnacksRepository } from "@/domain/repositories/snacks-repository";
 
 interface FindManyFavoriteRequest {
   userId: string;
@@ -12,7 +13,7 @@ export class FindManyFavoriteUseCase {
   async execute({ userId, page = 1, perPage = 10 }: FindManyFavoriteRequest) {
     const favorites = await this.favoritesRepository.findMany(
       { page, perPage },
-      userId
+      userId,
     );
 
     return { favorites };

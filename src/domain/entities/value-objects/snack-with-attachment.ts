@@ -1,15 +1,16 @@
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { ValueObject } from "@/shared/entity/value-object";
 
 interface SnackWithAttachmentProps {
-  snackId: string;
+  snackId: UniqueEntityId;
   attachmentUrl: string | null;
   title: string;
   description: string;
   category: FOOD_CATEGORIES;
   ingredients: string[];
   price: number;
-  userId: string;
+  userId: UniqueEntityId;
   createdAt: Date;
   updatedAt?: Date;
 }

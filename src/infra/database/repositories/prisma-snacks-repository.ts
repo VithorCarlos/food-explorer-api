@@ -123,19 +123,27 @@ export class PrismaSnacksRepository implements SnacksRepository {
     title,
     ingredients,
   }: SearchManySnacksParams) {
-    const conditions: Prisma.Sql[] = [Prisma.sql`s.category = ${category}`];
+    const conditions: Prisma.Sql[] = [];
+
+    if (category) {
+      conditions.push(
+        Prisma.sql`LOWER(s.category) = ${category.toLowerCase()}`,
+      );
+    }
 
     if (title) {
-      conditions.push(Prisma.sql`s.title ILIKE ${"%" + title + "%"}`);
+      const cleanTitle = `%${title.trim().toLowerCase()}%`;
+      conditions.push(Prisma.sql`LOWER(s.title) LIKE ${cleanTitle}`);
     }
 
     if (ingredients && ingredients.length > 0) {
       conditions.push(Prisma.sql`s.ingredients && ${ingredients}`);
     }
 
-    const whereClause = Prisma.sql`
-    WHERE ${Prisma.join(conditions, " AND ")}
-  `;
+    const whereClause =
+      conditions.length > 0
+        ? Prisma.sql`WHERE ${Prisma.join(conditions, " AND ")}`
+        : Prisma.sql``;
 
     const snacksWithAttachment = await this.prisma.$queryRaw<
       {
@@ -161,7 +169,7 @@ export class PrismaSnacksRepository implements SnacksRepository {
         s.user_id,
         s.created_at,
         s.updated_at,
-        al.attachment_id
+        al.attachment_id,
         a.url as attachment_url
       FROM snacks s
       LEFT JOIN attachment_link al 
@@ -174,7 +182,6 @@ export class PrismaSnacksRepository implements SnacksRepository {
       LIMIT ${perPage}
       OFFSET ${(page - 1) * perPage}
       `);
-
     return snacksWithAttachment.map(PrismaSnackWithAttachmentsAdapter.toDomain);
   }
 

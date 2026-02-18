@@ -34,6 +34,10 @@ export const searchSnack = async (
 
     reply.status(200).send(snanks);
   } catch (error) {
+    if (error instanceof Error) {
+      reply.status(400).send({ message: error.message });
+    }
+
     throw error;
   }
 };

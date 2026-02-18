@@ -28,11 +28,7 @@ export const deleteFavorite = async (
 
     reply.status(200);
   } catch (error) {
-    if (error instanceof FavoriteDoesNotExists) {
-      reply.status(400).send({ message: error.message });
-    }
-
-    if (error instanceof FavoriteNotFoundForThisUser) {
+    if (error instanceof Error) {
       reply.status(400).send({ message: error.message });
     }
 

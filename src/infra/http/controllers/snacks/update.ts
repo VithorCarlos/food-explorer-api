@@ -11,23 +11,32 @@ export const updateSnack = async (
   reply: FastifyReply,
 ) => {
   const updateSchema = z.object({
-    id: z.string(),
+    snackId: z.string(),
     title: z.string().optional(),
     description: z.string().optional(),
-    category: z.nativeEnum(FOOD_CATEGORIES).optional(),
+    category: z.enum(FOOD_CATEGORIES).optional(),
     ingredients: z.string().array().optional(),
     price: z.number().optional(),
+    attachmentId: z.string().optional(),
   });
 
-  const { id, title, category, ingredients, price, description } =
-    updateSchema.parse(request.body);
+  const {
+    snackId,
+    title,
+    category,
+    ingredients,
+    price,
+    description,
+    attachmentId,
+  } = updateSchema.parse(request.body);
   const userId = request.user.sub;
 
   try {
     const updateSnackUseCase = makeUpdateSnackUseCase(request.server.prisma);
 
     const { snack: updatedSnack } = await updateSnackUseCase.execute({
-      id,
+      snackId,
+      attachmentId,
       title,
       category,
       ingredients,
@@ -40,13 +49,10 @@ export const updateSnack = async (
 
     reply.status(201).send({ snack });
   } catch (error) {
-    if (error instanceof SnackDoesNotExists) {
+    if (error instanceof Error) {
       reply.status(400).send({ message: error.message });
     }
 
-    if (error instanceof SnackNotFoundForThisUser) {
-      reply.status(400).send({ message: error.message });
-    }
     throw error;
   }
 };

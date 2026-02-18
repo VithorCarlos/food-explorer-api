@@ -5,14 +5,12 @@ interface FavoriteDetailsProps {
   favoriteId: UniqueEntityId;
   snackId: UniqueEntityId;
   userId: UniqueEntityId;
-  attachmentUrl: string;
+  attachmentUrl: string | null;
   title: string;
   category: string;
   ingredients: string[];
   price: number;
   description: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export class FavoriteDetails extends ValueObject<FavoriteDetailsProps> {
@@ -50,14 +48,6 @@ export class FavoriteDetails extends ValueObject<FavoriteDetailsProps> {
 
   get description() {
     return this.props.description;
-  }
-
-  get updatedAt() {
-    return this.props.updatedAt;
-  }
-
-  get createdAt() {
-    return this.props.createdAt;
   }
 
   static create(props: FavoriteDetailsProps) {

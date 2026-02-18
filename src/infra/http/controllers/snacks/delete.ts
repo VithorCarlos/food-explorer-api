@@ -25,11 +25,7 @@ export const deleteSnack = async (
 
     reply.status(200);
   } catch (error) {
-    if (error instanceof SnackDoesNotExists) {
-      reply.status(400).send({ message: error.message });
-    }
-
-    if (error instanceof SnackNotFoundForThisUser) {
+    if (error instanceof Error) {
       reply.status(400).send({ message: error.message });
     }
 

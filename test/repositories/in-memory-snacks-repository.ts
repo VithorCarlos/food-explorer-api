@@ -76,8 +76,8 @@ export class InMemorySnacksRepository implements SnacksRepository {
       attachmentUrl: snack.attachmentLink.attachmentId + ".png",
       description: snack.description,
       ingredients: snack.ingredients,
-      snackId: snack.id.toString(),
-      userId: snack.userId.toString(),
+      snackId: snack.id,
+      userId: snack.userId,
     });
   }
 
@@ -115,8 +115,8 @@ export class InMemorySnacksRepository implements SnacksRepository {
         attachmentUrl: snack.attachmentLink.attachmentId + ".png",
         description: snack.description,
         ingredients: snack.ingredients,
-        snackId: snack.id.toString(),
-        userId: snack.userId.toString(),
+        snackId: snack.id,
+        userId: snack.userId,
       }),
     );
   }

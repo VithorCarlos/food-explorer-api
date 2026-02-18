@@ -12,7 +12,6 @@ export interface CustomBindProps {
   ingredients: string[];
   price: number;
   description: string;
-  updatedAt: Date;
 }
 
 export class PrismaFavoriteAdapter {
@@ -36,29 +35,5 @@ export class PrismaFavoriteAdapter {
       },
       new UniqueEntityId(id),
     );
-  }
-
-  static toBind({
-    snackId,
-    favoriteId,
-    title,
-    category,
-    ingredients,
-    userId,
-    price,
-    description,
-    updatedAt,
-  }: CustomBindProps) {
-    return {
-      snackId: snackId.toString(),
-      favoriteId: favoriteId.toString(),
-      title,
-      category,
-      ingredients,
-      userId: userId.toString(),
-      price,
-      description,
-      updatedAt,
-    };
   }
 }

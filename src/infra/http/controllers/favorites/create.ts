@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { PrismaFavoriteAdapter } from "@/infra/database/adapters/prisma-favorite-adapter";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { makeCreateFavoriteUseCase } from "../../factories/make-create-favorite-use-case";
+import { FavoritePresenter } from "../../presenters/favorite-presenter";
 
 export const createFavorite = async (
   request: FastifyRequest,
@@ -20,21 +20,17 @@ export const createFavorite = async (
       request.server.prisma,
     );
 
-    const createdFavorite = await createFavoriteUseCase.execute({
+    const favorite = await createFavoriteUseCase.execute({
       userId,
       snackId,
     });
 
-    if (createdFavorite?.favorite?.id) {
-      const favorite = PrismaFavoriteAdapter.toPrisma(
-        createdFavorite?.favorite,
-      );
-
-      reply.status(201).send({ favorite });
-    } else {
-      reply.status(423).send({ message: "Snack's already favorited" });
-    }
+    reply.status(201).send({ favorite: FavoritePresenter.toHTTP(favorite) });
   } catch (error) {
+    if (error instanceof Error) {
+      reply.status(400).send({ message: error.message });
+    }
+
     throw error;
   }
 };

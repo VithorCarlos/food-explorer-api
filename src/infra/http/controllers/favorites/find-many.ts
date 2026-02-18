@@ -3,7 +3,7 @@ import { FavoriteDoesNotExists } from "@/domain/errors/favorite-does-not-exists"
 import { z } from "zod";
 import { FavoriteNotFoundForThisUser } from "@/domain/errors/favorite-not-found-for-this-user";
 import { makeFindManyFavoriteUseCase } from "../../factories/make-find-many-favorites-use-case";
-import { PrismaFavoriteAdapter } from "@/infra/database/adapters/prisma-favorite-adapter";
+import { FavoriteDetailsPresenter } from "../../presenters/favorite-details-presenter";
 
 export const findManyFavorites = async (
   request: FastifyRequest,
@@ -23,24 +23,19 @@ export const findManyFavorites = async (
       request.server.prisma,
     );
 
-    const { favorites: filteredFavorites } =
-      await findManyFavoriteUseCase.execute({
-        userId,
-        page,
-        perPage,
-      });
+    const { favorites } = await findManyFavoriteUseCase.execute({
+      userId,
+      page,
+      perPage,
+    });
 
-    const favorites = filteredFavorites.map((favorite) =>
-      PrismaFavoriteAdapter.toBind(favorite),
-    );
-
-    reply.status(200).send({ favorites });
-  } catch (error) {
-    if (error instanceof FavoriteDoesNotExists) {
-      reply.status(400).send({ message: error.message });
+    if (favorites) {
+      reply
+        .status(200)
+        .send({ favorites: favorites.map(FavoriteDetailsPresenter.toHTTP) });
     }
-
-    if (error instanceof FavoriteNotFoundForThisUser) {
+  } catch (error) {
+    if (error instanceof Error) {
       reply.status(400).send({ message: error.message });
     }
 
