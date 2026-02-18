@@ -196,6 +196,7 @@ export type AttachmentLinkOrderByWithRelationInput = {
 
 export type AttachmentLinkWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  attachmentId_resourceId_resourceType?: Prisma.AttachmentLinkAttachmentIdResourceIdResourceTypeCompoundUniqueInput
   AND?: Prisma.AttachmentLinkWhereInput | Prisma.AttachmentLinkWhereInput[]
   OR?: Prisma.AttachmentLinkWhereInput[]
   NOT?: Prisma.AttachmentLinkWhereInput | Prisma.AttachmentLinkWhereInput[]
@@ -204,7 +205,7 @@ export type AttachmentLinkWhereUniqueInput = Prisma.AtLeast<{
   resourceType?: Prisma.EnumRESOURSE_TYPEFilter<"AttachmentLink"> | $Enums.RESOURSE_TYPE
   linkedAt?: Prisma.DateTimeFilter<"AttachmentLink"> | Date | string
   attachment?: Prisma.XOR<Prisma.AttachmentScalarRelationFilter, Prisma.AttachmentWhereInput>
-}, "id">
+}, "id" | "attachmentId_resourceId_resourceType">
 
 export type AttachmentLinkOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -232,7 +233,7 @@ export type AttachmentLinkCreateInput = {
   id?: string
   resourceId: string
   resourceType: $Enums.RESOURSE_TYPE
-  linkedAt: Date | string
+  linkedAt?: Date | string
   attachment: Prisma.AttachmentCreateNestedOneWithoutLinksInput
 }
 
@@ -241,7 +242,7 @@ export type AttachmentLinkUncheckedCreateInput = {
   attachmentId: string
   resourceId: string
   resourceType: $Enums.RESOURSE_TYPE
-  linkedAt: Date | string
+  linkedAt?: Date | string
 }
 
 export type AttachmentLinkUpdateInput = {
@@ -265,7 +266,7 @@ export type AttachmentLinkCreateManyInput = {
   attachmentId: string
   resourceId: string
   resourceType: $Enums.RESOURSE_TYPE
-  linkedAt: Date | string
+  linkedAt?: Date | string
 }
 
 export type AttachmentLinkUpdateManyMutationInput = {
@@ -291,6 +292,12 @@ export type AttachmentLinkListRelationFilter = {
 
 export type AttachmentLinkOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type AttachmentLinkAttachmentIdResourceIdResourceTypeCompoundUniqueInput = {
+  attachmentId: string
+  resourceId: string
+  resourceType: $Enums.RESOURSE_TYPE
 }
 
 export type AttachmentLinkCountOrderByAggregateInput = {
@@ -367,14 +374,14 @@ export type AttachmentLinkCreateWithoutAttachmentInput = {
   id?: string
   resourceId: string
   resourceType: $Enums.RESOURSE_TYPE
-  linkedAt: Date | string
+  linkedAt?: Date | string
 }
 
 export type AttachmentLinkUncheckedCreateWithoutAttachmentInput = {
   id?: string
   resourceId: string
   resourceType: $Enums.RESOURSE_TYPE
-  linkedAt: Date | string
+  linkedAt?: Date | string
 }
 
 export type AttachmentLinkCreateOrConnectWithoutAttachmentInput = {
@@ -418,7 +425,7 @@ export type AttachmentLinkCreateManyAttachmentInput = {
   id?: string
   resourceId: string
   resourceType: $Enums.RESOURSE_TYPE
-  linkedAt: Date | string
+  linkedAt?: Date | string
 }
 
 export type AttachmentLinkUpdateWithoutAttachmentInput = {

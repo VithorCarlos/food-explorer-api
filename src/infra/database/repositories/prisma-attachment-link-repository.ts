@@ -23,4 +23,14 @@ export class PrismaAttachmentLinkRepository implements AttachmentLinkRepository 
 
     return attachmentsLink.map(PrismaAttachmentLinkAdapter.toDomain);
   }
+
+  async findByAttachmentId(attachmentId: string): Promise<AttachmentLink[]> {
+    const attachmentsLink = await this.prisma.attachmentLink.findMany({
+      where: {
+        attachmentId,
+      },
+    });
+
+    return attachmentsLink.map(PrismaAttachmentLinkAdapter.toDomain);
+  }
 }

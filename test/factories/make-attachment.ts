@@ -1,12 +1,31 @@
 import { Attachment, AttachmentProps } from "@/domain/entities/attachment";
+import { PrismaAttachmentAdapter } from "@/infra/database/adapters/prisma-attachment-adapter";
+import { PrismaService } from "@/infra/database/prisma";
 import { faker } from "@faker-js/faker";
 
-export function makeAttachment(override: Partial<AttachmentProps> = {}) {
+export function makeAttachment(data: Partial<AttachmentProps> = {}) {
   const attachment = Attachment.create({
     title: faker.lorem.slug() + ".png",
     url: faker.image.url(),
-    ...override,
+    status: data.status ?? `PENDING`,
+    ...data,
   });
 
   return attachment;
+}
+
+export class AttachmentFactory {
+  constructor(private prisma: PrismaService) {}
+
+  async makeAttachmentToPrisma(
+    data: Partial<AttachmentProps> = {},
+  ): Promise<Attachment> {
+    const attachment = makeAttachment(data);
+
+    await this.prisma.attachment.create({
+      data: PrismaAttachmentAdapter.toPrisma(attachment),
+    });
+
+    return attachment;
+  }
 }

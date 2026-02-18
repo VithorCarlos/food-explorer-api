@@ -4,6 +4,7 @@ import { z } from "zod";
 import { SnackNotFoundForThisUser } from "@/domain/errors/snack-not-found-for-this-user";
 import { makeFindOneSnackUseCase } from "../../factories/make-find-one-snack-use-case";
 import { PrismaSnackAdapter } from "@/infra/database/adapters/prisma-snack-adapter";
+import { SnackWithAttachmentPresenter } from "../../presenters/snack-with-attachment-presenter";
 
 export const findOneSnack = async (
   request: FastifyRequest,
@@ -22,9 +23,9 @@ export const findOneSnack = async (
       id,
     });
 
-    const snack = PrismaSnackAdapter.toPrisma(snackResponse);
+    const snack = SnackWithAttachmentPresenter.toHTTP(snackResponse);
 
-    reply.status(200).send({ snack });
+    reply.status(200).send(snack);
   } catch (error) {
     if (error instanceof SnackDoesNotExists) {
       reply.status(400).send({ message: error.message });

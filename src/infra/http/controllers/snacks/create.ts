@@ -13,7 +13,7 @@ export const createSnack = async (
     description: z.string(),
     category: z.enum(FOOD_CATEGORIES),
     ingredients: z.string().array(),
-    price: z.number(),
+    price: z.number().min(0),
     attachmentId: z.string(),
   });
 
@@ -37,8 +37,11 @@ export const createSnack = async (
 
     const snack = PrismaSnackAdapter.toPrisma(createdSnack);
 
-    reply.status(201).send({ snack });
+    reply.status(201).send({ snack: { ...snack, attachmentId } });
   } catch (error) {
+    if (error instanceof Error) {
+      reply.status(400).send({ message: error.message });
+    }
     throw error;
   }
 };

@@ -19,7 +19,7 @@ export class SearchSnackUseCase {
     page = 1,
     perPage = 10,
   }: SearchSnackRequest) {
-    const snacks = await this.snacksRepository.searchMany({
+    const snacks = await this.snacksRepository.searchManyWithAttachments({
       page,
       perPage,
       category,

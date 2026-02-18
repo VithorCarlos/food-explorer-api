@@ -13,6 +13,7 @@ const schema = z.object({
   AWS_BUCKET_NAME: z.string(),
   AWS_ACCESS_KEY_ID: z.string(),
   AWS_SECRET_ACCESS_KEY: z.string(),
+  CLOUDFARE_PUBLIC_CDN: z.string(),
 });
 
 const _env = schema.safeParse(process.env);

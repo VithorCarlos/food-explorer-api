@@ -27,7 +27,7 @@ export class PrismaAttachmentLinkAdapter {
       id,
       attachmentId,
       resourceId,
-      resourceType: resourceType,
+      resourceType,
       linkedAt: linkedAt ?? null,
     });
   }

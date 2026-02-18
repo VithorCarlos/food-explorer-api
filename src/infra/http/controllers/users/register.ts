@@ -16,7 +16,7 @@ export const registerUser = async (
   const { name, email, password } = registerSchema.parse(request.body);
 
   try {
-    const registerUseCase = makeRegisterUserUseCase();
+    const registerUseCase = makeRegisterUserUseCase(request.server.prisma);
 
     await registerUseCase.execute({
       name,

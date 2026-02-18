@@ -31,7 +31,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT],
     },
-    searchSnack
+    searchSnack,
   );
 
   fastify.get(
@@ -51,7 +51,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT],
     },
-    findOneSnack
+    findOneSnack,
   );
 
   fastify.post(
@@ -66,6 +66,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
           type: "object",
           properties: {
             title: { type: "string", default: "Mozzarella pizza" },
+            attachmentId: { type: "string" },
             category: {
               type: "string",
               enum: Object.values(FOOD_CATEGORIES),
@@ -75,7 +76,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
               type: "array",
               default: ["cheese", "tomato", "onion"],
             },
-            price: { type: "integer", default: 54 },
+            price: { type: "number", default: 54 },
             description: {
               type: "string",
               default: "A delicious pizza with melted cheese",
@@ -98,7 +99,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
               title: { type: "string" },
               category: { type: "string" },
               ingredients: { type: "array", default: [] },
-              price: { type: "integer" },
+              price: { type: "number" },
               description: { type: "string" },
               attachmentId: { type: "string" },
             },
@@ -107,7 +108,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT, verifyRole(ROLE.ADMIN)],
     },
-    createSnack
+    createSnack,
   );
 
   fastify.put(
@@ -149,7 +150,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT, verifyRole(ROLE.ADMIN)],
     },
-    updateSnack
+    updateSnack,
   );
 
   fastify.delete(
@@ -169,6 +170,6 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT, verifyRole(ROLE.ADMIN)],
     },
-    deleteSnack
+    deleteSnack,
   );
 };

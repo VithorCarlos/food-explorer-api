@@ -8,7 +8,7 @@ export interface SnackProps {
   id: string;
   title: string;
   description: string;
-  attachment?: AttachmentLink;
+  attachmentLink?: AttachmentLink;
   category: FOOD_CATEGORIES;
   ingredients: string[];
   price: number;
@@ -23,7 +23,7 @@ interface SaveSnacksProps {
   category?: FOOD_CATEGORIES;
   ingredients?: string[];
   price?: number;
-  attachment?: AttachmentLink;
+  attachmentLink?: AttachmentLink;
 }
 
 export class Snack extends BaseEntity<SnackProps> {
@@ -49,8 +49,8 @@ export class Snack extends BaseEntity<SnackProps> {
     return this.props.description;
   }
 
-  get attachment() {
-    return this.props.attachment;
+  get attachmentLink() {
+    return this.props.attachmentLink;
   }
 
   get category() {
@@ -87,7 +87,7 @@ export class Snack extends BaseEntity<SnackProps> {
     category,
     ingredients,
     price,
-    attachment,
+    attachmentLink,
   }: SaveSnacksProps) {
     this.props.title = title ?? this.title;
 
@@ -99,7 +99,7 @@ export class Snack extends BaseEntity<SnackProps> {
 
     this.props.price = price ?? this.price;
 
-    this.props.attachment = attachment ?? this.attachment;
+    this.props.attachmentLink = attachmentLink ?? this.attachmentLink;
 
     this.touch();
   }

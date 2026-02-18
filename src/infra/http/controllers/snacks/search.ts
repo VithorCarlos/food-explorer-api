@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import { makeSearchSnacksUseCase } from "../../factories/make-search-snacks-use-case";
-import { PrismaSnackAdapter } from "@/infra/database/adapters/prisma-snack-adapter";
+import { SnackWithAttachmentPresenter } from "../../presenters/snack-with-attachment-presenter";
 
 export const searchSnack = async (
   request: FastifyRequest,
@@ -30,9 +30,9 @@ export const searchSnack = async (
       ingredients,
     });
 
-    const snanks = filteredSnacks.map(PrismaSnackAdapter.toPrisma);
+    const snanks = filteredSnacks.map(SnackWithAttachmentPresenter.toHTTP);
 
-    reply.status(201).send(snanks);
+    reply.status(200).send(snanks);
   } catch (error) {
     throw error;
   }

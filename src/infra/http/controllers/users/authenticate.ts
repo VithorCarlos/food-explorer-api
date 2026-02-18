@@ -23,28 +23,14 @@ export const authenticate = async (
       email,
       password,
     });
-
     const accessToken = await reply.jwtSign(
-      {
-        role: user.role,
-      },
-      {
-        sign: {
-          sub: user.id,
-        },
-      },
+      { role: user.role },
+      { sign: { sub: user.id } },
     );
 
     const refreshToken = await reply.jwtSign(
-      {
-        role: user.role,
-      },
-      {
-        sign: {
-          sub: user.id,
-          expiresIn: "7d",
-        },
-      },
+      { role: user.role },
+      { sign: { sub: user.id, expiresIn: "7d" } },
     );
 
     reply

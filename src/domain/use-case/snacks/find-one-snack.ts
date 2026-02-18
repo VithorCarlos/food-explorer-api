@@ -9,7 +9,7 @@ export class FindOneSnackUseCase {
   constructor(private snacksRepository: SnacksRepository) {}
 
   async execute({ id }: FindOneSnackRequest) {
-    const snack = await this.snacksRepository.findById(id);
+    const snack = await this.snacksRepository.findByIdWithAttachment(id);
 
     if (!snack) {
       throw new SnackDoesNotExists();

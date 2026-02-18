@@ -108,9 +108,11 @@ model AttachmentLink {
   attachmentId String        @map("attachment_id")
   resourceId   String        @map("resource_id")
   resourceType RESOURSE_TYPE @map("resource_type")
-  linkedAt     DateTime      @map("linked_at")
+  linkedAt     DateTime      @default(now()) @map("linked_at")
 
   attachment Attachment @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
 
+  @@unique([attachmentId, resourceId, resourceType])
+  @@index([resourceId, resourceType], name: "idx_resource")
   @@map("attachment_link")
 }

@@ -10,7 +10,9 @@ declare module "@fastify/jwt" {
     };
   }
 }
-
+export interface HttpErrorResponse {
+  message: string;
+}
 declare module "fastify" {
   interface FastifyInstance {
     prisma: PrismaService;

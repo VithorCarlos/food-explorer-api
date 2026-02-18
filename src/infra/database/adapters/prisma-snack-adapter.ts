@@ -1,6 +1,6 @@
 import { Snack } from "@/domain/entities/snack";
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
-import { snacks as RowSnacks } from "generated/prisma/client";
+import { Snack as RowSnacks } from "generated/prisma/client";
 
 export class PrismaSnackAdapter {
   static toPrisma({
@@ -10,9 +10,9 @@ export class PrismaSnackAdapter {
     ingredients,
     userId,
     price,
-    attachment,
     description,
-    updated_at,
+    updatedAt,
+    createdAt,
   }: Snack) {
     return {
       id,
@@ -21,9 +21,9 @@ export class PrismaSnackAdapter {
       ingredients,
       userId,
       price,
-      attachment,
       description,
-      updated_at,
+      createdAt,
+      updatedAt,
     };
   }
 
@@ -35,8 +35,8 @@ export class PrismaSnackAdapter {
     userId,
     price,
     description,
-    created_at,
-    updated_at,
+    createdAt,
+    updatedAt,
   }: RowSnacks) {
     return Snack.create({
       id,
@@ -46,8 +46,8 @@ export class PrismaSnackAdapter {
       userId,
       price,
       description,
-      created_at,
-      updated_at,
+      createdAt,
+      updatedAt,
     });
   }
 }

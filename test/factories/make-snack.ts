@@ -8,7 +8,7 @@ export function makeSnack(override: Partial<SnackProps> = {}, userId?: string) {
     title: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
     price: Number(faker.commerce.price()),
-    category: faker.commerce.department() as FOOD_CATEGORIES,
+    category: faker.helpers.arrayElement(Object.values(FOOD_CATEGORIES)),
     ingredients: faker.helpers.multiple(faker.commerce.product, { count: 3 }),
     userId: userId ?? randomUUID(),
     ...override,

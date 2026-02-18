@@ -17,7 +17,7 @@ export const updateUser = async (
   const userId = request.user.sub;
 
   try {
-    const updateUserUseCase = makeUpdateUserUseCase();
+    const updateUserUseCase = makeUpdateUserUseCase(request.server.prisma);
 
     const { user } = await updateUserUseCase.execute({
       userId,
@@ -30,7 +30,7 @@ export const updateUser = async (
       user: {
         name: user.name,
         email: user.email,
-        updatedAt: user.udpatedAt,
+        updatedAt: user.updatedAt,
       },
     });
   } catch (error) {

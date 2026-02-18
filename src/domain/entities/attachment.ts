@@ -19,7 +19,7 @@ export class Attachment extends BaseEntity<AttachmentProps> {
       ...props,
       id: props.id || randomUUID(),
       createdAt: props.createdAt ?? new Date(),
-      expiresAt: dayjs().add(1, "day").toDate() ?? props.expiresAt,
+      expiresAt: props.expiresAt ?? dayjs().add(1, "day").toDate(),
     });
 
     return attachment;
