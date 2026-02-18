@@ -1,4 +1,5 @@
 import { Favorite } from "@/domain/entities/favorite";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { Prisma } from "generated/prisma/browser";
 import { Favorite as RowFavorites } from "generated/prisma/client";
 
@@ -11,7 +12,7 @@ export interface CustomBindProps {
   ingredients: string[];
   price: number;
   description: string;
-  updated_at: Date;
+  updatedAt: Date;
 }
 
 export class PrismaFavoriteAdapter {
@@ -19,21 +20,21 @@ export class PrismaFavoriteAdapter {
     id,
     snackId,
     userId,
-  }: RowFavorites): Prisma.FavoriteUncheckedCreateInput {
+  }: Favorite): Prisma.FavoriteUncheckedCreateInput {
     return {
       id: id.toString(),
-      snackId,
-      userId,
+      snackId: snackId.toString(),
+      userId: userId.toString(),
     };
   }
 
-  static toDomain({ id, userId, snackId }: Favorite) {
+  static toDomain({ id, userId, snackId }: RowFavorites) {
     return Favorite.create(
       {
-        snackId,
-        userId,
+        snackId: new UniqueEntityId(snackId),
+        userId: new UniqueEntityId(userId),
       },
-      id,
+      new UniqueEntityId(id),
     );
   }
 
@@ -46,18 +47,18 @@ export class PrismaFavoriteAdapter {
     userId,
     price,
     description,
-    updated_at,
+    updatedAt,
   }: CustomBindProps) {
     return {
-      snackId,
-      favoriteId,
+      snackId: snackId.toString(),
+      favoriteId: favoriteId.toString(),
       title,
       category,
       ingredients,
-      userId,
+      userId: userId.toString(),
       price,
       description,
-      updated_at,
+      updatedAt,
     };
   }
 }

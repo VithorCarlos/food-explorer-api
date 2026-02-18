@@ -31,7 +31,7 @@ export const uploadAttachment = async (
       fileType: data.mimetype,
     });
 
-    reply.status(201).send({ attachmentId: attachment.id });
+    reply.status(201).send({ attachmentId: attachment.id.toString() });
   } catch (error: any) {
     if (error instanceof AttachmentNotFoundError) {
       reply.status(400).send({ message: error.message });

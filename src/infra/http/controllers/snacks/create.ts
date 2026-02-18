@@ -3,6 +3,7 @@ import { makeCreateSnackUseCase } from "../../factories/make-create-snack-use-ca
 import { PrismaSnackAdapter } from "@/infra/database/adapters/prisma-snack-adapter";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 
 export const createSnack = async (
   request: FastifyRequest,

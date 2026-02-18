@@ -6,6 +6,7 @@ import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attach
 import { InMemoryAttachmentLinkRepository } from "test/repositories/in-memory-attachment-link-repository";
 import { makeAttachment } from "test/factories/make-attachment";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
+import { RESOURSE_TYPE } from "generated/prisma/enums";
 
 let sut: FindAttachmentByResourceUseCase;
 let inMemorySnackRepository: InMemorySnacksRepository;
@@ -36,7 +37,7 @@ describe("Find attachment by resource", () => {
 
     const { attachmentLinks } = await sut.execute({
       resourceId: snack.id.toString(),
-      resourceType: "SNACK",
+      resourceType: RESOURSE_TYPE.SNACK,
     });
 
     expect(inMemoryAttachmentRepository.items[0]).toEqual(
@@ -62,7 +63,7 @@ describe("Find attachment by resource", () => {
     await expect(
       sut.execute({
         resourceId: "1",
-        resourceType: "SNACK",
+        resourceType: RESOURSE_TYPE.SNACK,
       }),
     ).rejects.toThrowError(AttachmentNotFoundError);
   });

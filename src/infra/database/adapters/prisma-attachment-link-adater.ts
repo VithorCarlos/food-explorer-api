@@ -1,5 +1,9 @@
 import { AttachmentLink } from "@/domain/entities/attachment-link";
-import { AttachmentLink as RowAttachmentLink } from "generated/prisma/client";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
+import {
+  Prisma,
+  AttachmentLink as RowAttachmentLink,
+} from "generated/prisma/client";
 
 export class PrismaAttachmentLinkAdapter {
   static toPrisma({
@@ -7,10 +11,10 @@ export class PrismaAttachmentLinkAdapter {
     resourceId,
     resourceType,
     linkedAt,
-  }: AttachmentLink) {
+  }: AttachmentLink): Prisma.AttachmentLinkUncheckedCreateInput {
     return {
-      attachmentId,
-      resourceId,
+      attachmentId: attachmentId.toString(),
+      resourceId: resourceId.toString(),
       resourceType,
       linkedAt,
     };
@@ -23,12 +27,14 @@ export class PrismaAttachmentLinkAdapter {
     resourceType,
     linkedAt,
   }: RowAttachmentLink) {
-    return AttachmentLink.create({
-      id,
-      attachmentId,
-      resourceId,
-      resourceType,
-      linkedAt: linkedAt ?? null,
-    });
+    return AttachmentLink.create(
+      {
+        attachmentId: new UniqueEntityId(attachmentId),
+        resourceId: new UniqueEntityId(resourceId),
+        resourceType,
+        linkedAt: linkedAt ?? null,
+      },
+      new UniqueEntityId(id),
+    );
   }
 }

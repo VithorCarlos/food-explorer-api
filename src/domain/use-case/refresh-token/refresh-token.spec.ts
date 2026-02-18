@@ -18,7 +18,7 @@ describe("Create refresh token", () => {
     expect(refreshToken).toEqual(
       expect.objectContaining({ userId: "user-01" }),
     );
-    expect(refreshToken.id).toEqual(expect.any(String));
+    expect(refreshToken.id.toString()).toEqual(expect.any(String));
 
     expect(inMemoryRefreshTokenRepository.items[0].id).toEqual(refreshToken.id);
   });

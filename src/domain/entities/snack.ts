@@ -3,6 +3,7 @@ import { Optional } from "@/shared/optional";
 import { FOOD_CATEGORIES } from "../enums/food-categories";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { AttachmentLink } from "./attachment-link";
+import { RESOURSE_TYPE } from "generated/prisma/enums";
 
 export interface SnackProps {
   title: string;
@@ -105,7 +106,7 @@ export class Snack extends BaseEntity<SnackProps> {
     const attachmentLink = AttachmentLink.create({
       attachmentId,
       resourceId: this.id,
-      resourceType: "SNACK",
+      resourceType: RESOURSE_TYPE.SNACK,
       linkedAt: new Date(),
     });
 

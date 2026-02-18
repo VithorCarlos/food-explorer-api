@@ -4,6 +4,7 @@ import { AttachmentLinkRepository } from "@/domain/repositories/attachment-link-
 import { AttachmentRepository } from "@/domain/repositories/attachment-repository";
 import { Uploader } from "@/domain/storage/uploader";
 import dayjs from "dayjs";
+import { ATTACHMENT_STATUS } from "generated/prisma/enums";
 
 interface CreateAttachmentRequest {
   fileName: string;
@@ -29,7 +30,7 @@ export class CreateAttachmentUseCase {
     const attachment = Attachment.create({
       title: fileName,
       url,
-      status: "PENDING",
+      status: ATTACHMENT_STATUS.PENDING,
     });
 
     await this.attachmentRepository.create(attachment);

@@ -1,6 +1,7 @@
 import { Snack } from "@/domain/entities/snack";
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
-import { Snack as RowSnacks } from "generated/prisma/client";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
+import { Prisma, Snack as RowSnacks } from "generated/prisma/client";
 
 export class PrismaSnackAdapter {
   static toPrisma({
@@ -13,13 +14,13 @@ export class PrismaSnackAdapter {
     description,
     updatedAt,
     createdAt,
-  }: Snack) {
+  }: Snack): Prisma.SnackUncheckedCreateInput {
     return {
-      id,
+      id: id.toString(),
       title,
       category,
       ingredients,
-      userId,
+      userId: userId.toString(),
       price,
       description,
       createdAt,
@@ -38,16 +39,18 @@ export class PrismaSnackAdapter {
     createdAt,
     updatedAt,
   }: RowSnacks) {
-    return Snack.create({
-      id,
-      title,
-      category: category as FOOD_CATEGORIES,
-      ingredients,
-      userId,
-      price,
-      description,
-      createdAt,
-      updatedAt,
-    });
+    return Snack.create(
+      {
+        title,
+        category: category as FOOD_CATEGORIES,
+        ingredients,
+        userId: new UniqueEntityId(userId),
+        price,
+        description,
+        createdAt,
+        updatedAt,
+      },
+      new UniqueEntityId(id),
+    );
   }
 }

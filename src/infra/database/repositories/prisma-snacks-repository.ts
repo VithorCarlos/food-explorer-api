@@ -7,7 +7,11 @@ import { PrismaSnackAdapter } from "../adapters/prisma-snack-adapter";
 import { PrismaService } from "../prisma";
 import { PrismaAttachmentLinkAdapter } from "../adapters/prisma-attachment-link-adater";
 import { PrismaSnackWithAttachmentsAdapter } from "../adapters/prisma-snack-with-attachments-adapter";
-import { Prisma } from "generated/prisma/client";
+import {
+  ATTACHMENT_STATUS,
+  Prisma,
+  RESOURSE_TYPE,
+} from "generated/prisma/client";
 
 export class PrismaSnacksRepository implements SnacksRepository {
   constructor(private prisma: PrismaService) {}
@@ -195,7 +199,7 @@ export class PrismaSnacksRepository implements SnacksRepository {
           where: {
             id: attachmentLink.attachmentId,
           },
-          data: { expiresAt: null, status: "LINKED" },
+          data: { expiresAt: null, status: ATTACHMENT_STATUS.LINKED },
         });
       }
     });
@@ -207,8 +211,8 @@ export class PrismaSnacksRepository implements SnacksRepository {
     await this.prisma.$transaction(async (tx) => {
       await tx.snack.update({
         where: {
-          id: data.id,
-          userId: data.userId,
+          id: data.id.toString(),
+          userId: data.userId.toString(),
         },
         data: {
           title: snack.title,
@@ -222,8 +226,8 @@ export class PrismaSnacksRepository implements SnacksRepository {
 
       await tx.attachmentLink.deleteMany({
         where: {
-          resourceId: data.id,
-          resourceType: "SNACK",
+          resourceId: data.id.toString(),
+          resourceType: RESOURSE_TYPE.SNACK,
         },
       });
 
@@ -240,7 +244,7 @@ export class PrismaSnacksRepository implements SnacksRepository {
           where: { id: attachmentLink.attachmentId },
           data: {
             expiresAt: null,
-            status: "LINKED",
+            status: ATTACHMENT_STATUS.LINKED,
           },
         });
       }
@@ -250,7 +254,7 @@ export class PrismaSnacksRepository implements SnacksRepository {
     const attachment = await this.prisma.attachmentLink.findFirst({
       where: {
         resourceId: id,
-        resourceType: "SNACK",
+        resourceType: RESOURSE_TYPE.SNACK,
       },
       select: {
         attachmentId: true,

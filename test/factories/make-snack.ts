@@ -3,12 +3,13 @@ import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { faker } from "@faker-js/faker";
 import { AttachmentLink } from "@/domain/entities/attachment-link";
+import { RESOURSE_TYPE } from "generated/prisma/enums";
 
 export function makeSnack(
   data: Partial<
-    SnackProps & { id?: UniqueEntityId; attachmentId: UniqueEntityId }
+    SnackProps & { id?: UniqueEntityId; attachmentId?: UniqueEntityId }
   > = {},
-  userId: UniqueEntityId,
+  userId?: UniqueEntityId,
 ) {
   const { id, attachmentId, ...rest } = data;
 
@@ -19,7 +20,7 @@ export function makeSnack(
       price: Number(faker.commerce.price()),
       category: faker.helpers.arrayElement(Object.values(FOOD_CATEGORIES)),
       ingredients: faker.helpers.multiple(faker.commerce.product, { count: 3 }),
-      userId,
+      userId: userId ?? new UniqueEntityId(),
       ...rest,
     },
     id,
@@ -29,7 +30,7 @@ export function makeSnack(
     const attachmentLInk = AttachmentLink.create({
       attachmentId: data.attachmentId,
       resourceId: snack.id,
-      resourceType: "SNACK",
+      resourceType: RESOURSE_TYPE.SNACK,
     });
 
     snack.attachmentLink = attachmentLInk;

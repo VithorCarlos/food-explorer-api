@@ -6,6 +6,7 @@ import { FastifyInstance } from "fastify";
 import { AttachmentFactory } from "test/factories/make-attachment";
 import { UserFactory } from "test/factories/make-user";
 import { makeSnack } from "test/factories/make-snack";
+import { RESOURSE_TYPE } from "generated/prisma/enums";
 
 describe("Create Snack(e2e)", () => {
   let app: FastifyInstance;
@@ -39,7 +40,10 @@ describe("Create Snack(e2e)", () => {
 
     const snack = makeSnack({ title: "snack-01" });
 
-    const accessToken = app.jwt.sign({ role: user.role }, { sub: user.id });
+    const accessToken = app.jwt.sign(
+      { role: user.role },
+      { sub: user.id.toString() },
+    );
 
     const response = await request(app.server)
       .post(`/snack`)
@@ -50,18 +54,23 @@ describe("Create Snack(e2e)", () => {
         category: snack.category,
         ingredients: snack.ingredients,
         price: snack.price,
-        userId: user.id,
-        attachmentId: attachment.id,
+        userId: user.id.toString(),
+        attachmentId: attachment.id.toString(),
       });
 
     const snackResponse = response.body.snack;
 
     const attachmentLinkOnDatabase = await prisma.attachmentLink.findMany({
-      where: { resourceId: snackResponse.id, resourceType: "SNACK" },
+      where: {
+        resourceId: snackResponse.id.toString(),
+        resourceType: RESOURSE_TYPE.SNACK,
+      },
     });
 
-    expect(snackResponse.id).toEqual(expect.any(String));
+    expect(snackResponse.id.toString()).toEqual(expect.any(String));
     expect(attachmentLinkOnDatabase).toHaveLength(1);
-    expect(attachmentLinkOnDatabase[0].attachmentId).toBe(attachment.id);
+    expect(attachmentLinkOnDatabase[0].attachmentId).toEqual(
+      attachment.id.toString(),
+    );
   });
 });
