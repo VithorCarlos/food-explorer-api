@@ -2,10 +2,9 @@ import { $Enums } from "generated/prisma/client";
 import { BaseEntity } from "../../shared/entity/base-identity";
 import { ROLE } from "../enums/role";
 import { Optional } from "@/shared/optional";
-import { randomUUID } from "node:crypto";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 
 export interface UserProps {
-  id: string;
   name: string;
   email: string;
   password: string;
@@ -21,30 +20,48 @@ interface SaveUserProps {
 }
 
 export class User extends BaseEntity<UserProps> {
-  static create(props: Optional<UserProps, "id" | "createdAt" | "role">) {
-    return new User({
-      ...props,
-      id: props.id ?? randomUUID(),
-      createdAt: props.createdAt ?? new Date(),
-      updatedAt: props.updatedAt ?? new Date(),
-      role: props.role ?? ROLE.CLIENT,
-    });
-  }
+  static create(
+    props: Optional<UserProps, "createdAt" | "role">,
+    id?: UniqueEntityId,
+  ) {
+    const user = new User(
+      {
+        ...props,
+        createdAt: props.createdAt ?? new Date(),
+        updatedAt: props.updatedAt ?? new Date(),
+        role: props.role ?? ROLE.CLIENT,
+      },
+      id,
+    );
 
-  get id() {
-    return this.props.id;
+    return user;
   }
 
   get name() {
     return this.props.name;
   }
 
+  set name(name: string) {
+    this.props.name = name;
+    this.touch();
+  }
+
   get email() {
     return this.props.email;
   }
 
+  set email(email: string) {
+    this.props.email = email;
+    this.touch();
+  }
+
   get password() {
     return this.props.password;
+  }
+
+  set password(password: string) {
+    this.props.password = password;
+    this.touch();
   }
 
   get role() {
@@ -61,13 +78,5 @@ export class User extends BaseEntity<UserProps> {
 
   private touch() {
     this.props.updatedAt = new Date();
-  }
-
-  public update({ name, password, email }: SaveUserProps) {
-    this.props.name = name ?? this.name;
-    this.props.password = password ?? this.password;
-    this.props.email = email ?? this.email;
-
-    this.touch();
   }
 }

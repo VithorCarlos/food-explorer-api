@@ -9,12 +9,14 @@ export class InMemoryAttachmentLinkRepository implements AttachmentLinkRepositor
   }
 
   async findByResource(resourceId: string): Promise<AttachmentLink[]> {
-    return this.items.filter((link) => link.resourceId === resourceId);
+    return this.items.filter(
+      (link) => link.resourceId.toString() === resourceId,
+    );
   }
 
-  async deleteByAttachmentId(attachmentId: string): Promise<void> {
-    this.items = this.items.filter(
-      (link) => link.attachmentId !== attachmentId,
+  async findByAttachmentId(attachmentId: string): Promise<AttachmentLink[]> {
+    return this.items.filter(
+      (link) => link.attachmentId.toString() === attachmentId,
     );
   }
 }

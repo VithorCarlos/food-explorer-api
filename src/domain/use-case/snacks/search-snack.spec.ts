@@ -1,25 +1,31 @@
 import { InMemorySnacksRepository } from "test/repositories/in-memory-snacks-repository";
 import { SearchSnackUseCase } from "./search-snack";
 import { makeSnack } from "test/factories/make-snack";
+import { InMemoryAttachmentLinkRepository } from "test/repositories/in-memory-attachment-link-repository";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 
 let sut: SearchSnackUseCase;
 let inMemorySnacksRepository: InMemorySnacksRepository;
+let inMemoryAttachmentLinkRepository: InMemoryAttachmentLinkRepository;
 
 describe("Search many snacks", () => {
   beforeEach(async () => {
-    inMemorySnacksRepository = new InMemorySnacksRepository();
+    inMemoryAttachmentLinkRepository = new InMemoryAttachmentLinkRepository();
+    inMemorySnacksRepository = new InMemorySnacksRepository(
+      inMemoryAttachmentLinkRepository,
+    );
     sut = new SearchSnackUseCase(inMemorySnacksRepository);
 
     for (let i = 1; i <= 12; i++) {
-      await inMemorySnacksRepository.create(
-        makeSnack(
-          {
-            title: `snack-${i}`,
-            ingredients: [`cheese-${i}`, `capchup-${i}`],
-          },
-          "user-01",
-        ),
+      const snack = makeSnack(
+        {
+          title: `snack-${i}`,
+          ingredients: [`cheese-${i}`, `capchup-${i}`],
+          attachmentId: new UniqueEntityId("attachment-" + i),
+        },
+        new UniqueEntityId("user-01"),
       );
+      await inMemorySnacksRepository.create(snack);
     }
   });
 
@@ -54,8 +60,9 @@ describe("Search many snacks", () => {
         {
           title: "Snack Doe",
           ingredients: ["rice", "sugar"],
+          attachmentId: new UniqueEntityId("attachment-01"),
         },
-        "user-01",
+        new UniqueEntityId("user-01"),
       ),
     );
 
@@ -79,13 +86,15 @@ describe("Search many snacks", () => {
         {
           title: "Snack Doe",
           ingredients: ["rice", "sugar"],
+          attachmentId: new UniqueEntityId("attachment-01"),
         },
-        "user-01",
+        new UniqueEntityId("user-01"),
       ),
     );
 
     const { snacks } = await sut.execute({
       page: 1,
+      perPage: 10,
       title: "Snack Doe",
       ingredients: ["rice", "sugar"],
     });

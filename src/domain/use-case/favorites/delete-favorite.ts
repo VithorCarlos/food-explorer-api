@@ -17,7 +17,7 @@ export class DeleteFavoriteUseCase {
       throw new FavoriteDoesNotExists();
     }
 
-    if (userId !== favorite.userId) {
+    if (userId !== favorite.userId.toString()) {
       throw new FavoriteNotFoundForThisUser();
     }
 

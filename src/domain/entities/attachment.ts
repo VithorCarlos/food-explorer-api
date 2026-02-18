@@ -1,11 +1,9 @@
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { BaseEntity } from "../../shared/entity/base-identity";
-import { Optional } from "@/shared/optional";
 import dayjs from "dayjs";
 import { ATTACHMENT_STATUS } from "generated/prisma/enums";
-import { randomUUID } from "node:crypto";
 
 export interface AttachmentProps {
-  id: string;
   title: string;
   url: string;
   createdAt?: Date;
@@ -14,27 +12,33 @@ export interface AttachmentProps {
 }
 
 export class Attachment extends BaseEntity<AttachmentProps> {
-  static create(props: Optional<AttachmentProps, "id">) {
-    const attachment = new Attachment({
-      ...props,
-      id: props.id || randomUUID(),
-      createdAt: props.createdAt ?? new Date(),
-      expiresAt: props.expiresAt ?? dayjs().add(1, "day").toDate(),
-    });
+  static create(props: AttachmentProps, id?: UniqueEntityId) {
+    const attachment = new Attachment(
+      {
+        ...props,
+        createdAt: props.createdAt ?? new Date(),
+        expiresAt: props.expiresAt ?? dayjs().add(1, "day").toDate(),
+      },
+      id,
+    );
 
     return attachment;
-  }
-
-  get id() {
-    return this.props.id;
   }
 
   get title() {
     return this.props.title;
   }
 
+  set title(title: string) {
+    this.props.title = title;
+  }
+
   get url() {
     return this.props.url;
+  }
+
+  set url(url: string) {
+    this.props.url = url;
   }
 
   get createdAt() {
@@ -47,5 +51,9 @@ export class Attachment extends BaseEntity<AttachmentProps> {
 
   get status() {
     return this.props.status;
+  }
+
+  set status(status: ATTACHMENT_STATUS) {
+    this.props.status = status;
   }
 }

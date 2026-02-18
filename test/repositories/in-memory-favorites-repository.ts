@@ -1,13 +1,15 @@
 import { Favorite } from "@/domain/entities/favorite";
 import { FavoritesRepository } from "@/domain/repositories/favorites-repository";
 import { PaginationParams } from "@/shared/pagination-params";
-import { makeSnack } from "../factories/make-snack";
+import { InMemorySnacksRepository } from "./in-memory-snacks-repository";
+import { FavoriteDetails } from "@/domain/entities/value-objects/favorite-details";
 
 export class InMemoryFavoritesRepository implements FavoritesRepository {
+  constructor(private snacksRepository: InMemorySnacksRepository) {}
   public items: Favorite[] = [];
 
   async findById(id: string) {
-    const item = this.items.find((item) => item.id === id);
+    const item = this.items.find((item) => item.id.toString() === id);
 
     if (!item) {
       return null;
@@ -16,8 +18,12 @@ export class InMemoryFavoritesRepository implements FavoritesRepository {
     return item;
   }
 
-  async findBySnackId(id: string) {
-    const item = this.items.find((item) => item.snackId === id);
+  async findByUserAndSnackId(userId: string, snackId: string) {
+    const item = this.items.find(
+      (item) =>
+        item.userId.toString() === userId &&
+        item.snackId.toString() === snackId,
+    );
 
     if (!item) {
       return null;
@@ -27,23 +33,33 @@ export class InMemoryFavoritesRepository implements FavoritesRepository {
   }
 
   async findMany({ page, perPage }: PaginationParams, userId: string) {
-    const mockSnack = makeSnack({}, userId);
-
     const filteredItems = this.items
-      .filter((item) => item.userId === userId)
+      .filter((item) => item.userId.toString() === userId)
       .slice((page - 1) * perPage, page * perPage);
 
-    return filteredItems.map(({ snackId, id, userId }) => ({
-      snackId,
-      favoriteId: id,
-      userId,
-      title: mockSnack.title,
-      category: mockSnack.category,
-      ingredients: mockSnack.ingredients,
-      price: mockSnack.price,
-      description: mockSnack.description,
-      updated_at: new Date(),
-    }));
+    const favorite = this.snacksRepository.items.find(
+      (item) => item.userId.toString() === userId,
+    );
+
+    if (!favorite) {
+      return null;
+    }
+
+    return filteredItems.map(({ snackId, id, userId }) =>
+      FavoriteDetails.create({
+        snackId,
+        favoriteId: id,
+        userId,
+        attachmentUrl: favorite.attachmentLink.attachmentId + ".png",
+        title: favorite.title,
+        category: favorite.category,
+        ingredients: favorite.ingredients,
+        price: favorite.price,
+        description: favorite.description,
+        createdAt: favorite.createdAt,
+        updatedAt: favorite.updatedAt!,
+      }),
+    );
   }
 
   async create(data: Favorite) {
@@ -51,7 +67,7 @@ export class InMemoryFavoritesRepository implements FavoritesRepository {
   }
 
   async delete(id: string) {
-    const itemIndex = this.items.findIndex((item) => item.id === id);
+    const itemIndex = this.items.findIndex((item) => item.id.toString() === id);
 
     this.items.splice(itemIndex, 1);
   }

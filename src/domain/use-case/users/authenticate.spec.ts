@@ -4,6 +4,7 @@ import { makeUser } from "test/factories/make-user";
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 import { UserInvalidCredential } from "@/domain/errors/user-invalid-crendential";
 import { hash } from "bcryptjs";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 
 describe("Authenticate test", () => {
   let sut: AuthenticateUserUseCase;
@@ -18,7 +19,7 @@ describe("Authenticate test", () => {
     const password_hash = await hash("mypassword", 6);
 
     const makedUser = makeUser({
-      id: "user-01",
+      id: new UniqueEntityId("user-01"),
       email: "johndoe@gmail.com",
       password: password_hash,
     });

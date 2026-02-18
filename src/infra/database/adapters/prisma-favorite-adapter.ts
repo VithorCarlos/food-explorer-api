@@ -1,4 +1,5 @@
 import { Favorite } from "@/domain/entities/favorite";
+import { Prisma } from "generated/prisma/browser";
 import { Favorite as RowFavorites } from "generated/prisma/client";
 
 export interface CustomBindProps {
@@ -14,20 +15,26 @@ export interface CustomBindProps {
 }
 
 export class PrismaFavoriteAdapter {
-  static toPrisma({ id, snackId, userId }: Favorite) {
+  static toPrisma({
+    id,
+    snackId,
+    userId,
+  }: RowFavorites): Prisma.FavoriteUncheckedCreateInput {
     return {
-      id,
+      id: id.toString(),
       snackId,
       userId,
     };
   }
 
-  static toDomain({ id, userId, snackId }: RowFavorites) {
-    return Favorite.create({
+  static toDomain({ id, userId, snackId }: Favorite) {
+    return Favorite.create(
+      {
+        snackId,
+        userId,
+      },
       id,
-      snackId,
-      userId,
-    });
+    );
   }
 
   static toBind({

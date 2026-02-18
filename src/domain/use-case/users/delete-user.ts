@@ -15,6 +15,6 @@ export class DeleteUserUseCase {
       throw new UserDoesNotExists();
     }
 
-    await this.usersRepository.delete(user.id);
+    await this.usersRepository.delete(user.id.toString());
   }
 }

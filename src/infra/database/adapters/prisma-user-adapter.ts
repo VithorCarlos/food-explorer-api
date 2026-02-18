@@ -1,24 +1,16 @@
 import { User } from "@/domain/entities/user";
-import { User as RowUsers } from "generated/prisma/client";
+import { Prisma, User as PrismaUser } from "generated/prisma/client";
 
 export class PrismaUserAdapter {
-  static toPrisma({
-    id,
-    name,
-    email,
-    password,
-    updatedAt,
-    createdAt,
-    role,
-  }: RowUsers) {
+  static toPrisma(user: PrismaUser): Prisma.UserUncheckedCreateInput {
     return {
-      id,
-      name,
-      email,
-      password,
-      createdAt,
-      updatedAt: updatedAt ?? null,
-      role,
+      id: user.id.toString(),
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt!,
+      role: user.role,
     };
   }
 
@@ -31,14 +23,16 @@ export class PrismaUserAdapter {
     updatedAt,
     role,
   }: User) {
-    return User.create({
+    return User.create(
+      {
+        name,
+        email,
+        password,
+        createdAt,
+        updatedAt: updatedAt ?? null,
+        role,
+      },
       id,
-      name,
-      email,
-      password,
-      createdAt,
-      updatedAt: updatedAt ?? null,
-      role,
-    });
+    );
   }
 }

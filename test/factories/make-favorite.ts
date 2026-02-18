@@ -1,11 +1,14 @@
 import { Favorite, FavoriteProps } from "@/domain/entities/favorite";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 
-export function makeFavorite({ id, userId, snackId }: FavoriteProps) {
-  const favorite = Favorite.create({
+export function makeFavorite(data: FavoriteProps, id?: UniqueEntityId) {
+  const favorite = Favorite.create(
+    {
+      userId: data.userId,
+      snackId: data.snackId,
+    },
     id,
-    userId,
-    snackId,
-  });
+  );
 
   return favorite;
 }

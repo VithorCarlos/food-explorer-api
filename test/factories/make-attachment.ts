@@ -1,15 +1,22 @@
 import { Attachment, AttachmentProps } from "@/domain/entities/attachment";
 import { PrismaAttachmentAdapter } from "@/infra/database/adapters/prisma-attachment-adapter";
 import { PrismaService } from "@/infra/database/prisma";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { faker } from "@faker-js/faker";
 
-export function makeAttachment(data: Partial<AttachmentProps> = {}) {
-  const attachment = Attachment.create({
-    title: faker.lorem.slug() + ".png",
-    url: faker.image.url(),
-    status: data.status ?? `PENDING`,
-    ...data,
-  });
+export function makeAttachment(
+  data: Partial<AttachmentProps> = {},
+  id?: UniqueEntityId,
+) {
+  const attachment = Attachment.create(
+    {
+      title: faker.lorem.slug() + ".png",
+      url: faker.image.url(),
+      status: data.status ?? `PENDING`,
+      ...data,
+    },
+    id,
+  );
 
   return attachment;
 }

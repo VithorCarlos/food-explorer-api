@@ -1,5 +1,6 @@
 import { Attachment } from "@/domain/entities/attachment";
-import { Attachment as RowAttachments } from "generated/prisma/client";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
+import { Prisma, Attachment as RowAttachments } from "generated/prisma/client";
 
 export class PrismaAttachmentAdapter {
   static toPrisma({
@@ -9,9 +10,9 @@ export class PrismaAttachmentAdapter {
     expiresAt,
     createdAt,
     status,
-  }: Attachment) {
+  }: Attachment): Prisma.AttachmentUncheckedCreateInput {
     return {
-      id,
+      id: id.toString(),
       title,
       url,
       expiresAt,
@@ -28,6 +29,15 @@ export class PrismaAttachmentAdapter {
     expiresAt,
     status,
   }: RowAttachments) {
-    return Attachment.create({ id, title, url, createdAt, expiresAt, status });
+    return Attachment.create(
+      {
+        title,
+        url,
+        createdAt,
+        expiresAt,
+        status,
+      },
+      new UniqueEntityId(id),
+    );
   }
 }

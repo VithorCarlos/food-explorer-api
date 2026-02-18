@@ -34,11 +34,9 @@ export class UpdateUserUseCase {
       }
     }
 
-    user.update({
-      ...(name && { name }),
-      ...(email && { email }),
-      ...(password && { password: password_hash }),
-    });
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (password) user.password = password;
 
     await this.usersRepository.update(user);
 

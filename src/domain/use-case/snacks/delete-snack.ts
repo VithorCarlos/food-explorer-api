@@ -17,10 +17,10 @@ export class DeleteSnackUseCase {
       throw new SnackDoesNotExists();
     }
 
-    if (userId !== snack.userId) {
+    if (userId !== snack.userId.toString()) {
       throw new SnackNotFoundForThisUser();
     }
 
-    await this.snacksRepository.delete(snack.id);
+    await this.snacksRepository.delete(snack.id.toString());
   }
 }

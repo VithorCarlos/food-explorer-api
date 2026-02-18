@@ -1,68 +1,88 @@
 import { BaseEntity } from "../../shared/entity/base-identity";
 import { Optional } from "@/shared/optional";
-import { randomUUID } from "node:crypto";
 import { FOOD_CATEGORIES } from "../enums/food-categories";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { AttachmentLink } from "./attachment-link";
 
 export interface SnackProps {
-  id: string;
   title: string;
   description: string;
   attachmentLink?: AttachmentLink;
   category: FOOD_CATEGORIES;
   ingredients: string[];
   price: number;
-  userId: string;
+  userId: UniqueEntityId;
   createdAt: Date;
   updatedAt?: Date;
 }
 
-interface SaveSnacksProps {
-  title?: string;
-  description?: string;
-  category?: FOOD_CATEGORIES;
-  ingredients?: string[];
-  price?: number;
-  attachmentLink?: AttachmentLink;
-}
-
 export class Snack extends BaseEntity<SnackProps> {
-  static create(props: Optional<SnackProps, "id" | "createdAt">) {
-    const snack = new Snack({
-      ...props,
-      id: props.id || randomUUID(),
-      createdAt: props.createdAt ?? new Date(),
-    });
+  static create(props: Optional<SnackProps, "createdAt">, id?: UniqueEntityId) {
+    const snack = new Snack(
+      {
+        ...props,
+        createdAt: props.createdAt ?? new Date(),
+      },
+      id,
+    );
 
     return snack;
-  }
-
-  get id() {
-    return this.props.id;
   }
 
   get title() {
     return this.props.title;
   }
 
+  set title(title: string) {
+    this.props.title = title;
+    this.touch();
+  }
+
   get description() {
     return this.props.description;
   }
 
+  set description(description: string) {
+    this.props.description = description;
+    this.touch();
+  }
+
   get attachmentLink() {
-    return this.props.attachmentLink;
+    return this.props.attachmentLink!;
+  }
+
+  set attachmentLink(attachmentLink: AttachmentLink) {
+    this.props.attachmentLink = attachmentLink;
+    this.touch();
   }
 
   get category() {
     return this.props.category;
   }
 
+  set category(category: FOOD_CATEGORIES) {
+    this.props.category = category;
+    this.touch();
+  }
+
   get ingredients() {
     return this.props.ingredients;
   }
 
+  set ingredients(ingredients: string[]) {
+    this.props.ingredients = ingredients;
+    this.touch();
+  }
+
   get price() {
     return this.props.price;
+  }
+
+  set price(price: number) {
+    if (price < 0) throw new Error();
+
+    this.props.price = price;
+    this.touch();
   }
 
   get userId() {
@@ -81,26 +101,14 @@ export class Snack extends BaseEntity<SnackProps> {
     this.props.updatedAt = new Date();
   }
 
-  public update({
-    title,
-    description,
-    category,
-    ingredients,
-    price,
-    attachmentLink,
-  }: SaveSnacksProps) {
-    this.props.title = title ?? this.title;
+  changeAttachment(attachmentId: UniqueEntityId) {
+    const attachmentLink = AttachmentLink.create({
+      attachmentId,
+      resourceId: this.id,
+      resourceType: "SNACK",
+      linkedAt: new Date(),
+    });
 
-    this.props.description = description ?? this.description;
-
-    this.props.category = category ?? this.category;
-
-    this.props.ingredients = ingredients ?? this.ingredients;
-
-    this.props.price = price ?? this.price;
-
-    this.props.attachmentLink = attachmentLink ?? this.attachmentLink;
-
-    this.touch();
+    this.attachmentLink = attachmentLink;
   }
 }

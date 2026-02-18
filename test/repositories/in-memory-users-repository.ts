@@ -5,7 +5,7 @@ export class InMemoryUsersRepository implements UsersRepository {
   public items: User[] = [];
 
   async findById(id: string) {
-    const item = this.items.find((item) => item.id === id);
+    const item = this.items.find((item) => item.id.toString() === id);
 
     if (!item) {
       return null;
@@ -29,7 +29,7 @@ export class InMemoryUsersRepository implements UsersRepository {
   }
 
   async update(data: User) {
-    const itemIndex = this.items.findIndex((item) => item.id === data.id);
+    const itemIndex = this.items.findIndex((item) => item.id.equals(data.id));
 
     if (itemIndex >= 0) {
       this.items[itemIndex] = data;
@@ -37,7 +37,7 @@ export class InMemoryUsersRepository implements UsersRepository {
   }
 
   async delete(id: string) {
-    const itemIndex = this.items.findIndex((item) => item.id === id);
+    const itemIndex = this.items.findIndex((item) => item.id.toString() === id);
 
     this.items.splice(itemIndex, 1);
   }

@@ -3,6 +3,7 @@ import { makeUser } from "test/factories/make-user";
 import { UpdateUserUseCase } from "./update-user";
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 import { EmailAlreadyExists } from "@/domain/errors/email-already-exists";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 
 let sut: UpdateUserUseCase;
 let inMemoryUsersRepository: InMemoryUsersRepository;
@@ -14,12 +15,12 @@ describe("Update user", () => {
   });
 
   it("Should be able to update an user", async () => {
-    const createdUser = makeUser({ id: "user-1" });
+    const createdUser = makeUser({ id: new UniqueEntityId("user-1") });
 
     await inMemoryUsersRepository.create(createdUser);
 
     const { user } = await sut.execute({
-      userId: "user-1",
+      userId: createdUser.id.toString(),
       name: "John Doe",
       email: "johndoe@gmail.com",
       password: createdUser.password,
@@ -29,10 +30,10 @@ describe("Update user", () => {
       expect.objectContaining({ name: "John Doe", email: "johndoe@gmail.com" }),
     );
 
-    expect(user.id).toEqual(expect.any(String));
+    expect(user.id.toString()).toEqual(expect.any(String));
 
     expect(inMemoryUsersRepository.items[0]?.name).toEqual("John Doe");
-    expect(inMemoryUsersRepository.items[0]?.id).toEqual("user-1");
+    expect(inMemoryUsersRepository.items[0]?.id.toString()).toEqual("user-1");
   });
 
   it("It should not be possible to update a non-existent user", async () => {
@@ -49,13 +50,16 @@ describe("Update user", () => {
   });
 
   it("It should not be possible to update a user with existent email", async () => {
-    const user = makeUser({ email: "johndoe@gmail.com", id: "user-1" });
+    const user = makeUser({
+      email: "johndoe@gmail.com",
+      id: new UniqueEntityId("user-1"),
+    });
 
     await inMemoryUsersRepository.create(user);
 
     await expect(
       sut.execute({
-        userId: user.id,
+        userId: user.id.toString(),
         name: user.name,
         email: "johndoe@gmail.com",
         password: user.password,

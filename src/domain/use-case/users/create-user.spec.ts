@@ -22,10 +22,12 @@ describe("Create user", () => {
     });
 
     expect(user).toEqual(expect.objectContaining({ name: "jhon doe" }));
-    expect(user.id).toEqual(expect.any(String));
+    expect(user.id.toString()).toEqual(expect.any(String));
 
     expect(inMemoryUsersRepository.items[0]?.name).toEqual("jhon doe");
-    expect(inMemoryUsersRepository.items[0]?.id).toEqual(user.id);
+    expect(inMemoryUsersRepository.items[0]?.id.toString()).toEqual(
+      user.id.toString(),
+    );
   });
 
   it("Should not able to create a user if one exists", async () => {

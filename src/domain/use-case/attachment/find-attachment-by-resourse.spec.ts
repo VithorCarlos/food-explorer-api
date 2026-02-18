@@ -5,7 +5,7 @@ import { AttachmentNotFoundError } from "@/domain/errors/attachment-not-found";
 import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 import { InMemoryAttachmentLinkRepository } from "test/repositories/in-memory-attachment-link-repository";
 import { makeAttachment } from "test/factories/make-attachment";
-import { makeAttachmentLink } from "test/factories/make-attachment-link";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 
 let sut: FindAttachmentByResourceUseCase;
 let inMemorySnackRepository: InMemorySnacksRepository;
@@ -14,30 +14,28 @@ let inMemoryAttachmentLinkRepository: InMemoryAttachmentLinkRepository;
 
 describe("Find attachment by resource", () => {
   beforeEach(() => {
-    inMemorySnackRepository = new InMemorySnacksRepository();
-    inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
     inMemoryAttachmentLinkRepository = new InMemoryAttachmentLinkRepository();
+    inMemorySnackRepository = new InMemorySnacksRepository(
+      inMemoryAttachmentLinkRepository,
+    );
+    inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
     sut = new FindAttachmentByResourceUseCase(inMemoryAttachmentLinkRepository);
   });
 
   it("Should be able to find an attachment by resource", async () => {
-    const snack = makeSnack();
-
     const attachment = makeAttachment({ title: "food.png" });
 
-    const attachmentLink = makeAttachmentLink(attachment.id, {
-      resourceId: snack.id,
-      resourceType: "SNACK",
-    });
+    const snack = makeSnack(
+      { id: new UniqueEntityId("snack-01"), attachmentId: attachment.id },
+      new UniqueEntityId("user-01"),
+    );
 
     await inMemorySnackRepository.create(snack);
 
     await inMemoryAttachmentRepository.create(attachment);
 
-    await inMemoryAttachmentLinkRepository.createLink(attachmentLink);
-
     const { attachmentLinks } = await sut.execute({
-      resourceId: inMemorySnackRepository.items[0].id,
+      resourceId: snack.id.toString(),
       resourceType: "SNACK",
     });
 
