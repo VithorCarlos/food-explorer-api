@@ -16,6 +16,8 @@ export class DeleteRefreshTokenUseCase {
       throw new RefreshTokenNotFoundError();
     }
 
-    await this.refreshTokenRepository.delete(refreshTokenAlreadyExists.id);
+    await this.refreshTokenRepository.delete(
+      refreshTokenAlreadyExists.id.toString(),
+    );
   }
 }

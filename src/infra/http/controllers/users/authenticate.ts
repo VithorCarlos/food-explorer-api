@@ -26,7 +26,7 @@ export const authenticate = async (
 
     const accessToken = await reply.jwtSign(
       { role: user.role },
-      { sub: user.id.toString() }, // ✅ sub é passado como subject
+      { sub: user.id.toString() },
     );
 
     const refreshToken = await reply.jwtSign(
@@ -38,11 +38,12 @@ export const authenticate = async (
       .setCookie(TOKEN.REFRESH_TOKEN, refreshToken, {
         maxAge: 7 * 24 * 60 * 60,
         path: "/",
-        secure: true,
+        secure: process.env.NODE_ENV === "production",
         httpOnly: true,
+        sameSite: "strict",
       })
       .status(200)
-      .send({ accessToken, refreshToken });
+      .send({ accessToken });
   } catch (error) {
     if (error instanceof UserDoesNotExists) {
       reply.status(400).send({ message: error.message });

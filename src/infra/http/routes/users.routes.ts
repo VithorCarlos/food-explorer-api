@@ -34,7 +34,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
         },
       },
     },
-    authenticate
+    authenticate,
   );
 
   fastify.patch(
@@ -50,13 +50,12 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
             type: "object",
             properties: {
               accessToken: { type: "string" },
-              refreshToken: { type: "string" },
             },
           },
         },
       },
     },
-    refreshToken
+    refreshToken,
   );
 
   fastify.post(
@@ -77,7 +76,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
         },
       },
     },
-    registerUser
+    registerUser,
   );
 
   fastify.put(
@@ -110,7 +109,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT],
     },
-    updateUser
+    updateUser,
   );
 
   fastify.delete(
@@ -124,6 +123,6 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT],
     },
-    deleteUser
+    deleteUser,
   );
 };

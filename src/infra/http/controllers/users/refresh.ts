@@ -1,55 +1,53 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-
-import { RefreshTokenNotFoundError } from "@/domain/errors/refresh-token-not-found";
 import { TOKEN } from "@/domain/enums/token";
+import { RefreshTokenNotFoundError } from "@/domain/errors/refresh-token-not-found";
+import { env } from "@/env";
+import { FastifyReply, FastifyRequest } from "fastify";
+import jwt from "jsonwebtoken";
 
 export const refreshToken = async (
   request: FastifyRequest,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) => {
   try {
-    await request.jwtVerify();
+    const refreshToken = request.cookies[TOKEN.REFRESH_TOKEN];
+    if (!refreshToken) {
+      throw new RefreshTokenNotFoundError();
+    }
 
-    const { role, sub } = request.user;
+    const payload = jwt.verify(refreshToken, env.JWT_SECRET) as {
+      sub: string;
+      role: string;
+    };
 
-    const accessToken = await reply.jwtSign(
-      {
-        role,
-      },
-      {
-        sign: {
-          sub,
-        },
-      }
+    const { sub, role } = payload;
+
+    const newAccessToken = await reply.jwtSign(
+      { role },
+      { sub, expiresIn: "15m" },
     );
 
-    const refreshToken = await reply.jwtSign(
-      {
-        role,
-      },
-      {
-        sign: {
-          sub: request.user.sub,
-          expiresIn: "7d",
-        },
-      }
-    );
-    return reply
-      .setCookie(TOKEN.REFRESH_TOKEN, refreshToken, {
-        path: "/",
-        secure: true,
-        httpOnly: true,
-        sameSite: true,
-      })
-      .status(200)
-      .send({
-        accessToken,
-        refreshToken,
-      });
+    const newRefreshToken = jwt.sign({ role }, env.JWT_SECRET, {
+      subject: sub,
+      expiresIn: "7d",
+    });
+
+    reply.setCookie(TOKEN.REFRESH_TOKEN, newRefreshToken, {
+      path: "/",
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    return reply.send({
+      accessToken: newAccessToken,
+    });
   } catch (error) {
     if (error instanceof RefreshTokenNotFoundError) {
-      reply.status(401).send({ message: "refresh token not found" });
+      reply.status(401).send({ message: error.message });
     }
-    throw error;
+
+    return reply.status(401).send({
+      message: "invalid refresh token",
+    });
   }
 };

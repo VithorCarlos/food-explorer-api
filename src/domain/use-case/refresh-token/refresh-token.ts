@@ -16,7 +16,9 @@ export class RefreshTokenUseCase {
     const expiresIn = dayjs().add(7, "day").unix();
 
     if (refreshTokenAlreadyExists) {
-      await this.refreshTokenRepository.delete(refreshTokenAlreadyExists.id);
+      await this.refreshTokenRepository.delete(
+        refreshTokenAlreadyExists.id.toString(),
+      );
     }
 
     const refreshToken = RefreshToken.create({

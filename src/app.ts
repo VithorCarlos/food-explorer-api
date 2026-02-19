@@ -32,26 +32,6 @@ export async function buildApp() {
 
   app.register(fastifyJwt, {
     secret: env.JWT_SECRET,
-    cookie: {
-      cookieName: TOKEN.REFRESH_TOKEN,
-      signed: false,
-    },
-    sign: {
-      expiresIn: "15m",
-    },
-
-    verify: {
-      extractToken: (request) => {
-        // if (request.url === "/refresh-token") {
-        // return request.cookies && request.cookies.refreshToken;
-        // } else {
-        return (
-          request.headers.authorization &&
-          request.headers.authorization.split(" ")[1]
-        );
-        // }
-      },
-    },
   });
 
   app.register(cors, {

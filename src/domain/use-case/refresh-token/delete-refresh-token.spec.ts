@@ -17,7 +17,6 @@ describe("Delete refresh token", () => {
     const expiresIn = dayjs().add(10, "seconds").unix();
 
     const createRefresh = RefreshToken.create({
-      id: "refresh-01",
       userId: "user-01",
       expiresIn,
     });
