@@ -1,6 +1,14 @@
-import { Uploader, UploaderParams } from "@/domain/storage/uploader";
+import {
+  Uploader,
+  UploaderDeleteParams,
+  UploaderParams,
+} from "@/domain/storage/uploader";
 import { env } from "@/env";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} from "@aws-sdk/client-s3";
 import { randomUUID } from "node:crypto";
 
 export class R2Storage implements Uploader {
@@ -38,5 +46,16 @@ export class R2Storage implements Uploader {
     return {
       url: uniqueFileName,
     };
+  }
+
+  async delete({ key }: UploaderDeleteParams): Promise<void> {
+    const bucketName = env.AWS_BUCKET_NAME;
+
+    await this.client.send(
+      new DeleteObjectCommand({
+        Bucket: bucketName,
+        Key: key,
+      }),
+    );
   }
 }

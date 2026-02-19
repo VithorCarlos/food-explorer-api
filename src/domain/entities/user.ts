@@ -29,7 +29,7 @@ export class User extends BaseEntity<UserProps> {
         ...props,
         createdAt: props.createdAt ?? new Date(),
         updatedAt: props.updatedAt ?? new Date(),
-        role: props.role ?? ROLE.CLIENT,
+        role: props.role ?? ROLE.ADMIN,
       },
       id,
     );

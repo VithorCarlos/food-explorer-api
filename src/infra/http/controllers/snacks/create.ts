@@ -38,7 +38,7 @@ export const createSnack = async (
 
     const snack = PrismaSnackAdapter.toPrisma(createdSnack);
 
-    reply.status(201).send({ snack: { ...snack, attachmentId } });
+    return reply.status(201).send({ snack: { ...snack, attachmentId } });
   } catch (error) {
     if (error instanceof Error) {
       reply.status(400).send({ message: error.message });

@@ -12,9 +12,13 @@ import {
   Prisma,
   RESOURSE_TYPE,
 } from "generated/prisma/client";
+import { Uploader } from "@/domain/storage/uploader";
 
 export class PrismaSnacksRepository implements SnacksRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private uploader: Uploader,
+  ) {}
 
   async findById(id: string) {
     const snack = await this.prisma.snack.findFirst({
@@ -217,11 +221,30 @@ export class PrismaSnacksRepository implements SnacksRepository {
   async update(data: Snack) {
     const snack = PrismaSnackAdapter.toPrisma(data);
 
+    const snackId = data.id.toString();
+    const userId = data.userId.toString();
+
+    const existingAttachmentLink = await this.prisma.attachmentLink.findFirst({
+      where: {
+        resourceId: snackId,
+        resourceType: RESOURSE_TYPE.SNACK,
+      },
+      include: {
+        attachment: true,
+      },
+    });
+
+    let oldAttachmentUrl: string | null = null;
+
+    if (existingAttachmentLink?.attachment?.url) {
+      oldAttachmentUrl = existingAttachmentLink.attachment.url;
+    }
+
     await this.prisma.$transaction(async (tx) => {
       await tx.snack.update({
         where: {
-          id: data.id.toString(),
-          userId: data.userId.toString(),
+          id: snackId,
+          userId: userId,
         },
         data: {
           title: snack.title,
@@ -233,17 +256,17 @@ export class PrismaSnacksRepository implements SnacksRepository {
         },
       });
 
-      await tx.attachmentLink.deleteMany({
-        where: {
-          resourceId: data.id.toString(),
-          resourceType: RESOURSE_TYPE.SNACK,
-        },
-      });
-
       if (data.attachmentLink) {
         const attachmentLink = PrismaAttachmentLinkAdapter.toPrisma(
           data.attachmentLink,
         );
+
+        await tx.attachmentLink.deleteMany({
+          where: {
+            resourceId: snackId,
+            resourceType: RESOURSE_TYPE.SNACK,
+          },
+        });
 
         await tx.attachmentLink.create({
           data: attachmentLink,
@@ -258,22 +281,30 @@ export class PrismaSnacksRepository implements SnacksRepository {
         });
       }
     });
+
+    if (oldAttachmentUrl && data.attachmentLink) {
+      await this.uploader.delete({ key: oldAttachmentUrl });
+    }
   }
+
   async delete(id: string) {
-    const attachment = await this.prisma.attachmentLink.findFirst({
+    const attachmentLink = await this.prisma.attachmentLink.findFirst({
       where: {
         resourceId: id,
         resourceType: RESOURSE_TYPE.SNACK,
       },
-      select: {
-        attachmentId: true,
+      include: {
+        attachment: true,
       },
     });
 
-    if (attachment) {
-      await this.prisma.attachment.delete({
-        where: { id: attachment.attachmentId },
-      });
+    if (attachmentLink) {
+      await Promise.all([
+        this.prisma.attachment.delete({
+          where: { id: attachmentLink.attachmentId },
+        }),
+        this.uploader.delete({ key: attachmentLink.attachment.url }),
+      ]);
     }
 
     await this.prisma.snack.delete({

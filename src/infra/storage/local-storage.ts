@@ -1,4 +1,8 @@
-import { Uploader, UploaderParams } from "@/domain/storage/uploader";
+import {
+  Uploader,
+  UploaderDeleteParams,
+  UploaderParams,
+} from "@/domain/storage/uploader";
 import path from "node:path";
 import { pipeline, Readable } from "node:stream";
 import { promisify } from "node:util";
@@ -28,5 +32,14 @@ export class LocalStorage implements Uploader {
     return {
       url: filePath,
     };
+  }
+
+  async delete({ key }: UploaderDeleteParams): Promise<void> {
+    const filePath = path.resolve(key);
+
+    if (fs.existsSync(filePath)) {
+      await fs.promises.unlink(filePath);
+      console.log(`Arquivo deletado: ${filePath}`);
+    }
   }
 }
