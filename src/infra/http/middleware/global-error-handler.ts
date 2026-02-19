@@ -13,7 +13,7 @@ export function globalErrorHandler(
       message: err.message,
     }));
 
-    return reply.status(400).send({
+    reply.status(400).send({
       statusCode: 400,
       error: "Validation Error",
       message: "Some fields are invalid",
@@ -22,7 +22,7 @@ export function globalErrorHandler(
   }
 
   if (error.validation) {
-    return reply.status(400).send({
+    reply.status(400).send({
       statusCode: 400,
       error: "Validation Error",
       message: "Invalid request parameters",
@@ -38,7 +38,7 @@ export function globalErrorHandler(
     console.error(error);
   }
 
-  return reply.status(500).send({
+  reply.status(500).send({
     statusCode: 500,
     error: "Internal Server Error",
     message: "An unexpected error occurred",

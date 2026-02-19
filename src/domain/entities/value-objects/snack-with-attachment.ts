@@ -5,6 +5,7 @@ import { ValueObject } from "@/shared/entity/value-object";
 interface SnackWithAttachmentProps {
   snackId: UniqueEntityId;
   attachmentUrl: string | null;
+  attachmentId: UniqueEntityId;
   title: string;
   description: string;
   category: FOOD_CATEGORIES;
@@ -22,6 +23,10 @@ export class SnackWithAttachment extends ValueObject<SnackWithAttachmentProps> {
 
   get attachmentUrl() {
     return this.props.attachmentUrl;
+  }
+
+  get attachmentId() {
+    return this.props.attachmentId;
   }
 
   get title() {

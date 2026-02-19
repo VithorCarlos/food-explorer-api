@@ -41,6 +41,7 @@ export class PrismaSnacksRepository implements SnacksRepository {
         created_at: Date;
         updated_at: Date;
         attachment_url: string | null;
+        attachment_id: string;
       }[]
     >(
       Prisma.sql`
@@ -157,6 +158,7 @@ export class PrismaSnacksRepository implements SnacksRepository {
         created_at: Date;
         updated_at: Date;
         attachment_url: string | null;
+        attachment_id: string;
       }[]
     >(Prisma.sql`
       SELECT 

@@ -1,8 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { SnackDoesNotExists } from "@/domain/errors/snack-does-not-exists";
 import { makeDeleteSnackUseCase } from "../../factories/make-delete-snack-use-case";
 import { z } from "zod";
-import { SnackNotFoundForThisUser } from "@/domain/errors/snack-not-found-for-this-user";
 
 export const deleteSnack = async (
   request: FastifyRequest,
@@ -13,7 +11,7 @@ export const deleteSnack = async (
     id: z.string(),
   });
 
-  const { id } = deleteSchema.parse(request.body);
+  const { id } = deleteSchema.parse(request.params);
 
   try {
     const deleteSnackUseCase = makeDeleteSnackUseCase(request.server.prisma);

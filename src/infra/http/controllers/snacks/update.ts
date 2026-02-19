@@ -2,16 +2,13 @@ import { z } from "zod";
 import { PrismaSnackAdapter } from "@/infra/database/adapters/prisma-snack-adapter";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { makeUpdateSnackUseCase } from "../../factories/make-update-snack-use-case";
-import { SnackDoesNotExists } from "@/domain/errors/snack-does-not-exists";
-import { SnackNotFoundForThisUser } from "@/domain/errors/snack-not-found-for-this-user";
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
 
 export const updateSnack = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const updateSchema = z.object({
-    snackId: z.string(),
+  const updateSchemaBody = z.object({
     title: z.string().optional(),
     description: z.string().optional(),
     category: z.enum(FOOD_CATEGORIES).optional(),
@@ -20,22 +17,22 @@ export const updateSnack = async (
     attachmentId: z.string().optional(),
   });
 
-  const {
-    snackId,
-    title,
-    category,
-    ingredients,
-    price,
-    description,
-    attachmentId,
-  } = updateSchema.parse(request.body);
+  const updateSchemaParms = z.object({
+    id: z.string(),
+  });
+
+  const { title, category, ingredients, price, description, attachmentId } =
+    updateSchemaBody.parse(request.body);
+
+  const { id } = updateSchemaParms.parse(request.params);
+
   const userId = request.user.sub;
 
   try {
     const updateSnackUseCase = makeUpdateSnackUseCase(request.server.prisma);
 
     const { snack: updatedSnack } = await updateSnackUseCase.execute({
-      snackId,
+      snackId: id,
       attachmentId,
       title,
       category,

@@ -4,6 +4,7 @@ import { makeAuthenticateUseCase } from "../../factories/make-authenticate-use-c
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 import { UserInvalidCredential } from "@/domain/errors/user-invalid-crendential";
 import { TOKEN } from "@/domain/enums/token";
+import { env } from "@/env";
 
 export const authenticate = async (
   request: FastifyRequest,
@@ -26,7 +27,7 @@ export const authenticate = async (
 
     const accessToken = await reply.jwtSign(
       { role: user.role },
-      { sub: user.id.toString() },
+      { sub: user.id.toString(), expiresIn: "15m" },
     );
 
     const refreshToken = await reply.jwtSign(
@@ -36,14 +37,14 @@ export const authenticate = async (
 
     reply
       .setCookie(TOKEN.REFRESH_TOKEN, refreshToken, {
-        maxAge: 7 * 24 * 60 * 60,
         path: "/",
-        secure: process.env.NODE_ENV === "production",
+        maxAge: 7 * 24 * 60 * 60,
+        secure: env.NODE_ENV === "production",
         httpOnly: true,
-        sameSite: "strict",
+        sameSite: "lax",
       })
       .status(200)
-      .send({ accessToken });
+      .send({ accessToken, refreshToken });
   } catch (error) {
     if (error instanceof UserDoesNotExists) {
       reply.status(400).send({ message: error.message });

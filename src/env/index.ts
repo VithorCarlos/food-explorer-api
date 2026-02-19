@@ -9,6 +9,7 @@ const schema = z.object({
   DATABASE_URL: z.string(),
   DATABASE_SCHEMA: z.string(),
   JWT_SECRET: z.string(),
+  PUBLIC_FRONT_URL: z.string(),
   CLOUDFARE_ACCOUNT_ID: z.string(),
   AWS_BUCKET_NAME: z.string(),
   AWS_ACCESS_KEY_ID: z.string(),

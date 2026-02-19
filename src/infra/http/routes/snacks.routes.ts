@@ -112,7 +112,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
   );
 
   fastify.put(
-    "",
+    "/:id",
     {
       schema: {
         security: [{ BearerAuth: [] }],
@@ -122,8 +122,8 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
         body: {
           type: "object",
           properties: {
-            id: { type: "string" },
             title: { type: "string" },
+            attachmentId: { type: "string" },
             category: { type: "string" },
             ingredients: {
               type: "array",
@@ -144,6 +144,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
               ingredients: { type: "array", default: [] },
               price: { type: "integer" },
               description: { type: "string" },
+              attachmentId: { type: "string" },
             },
           },
         },
@@ -154,17 +155,11 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
   );
 
   fastify.delete(
-    "",
+    "/:id",
     {
       schema: {
         security: [{ BearerAuth: [] }],
         description: "Delete snack",
-        body: {
-          type: "object",
-          properties: {
-            id: { type: "string" },
-          },
-        },
         tags: ["Snacks"],
         summary: "Delete snack",
       },

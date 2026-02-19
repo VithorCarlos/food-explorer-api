@@ -14,6 +14,7 @@ interface PrismaSnackWithAttachmentRaw {
   created_at: Date;
   updated_at: Date;
   attachment_url: string | null;
+  attachment_id: string;
 }
 
 export class PrismaSnackWithAttachmentsAdapter {
@@ -23,6 +24,7 @@ export class PrismaSnackWithAttachmentsAdapter {
       attachmentUrl: raw.attachment_url
         ? `${env.CLOUDFARE_PUBLIC_CDN}/${raw.attachment_url}`
         : null,
+      attachmentId: new UniqueEntityId(raw.attachment_id),
       userId: new UniqueEntityId(raw.user_id),
       title: raw.title,
       category: raw.category as FOOD_CATEGORIES,

@@ -5,6 +5,7 @@ export class SnackWithAttachmentPresenter {
     return {
       snackId: snackWithAttachment.snackId.toString(),
       attachmentUrl: snackWithAttachment.attachmentUrl,
+      attachmentId: snackWithAttachment.attachmentId.toString(),
       userId: snackWithAttachment.userId.toString(),
       title: snackWithAttachment.title,
       description: snackWithAttachment.description,

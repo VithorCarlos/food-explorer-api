@@ -8,11 +8,11 @@ import fastifySwaggerUi from "@fastify/swagger-ui";
 import cors from "@fastify/cors";
 import { snackRoutes } from "./infra/http/routes/snacks.routes";
 import { favoritesRoutes } from "./infra/http/routes/favorites.routes";
-import { TOKEN } from "./domain/enums/token";
 import { globalErrorHandler } from "./infra/http/middleware/global-error-handler";
 import multipart from "@fastify/multipart";
 import { uploadRoutes } from "./infra/http/routes/upload.routes";
 import { PrismaService } from "./infra/database/prisma";
+import { TOKEN } from "./domain/enums/token";
 
 export async function buildApp() {
   const app = fastify({
@@ -28,14 +28,23 @@ export async function buildApp() {
     limits: { fileSize: 2 * 1024 * 1024 }, // 2mb
   });
 
-  app.register(cookie);
+  app.register(cookie, { secret: "my-secret" });
 
   app.register(fastifyJwt, {
     secret: env.JWT_SECRET,
+    cookie: {
+      signed: false,
+      cookieName: TOKEN.REFRESH_TOKEN,
+    },
+    sign: {
+      expiresIn: "15m",
+    },
   });
 
   app.register(cors, {
+    origin: env.PUBLIC_FRONT_URL,
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   });
 
   app.register(fastifySwagger, {

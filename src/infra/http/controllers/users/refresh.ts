@@ -33,20 +33,22 @@ export const refreshToken = async (
 
     reply.setCookie(TOKEN.REFRESH_TOKEN, newRefreshToken, {
       path: "/",
+      maxAge: 7 * 24 * 60 * 60,
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: env.NODE_ENV === "production",
+      sameSite: "lax",
     });
 
-    return reply.send({
+    reply.send({
       accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
     });
   } catch (error) {
     if (error instanceof RefreshTokenNotFoundError) {
       reply.status(401).send({ message: error.message });
     }
 
-    return reply.status(401).send({
+    reply.status(401).send({
       message: "invalid refresh token",
     });
   }
