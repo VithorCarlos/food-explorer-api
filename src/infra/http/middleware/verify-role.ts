@@ -8,7 +8,7 @@ export function verifyRole(
     const { role } = request.user;
 
     if (role !== roleToVerify) {
-      reply.status(401).send({ message: "Unauthorized" });
+      reply.status(401).send({ message: "Unauthorized role" });
     }
   };
 }

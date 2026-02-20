@@ -31,13 +31,21 @@ export const refreshToken = async (
       expiresIn: "7d",
     });
 
-    reply.setCookie(TOKEN.REFRESH_TOKEN, newRefreshToken, {
-      path: "/",
-      maxAge: 7 * 24 * 60 * 60,
-      httpOnly: true,
-      secure: env.NODE_ENV === "production",
-      sameSite: "lax",
-    });
+    reply
+      .setCookie(TOKEN.ACCESS_TOKEN, newAccessToken, {
+        path: "/",
+        maxAge: 15 * 60,
+        httpOnly: true,
+        secure: env.NODE_ENV === "production",
+        sameSite: "lax",
+      })
+      .setCookie(TOKEN.REFRESH_TOKEN, newRefreshToken, {
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60,
+        httpOnly: true,
+        secure: env.NODE_ENV === "production",
+        sameSite: "lax",
+      });
 
     reply.send({
       accessToken: newAccessToken,

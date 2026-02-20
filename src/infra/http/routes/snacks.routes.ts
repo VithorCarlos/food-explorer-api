@@ -14,7 +14,6 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
     "",
     {
       schema: {
-        security: [{ BearerAuth: [] }],
         description: "Search snacks",
         tags: ["Snacks"],
         summary: "Search snacks",
@@ -38,7 +37,6 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
     "/:id",
     {
       schema: {
-        security: [{ BearerAuth: [] }],
         description: "Find one snack",
         tags: ["Snacks"],
         summary: "Find one snack",
@@ -58,7 +56,6 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
     "",
     {
       schema: {
-        security: [{ BearerAuth: [] }],
         description: "Create snack",
         tags: ["Snacks"],
         summary: "Create snack",
@@ -115,7 +112,6 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
     "/:id",
     {
       schema: {
-        security: [{ BearerAuth: [] }],
         description: "Update snack",
         tags: ["Snacks"],
         summary: "Update snack",
@@ -158,7 +154,6 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
     "/:id",
     {
       schema: {
-        security: [{ BearerAuth: [] }],
         description: "Delete snack",
         tags: ["Snacks"],
         summary: "Delete snack",

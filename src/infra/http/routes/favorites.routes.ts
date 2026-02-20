@@ -9,7 +9,6 @@ export const favoritesRoutes = async (fastify: FastifyInstance) => {
     "",
     {
       schema: {
-        security: [{ BearerAuth: [] }],
         description: "Create favorites",
         tags: ["Favorites"],
         summary: "Create favorites",
@@ -23,14 +22,13 @@ export const favoritesRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT],
     },
-    createFavorite
+    createFavorite,
   );
 
   fastify.get(
     "",
     {
       schema: {
-        security: [{ BearerAuth: [] }],
         description: "Find many favorites",
         tags: ["Favorites"],
         summary: "Find many favorites",
@@ -44,14 +42,13 @@ export const favoritesRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT],
     },
-    findManyFavorites
+    findManyFavorites,
   );
 
   fastify.delete(
     "",
     {
       schema: {
-        security: [{ BearerAuth: [] }],
         description: "Delete favorite",
         body: {
           type: "object",
@@ -64,6 +61,6 @@ export const favoritesRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT],
     },
-    deleteFavorite
+    deleteFavorite,
   );
 };

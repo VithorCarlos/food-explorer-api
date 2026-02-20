@@ -7,7 +7,6 @@ export const uploadRoutes = async (fastify: FastifyInstance) => {
     "",
     {
       schema: {
-        security: [{ BearerAuth: [] }],
         description: "Upload Attachment",
         tags: ["Upload"],
         summary: "Upload Attachment",
@@ -27,6 +26,6 @@ export const uploadRoutes = async (fastify: FastifyInstance) => {
       preHandler: [verifyJWT],
     },
 
-    uploadAttachment
+    uploadAttachment,
   );
 };

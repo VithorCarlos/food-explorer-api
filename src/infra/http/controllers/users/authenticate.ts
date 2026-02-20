@@ -36,6 +36,13 @@ export const authenticate = async (
     );
 
     reply
+      .setCookie(TOKEN.ACCESS_TOKEN, accessToken, {
+        path: "/",
+        maxAge: 15 * 60,
+        httpOnly: true,
+        secure: env.NODE_ENV === "production",
+        sameSite: "lax",
+      })
       .setCookie(TOKEN.REFRESH_TOKEN, refreshToken, {
         path: "/",
         maxAge: 7 * 24 * 60 * 60,

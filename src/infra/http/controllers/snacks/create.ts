@@ -3,7 +3,6 @@ import { makeCreateSnackUseCase } from "../../factories/make-create-snack-use-ca
 import { PrismaSnackAdapter } from "@/infra/database/adapters/prisma-snack-adapter";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
-import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 
 export const createSnack = async (
   request: FastifyRequest,
@@ -23,26 +22,19 @@ export const createSnack = async (
 
   const userId = request.user.sub;
 
-  try {
-    const createSnackUseCase = makeCreateSnackUseCase(request.server.prisma);
+  const createSnackUseCase = makeCreateSnackUseCase(request.server.prisma);
 
-    const { snack: createdSnack } = await createSnackUseCase.execute({
-      title,
-      category,
-      ingredients,
-      userId,
-      price,
-      description,
-      attachmentId,
-    });
+  const { snack: createdSnack } = await createSnackUseCase.execute({
+    title,
+    category,
+    ingredients,
+    userId,
+    price,
+    description,
+    attachmentId,
+  });
 
-    const snack = PrismaSnackAdapter.toPrisma(createdSnack);
+  const snack = PrismaSnackAdapter.toPrisma(createdSnack);
 
-    return reply.status(201).send({ snack: { ...snack, attachmentId } });
-  } catch (error) {
-    if (error instanceof Error) {
-      reply.status(400).send({ message: error.message });
-    }
-    throw error;
-  }
+  return reply.status(201).send({ snack: { ...snack, attachmentId } });
 };

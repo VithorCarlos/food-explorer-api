@@ -28,13 +28,13 @@ export async function buildApp() {
     limits: { fileSize: 2 * 1024 * 1024 }, // 2mb
   });
 
-  app.register(cookie, { secret: "my-secret" });
+  app.register(cookie);
 
   app.register(fastifyJwt, {
     secret: env.JWT_SECRET,
     cookie: {
       signed: false,
-      cookieName: TOKEN.REFRESH_TOKEN,
+      cookieName: TOKEN.ACCESS_TOKEN,
     },
     sign: {
       expiresIn: "15m",
@@ -42,9 +42,9 @@ export async function buildApp() {
   });
 
   app.register(cors, {
-    origin: env.PUBLIC_FRONT_URL,
+    origin: ["http://localhost:3000"],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   });
 
   app.register(fastifySwagger, {
