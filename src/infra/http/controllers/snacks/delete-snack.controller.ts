@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { makeDeleteSnackUseCase } from "../../factories/make-delete-snack-use-case";
 import { z } from "zod";
 
-export const deleteSnack = async (
+export const deleteSnackController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {

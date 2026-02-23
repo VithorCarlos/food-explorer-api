@@ -3,7 +3,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { makeCreateFavoriteUseCase } from "../../factories/make-create-favorite-use-case";
 import { FavoritePresenter } from "../../presenters/favorite-presenter";
 
-export const createFavorite = async (
+export const createFavoriteController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {

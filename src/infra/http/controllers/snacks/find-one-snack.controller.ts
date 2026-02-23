@@ -3,7 +3,7 @@ import { z } from "zod";
 import { makeFindOneSnackUseCase } from "../../factories/make-find-one-snack-use-case";
 import { SnackWithAttachmentPresenter } from "../../presenters/snack-with-attachment-presenter";
 
-export const findOneSnack = async (
+export const findOneSnackController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {

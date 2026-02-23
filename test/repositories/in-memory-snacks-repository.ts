@@ -6,6 +6,7 @@ import {
 } from "@/domain/repositories/snacks-repository";
 import { InMemoryAttachmentLinkRepository } from "./in-memory-attachment-link-repository";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
+import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
 
 export class InMemorySnacksRepository implements SnacksRepository {
   constructor(
@@ -59,6 +60,14 @@ export class InMemorySnacksRepository implements SnacksRepository {
       .slice((page - 1) * perPage, page * perPage);
   }
 
+  async findActiveCategories(): Promise<FOOD_CATEGORIES[]> {
+    const allCategories = this.items.map((item) => item.category);
+
+    const activeCategories = [...new Set(allCategories)];
+
+    return activeCategories;
+  }
+
   async findByIdWithAttachment(
     id: string,
   ): Promise<SnackWithAttachment | null> {
@@ -73,6 +82,7 @@ export class InMemorySnacksRepository implements SnacksRepository {
       price: snack.price,
       category: snack.category,
       createdAt: snack.createdAt,
+      attachmentId: snack.attachmentLink.id,
       attachmentUrl: snack.attachmentLink.attachmentId + ".png",
       description: snack.description,
       ingredients: snack.ingredients,
@@ -112,6 +122,7 @@ export class InMemorySnacksRepository implements SnacksRepository {
         price: snack.price,
         category: snack.category,
         createdAt: snack.createdAt,
+        attachmentId: snack.attachmentLink.id,
         attachmentUrl: snack.attachmentLink.attachmentId + ".png",
         description: snack.description,
         ingredients: snack.ingredients,

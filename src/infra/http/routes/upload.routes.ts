@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { verifyJWT } from "../middleware/verify-jwt";
-import { uploadAttachment } from "../controllers/upload/upload-attachment";
+import { uploadAttachmentController } from "../controllers/upload/upload-attachment.controller";
 
 export const uploadRoutes = async (fastify: FastifyInstance) => {
   fastify.post(
@@ -26,6 +26,6 @@ export const uploadRoutes = async (fastify: FastifyInstance) => {
       preHandler: [verifyJWT],
     },
 
-    uploadAttachment,
+    uploadAttachmentController,
   );
 };

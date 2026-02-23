@@ -3,7 +3,7 @@ import { z } from "zod";
 import { makeUpdateUserUseCase } from "../../factories/make-update-user-use-case";
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 
-export const updateUser = async (
+export const updateUserController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {

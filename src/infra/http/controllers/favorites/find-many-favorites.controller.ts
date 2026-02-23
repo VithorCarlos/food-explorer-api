@@ -1,11 +1,9 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { FavoriteDoesNotExists } from "@/domain/errors/favorite-does-not-exists";
 import { z } from "zod";
-import { FavoriteNotFoundForThisUser } from "@/domain/errors/favorite-not-found-for-this-user";
 import { makeFindManyFavoriteUseCase } from "../../factories/make-find-many-favorites-use-case";
 import { FavoriteDetailsPresenter } from "../../presenters/favorite-details-presenter";
 
-export const findManyFavorites = async (
+export const findManyFavoritesController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {

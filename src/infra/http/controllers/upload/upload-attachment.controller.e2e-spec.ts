@@ -4,6 +4,7 @@ import path from "node:path";
 import { PrismaService } from "@/infra/database/prisma";
 import { buildApp } from "@/app";
 import { FastifyInstance } from "fastify";
+import { TOKEN } from "@/domain/enums/token";
 
 describe("Upload Attachement (e2e)", () => {
   let app: FastifyInstance;
@@ -38,7 +39,7 @@ describe("Upload Attachement (e2e)", () => {
 
     const response = await request(app.server)
       .post(`/upload`)
-      .set("Authorization", `Bearer ${accessToken}`)
+      .set("Cookie", [`${TOKEN.ACCESS_TOKEN}=${accessToken}`])
       .attach("file", filePath);
 
     expect(response.statusCode).toEqual(201);

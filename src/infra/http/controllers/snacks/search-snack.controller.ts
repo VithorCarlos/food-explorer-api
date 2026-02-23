@@ -3,13 +3,13 @@ import { z } from "zod";
 import { makeSearchSnacksUseCase } from "../../factories/make-search-snacks-use-case";
 import { SnackWithAttachmentPresenter } from "../../presenters/snack-with-attachment-presenter";
 
-export const searchSnack = async (
+export const searchSnackController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {
   const searchSchema = z.object({
     page: z.number().optional(),
-    category: z.string(),
+    category: z.string().optional(),
     perPage: z.number().optional(),
     title: z.string().optional(),
     ingredients: z.string().array().optional(),

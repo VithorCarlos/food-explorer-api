@@ -4,7 +4,7 @@ import { PrismaSnackAdapter } from "@/infra/database/adapters/prisma-snack-adapt
 import { FastifyReply, FastifyRequest } from "fastify";
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
 
-export const createSnack = async (
+export const createSnackController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {

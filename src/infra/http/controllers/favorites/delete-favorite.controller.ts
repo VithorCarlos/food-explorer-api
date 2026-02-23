@@ -1,10 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { FavoriteDoesNotExists } from "@/domain/errors/favorite-does-not-exists";
 import { z } from "zod";
 import { makeDeleteFavoriteUseCase } from "../../factories/make-delete-favorite-use-case";
-import { FavoriteNotFoundForThisUser } from "@/domain/errors/favorite-not-found-for-this-user";
 
-export const deleteFavorite = async (
+export const deleteFavoriteController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {

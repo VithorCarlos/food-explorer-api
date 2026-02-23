@@ -4,7 +4,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { makeUpdateSnackUseCase } from "../../factories/make-update-snack-use-case";
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
 
-export const updateSnack = async (
+export const updateSnackController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {

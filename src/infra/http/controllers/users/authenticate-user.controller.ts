@@ -6,7 +6,7 @@ import { UserInvalidCredential } from "@/domain/errors/user-invalid-crendential"
 import { TOKEN } from "@/domain/enums/token";
 import { env } from "@/env";
 
-export const authenticate = async (
+export const authenticateUserController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {

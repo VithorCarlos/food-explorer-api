@@ -5,7 +5,7 @@ import { InvalidAttachmentTypeError } from "@/domain/errors/invalid-attachment-t
 import { makeUploadAttachmentUseCase } from "../../factories/make-upload-attachment-use-case";
 import { AttachmentNotFoundError } from "@/domain/errors/attachment-not-found";
 
-export const uploadAttachment = async (
+export const uploadAttachmentController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {

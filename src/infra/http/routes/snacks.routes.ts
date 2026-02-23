@@ -1,13 +1,14 @@
 import { FastifyInstance } from "fastify";
-import { createSnack } from "../controllers/snacks/create";
+import { createSnackController } from "../controllers/snacks/create-snack.controller";
 import { verifyRole } from "../middleware/verify-role";
 import { ROLE } from "@/domain/enums/role";
-import { updateSnack } from "../controllers/snacks/update";
-import { deleteSnack } from "../controllers/snacks/delete";
-import { searchSnack } from "../controllers/snacks/search";
+import { updateSnackController } from "../controllers/snacks/update-snack.controller";
+import { deleteSnackController } from "../controllers/snacks/delete-snack.controller";
+import { searchSnackController } from "../controllers/snacks/search-snack.controller";
 import { verifyJWT } from "../middleware/verify-jwt";
-import { findOneSnack } from "../controllers/snacks/find-one";
+import { findOneSnackController } from "../controllers/snacks/find-one-snack.controller";
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
+import { findActiceCategoriesController } from "../controllers/snacks/find-active-categories.controller";
 
 export const snackRoutes = async (fastify: FastifyInstance) => {
   fastify.get(
@@ -30,7 +31,20 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT],
     },
-    searchSnack,
+    searchSnackController,
+  );
+
+  fastify.get(
+    "/active-categories",
+    {
+      schema: {
+        description: "Find Active Categories",
+        tags: ["Snacks"],
+        summary: "Find Active Categories",
+      },
+      preHandler: [verifyJWT],
+    },
+    findActiceCategoriesController,
   );
 
   fastify.get(
@@ -49,7 +63,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT],
     },
-    findOneSnack,
+    findOneSnackController,
   );
 
   fastify.post(
@@ -105,7 +119,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT, verifyRole(ROLE.ADMIN)],
     },
-    createSnack,
+    createSnackController,
   );
 
   fastify.put(
@@ -147,7 +161,7 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT, verifyRole(ROLE.ADMIN)],
     },
-    updateSnack,
+    updateSnackController,
   );
 
   fastify.delete(
@@ -160,6 +174,6 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT, verifyRole(ROLE.ADMIN)],
     },
-    deleteSnack,
+    deleteSnackController,
   );
 };

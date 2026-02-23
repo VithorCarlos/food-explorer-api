@@ -3,7 +3,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import { makeRegisterUserUseCase } from "../../factories/make-register-user-use-case";
 
-export const registerUser = async (
+export const registerUserController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {

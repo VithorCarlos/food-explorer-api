@@ -3,7 +3,7 @@ import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 import { makeDeleteUserUseCase } from "../../factories/make-delete-user-use-case";
 import { makeDeleteRefreshTokenUseCase } from "../../factories/make-delete-refresh-token-use-case";
 
-export const deleteUser = async (
+export const deleteUserController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {

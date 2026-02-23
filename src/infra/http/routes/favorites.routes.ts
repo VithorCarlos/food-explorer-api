@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
-import { createFavorite } from "../controllers/favorites/create";
-import { deleteFavorite } from "../controllers/favorites/delete";
-import { findManyFavorites } from "../controllers/favorites/find-many";
+import { createFavoriteController } from "../controllers/favorites/create-favorite.controller";
+import { deleteFavoriteController } from "../controllers/favorites/delete-favorite.controller";
+import { findManyFavoritesController } from "../controllers/favorites/find-many-favorites.controller";
 import { verifyJWT } from "../middleware/verify-jwt";
 
 export const favoritesRoutes = async (fastify: FastifyInstance) => {
@@ -22,7 +22,7 @@ export const favoritesRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT],
     },
-    createFavorite,
+    createFavoriteController,
   );
 
   fastify.get(
@@ -42,7 +42,7 @@ export const favoritesRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT],
     },
-    findManyFavorites,
+    findManyFavoritesController,
   );
 
   fastify.delete(
@@ -61,6 +61,6 @@ export const favoritesRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT],
     },
-    deleteFavorite,
+    deleteFavoriteController,
   );
 };

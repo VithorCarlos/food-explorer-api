@@ -4,7 +4,7 @@ import { env } from "@/env";
 import { FastifyReply, FastifyRequest } from "fastify";
 import jwt from "jsonwebtoken";
 
-export const refreshToken = async (
+export const refreshTokenController = async (
   request: FastifyRequest,
   reply: FastifyReply,
 ) => {

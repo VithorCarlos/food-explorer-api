@@ -13,6 +13,7 @@ import {
   RESOURSE_TYPE,
 } from "generated/prisma/client";
 import { Uploader } from "@/domain/storage/uploader";
+import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
 
 export class PrismaSnacksRepository implements SnacksRepository {
   constructor(
@@ -121,6 +122,14 @@ export class PrismaSnacksRepository implements SnacksRepository {
     return snacks.map(PrismaSnackAdapter.toDomain);
   }
 
+  async findActiveCategories(): Promise<FOOD_CATEGORIES[]> {
+    const activeCategories = await this.prisma.snack.groupBy({
+      by: ["category"],
+    });
+
+    return activeCategories.map((c) => c.category as FOOD_CATEGORIES);
+  }
+
   async searchManyWithAttachments({
     page,
     perPage,
@@ -128,26 +137,42 @@ export class PrismaSnacksRepository implements SnacksRepository {
     title,
     ingredients,
   }: SearchManySnacksParams) {
-    const conditions: Prisma.Sql[] = [];
+    const andConditions: Prisma.Sql[] = [];
 
     if (category) {
-      conditions.push(
+      andConditions.push(
         Prisma.sql`LOWER(s.category) = ${category.toLowerCase()}`,
       );
     }
 
+    const searchConditions: Prisma.Sql[] = [];
+
     if (title) {
       const cleanTitle = `%${title.trim().toLowerCase()}%`;
-      conditions.push(Prisma.sql`LOWER(s.title) LIKE ${cleanTitle}`);
+      searchConditions.push(Prisma.sql`LOWER(s.title) LIKE ${cleanTitle}`);
     }
 
     if (ingredients && ingredients.length > 0) {
-      conditions.push(Prisma.sql`s.ingredients && ${ingredients}`);
+      const ingredientsSql = ingredients.map((ing) => {
+        const cleanIng = `%${ing.trim().toLowerCase()}%`;
+
+        return Prisma.sql`LOWER(array_to_string(s.ingredients, ',')) LIKE ${cleanIng}`;
+      });
+
+      searchConditions.push(
+        Prisma.sql`(${Prisma.join(ingredientsSql, " OR ")})`,
+      );
+    }
+
+    if (searchConditions.length > 0) {
+      andConditions.push(
+        Prisma.sql`(${Prisma.join(searchConditions, " OR ")})`,
+      );
     }
 
     const whereClause =
-      conditions.length > 0
-        ? Prisma.sql`WHERE ${Prisma.join(conditions, " AND ")}`
+      andConditions.length > 0
+        ? Prisma.sql`WHERE ${Prisma.join(andConditions, " AND ")}`
         : Prisma.sql``;
 
     const snacksWithAttachment = await this.prisma.$queryRaw<
@@ -220,32 +245,25 @@ export class PrismaSnacksRepository implements SnacksRepository {
 
   async update(data: Snack) {
     const snack = PrismaSnackAdapter.toPrisma(data);
-
     const snackId = data.id.toString();
     const userId = data.userId.toString();
+    const newAttachmentId = data.attachmentLink.attachmentId.toString();
 
-    const existingAttachmentLink = await this.prisma.attachmentLink.findFirst({
+    const existingLink = await this.prisma.attachmentLink.findFirst({
       where: {
         resourceId: snackId,
         resourceType: RESOURSE_TYPE.SNACK,
       },
-      include: {
-        attachment: true,
-      },
+      include: { attachment: true },
     });
 
-    let oldAttachmentUrl: string | null = null;
-
-    if (existingAttachmentLink?.attachment?.url) {
-      oldAttachmentUrl = existingAttachmentLink.attachment.url;
-    }
+    const oldAttachmentId = existingLink?.attachmentId;
+    const oldAttachmentUrl = existingLink?.attachment?.url;
+    const isNewAttachment = oldAttachmentId !== newAttachmentId;
 
     await this.prisma.$transaction(async (tx) => {
       await tx.snack.update({
-        where: {
-          id: snackId,
-          userId: userId,
-        },
+        where: { id: snackId, userId: userId },
         data: {
           title: snack.title,
           category: snack.category,
@@ -256,11 +274,7 @@ export class PrismaSnacksRepository implements SnacksRepository {
         },
       });
 
-      if (data.attachmentLink) {
-        const attachmentLink = PrismaAttachmentLinkAdapter.toPrisma(
-          data.attachmentLink,
-        );
-
+      if (isNewAttachment) {
         await tx.attachmentLink.deleteMany({
           where: {
             resourceId: snackId,
@@ -268,12 +282,21 @@ export class PrismaSnacksRepository implements SnacksRepository {
           },
         });
 
+        if (oldAttachmentId) {
+          await tx.attachment.delete({
+            where: { id: oldAttachmentId },
+          });
+        }
+
+        const newAttachmentLink = PrismaAttachmentLinkAdapter.toPrisma(
+          data.attachmentLink,
+        );
         await tx.attachmentLink.create({
-          data: attachmentLink,
+          data: newAttachmentLink,
         });
 
         await tx.attachment.update({
-          where: { id: attachmentLink.attachmentId },
+          where: { id: newAttachmentId },
           data: {
             expiresAt: null,
             status: ATTACHMENT_STATUS.LINKED,
@@ -282,7 +305,7 @@ export class PrismaSnacksRepository implements SnacksRepository {
       }
     });
 
-    if (oldAttachmentUrl && data.attachmentLink) {
+    if (isNewAttachment && oldAttachmentUrl) {
       await this.uploader.delete({ key: oldAttachmentUrl });
     }
   }

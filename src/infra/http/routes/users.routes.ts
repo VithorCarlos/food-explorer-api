@@ -1,9 +1,9 @@
 import { FastifyInstance } from "fastify";
-import { authenticate } from "../controllers/users/authenticate";
-import { registerUser } from "../controllers/users/register";
-import { updateUser } from "../controllers/users/update";
-import { deleteUser } from "../controllers/users/delete";
-import { refreshToken } from "../controllers/users/refresh";
+import { authenticateUserController } from "../controllers/users/authenticate-user.controller";
+import { registerUserController } from "../controllers/users/register-user.controller";
+import { updateUserController } from "../controllers/users/update-user.controller";
+import { deleteUserController } from "../controllers/users/delete-user.controller";
+import { refreshTokenController } from "../controllers/users/refresh-token.controller";
 import { verifyJWT } from "../middleware/verify-jwt";
 
 export const usersRoutes = async (fastify: FastifyInstance) => {
@@ -34,7 +34,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
         },
       },
     },
-    authenticate,
+    authenticateUserController,
   );
 
   fastify.patch(
@@ -56,7 +56,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
         },
       },
     },
-    refreshToken,
+    refreshTokenController,
   );
 
   fastify.post(
@@ -77,7 +77,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
         },
       },
     },
-    registerUser,
+    registerUserController,
   );
 
   fastify.put(
@@ -110,7 +110,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT],
     },
-    updateUser,
+    updateUserController,
   );
 
   fastify.delete(
@@ -124,6 +124,6 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
       },
       preHandler: [verifyJWT],
     },
-    deleteUser,
+    deleteUserController,
   );
 };

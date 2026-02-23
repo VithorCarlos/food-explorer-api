@@ -19,7 +19,7 @@ export class CreateAttachmentUseCase {
   ) {}
 
   async execute({ fileName, fileType, body }: CreateAttachmentRequest) {
-    const allowedMimeTypes = /^image\/(jpeg|png|webp)$/;
+    const allowedMimeTypes = /^image\/(jpeg|png|webp|avif)$/;
 
     if (!allowedMimeTypes.test(fileType)) {
       throw new InvalidAttachmentTypeError();
