@@ -30,9 +30,9 @@ export const searchSnackController = async (
       ingredients,
     });
 
-    const snanks = result.snacks.data.map(SnackWithAttachmentPresenter.toHTTP);
+    const snacks = result.snacks.data.map(SnackWithAttachmentPresenter.toHTTP);
 
-    reply.status(200).send({ snanks, pagination: result.snacks.pagination });
+    reply.status(200).send({ snacks, pagination: result.snacks.pagination });
   } catch (error) {
     if (error instanceof Error) {
       reply.status(400).send({ message: error.message });
