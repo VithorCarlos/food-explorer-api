@@ -22,7 +22,7 @@ export const searchSnackController = async (
   try {
     const searchSnacksUseCase = makeSearchSnacksUseCase(request.server.prisma);
 
-    const { snacks: filteredSnacks } = await searchSnacksUseCase.execute({
+    const result = await searchSnacksUseCase.execute({
       page,
       perPage,
       category,
@@ -30,9 +30,9 @@ export const searchSnackController = async (
       ingredients,
     });
 
-    const snanks = filteredSnacks.map(SnackWithAttachmentPresenter.toHTTP);
+    const snanks = result.snacks.data.map(SnackWithAttachmentPresenter.toHTTP);
 
-    reply.status(200).send(snanks);
+    reply.status(200).send({ snanks, pagination: result.snacks.pagination });
   } catch (error) {
     if (error instanceof Error) {
       reply.status(400).send({ message: error.message });

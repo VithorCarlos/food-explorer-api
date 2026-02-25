@@ -14,6 +14,8 @@ import {
 } from "generated/prisma/client";
 import { Uploader } from "@/domain/storage/uploader";
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
+import { PaginatedResponse } from "@/shared/paginated-response";
+import { SnackWithAttachment } from "@/domain/entities/value-objects/snack-with-attachment";
 
 export class PrismaSnacksRepository implements SnacksRepository {
   constructor(
@@ -85,7 +87,7 @@ export class PrismaSnacksRepository implements SnacksRepository {
     category,
     title,
     ingredients,
-  }: SearchManySnacksParams) {
+  }: SearchManySnacksParams): Promise<PaginatedResponse<Snack>> {
     const searchConditions = [];
 
     if (title) {
@@ -103,23 +105,30 @@ export class PrismaSnacksRepository implements SnacksRepository {
         },
       });
     }
+    const where = {
+      category,
+      ...(searchConditions.length > 0 && {
+        OR: searchConditions,
+      }),
+    };
+    const [snacks, total] = await Promise.all([
+      this.prisma.snack.findMany({
+        where,
+        skip: (page - 1) * perPage,
+        orderBy: {
+          title: "desc",
+        },
+        take: perPage,
+      }),
+      this.prisma.snack.count({ where }),
+    ]);
 
-    const snacks = await this.prisma.snack.findMany({
-      where: {
-        category,
-        ...(searchConditions.length > 0 && {
-          OR: searchConditions,
-        }),
-      },
-      skip: (page - 1) * perPage,
-      include: { _count: true },
-      orderBy: {
-        title: "desc",
-      },
-      take: perPage,
-    });
+    const hasMore = page * perPage < total;
 
-    return snacks.map(PrismaSnackAdapter.toDomain);
+    return {
+      data: snacks.map(PrismaSnackAdapter.toDomain),
+      pagination: { total, hasMore, nextPage: hasMore ? page + 1 : null },
+    };
   }
 
   async findActiveCategories(): Promise<FOOD_CATEGORIES[]> {
@@ -136,7 +145,7 @@ export class PrismaSnacksRepository implements SnacksRepository {
     category,
     title,
     ingredients,
-  }: SearchManySnacksParams) {
+  }: SearchManySnacksParams): Promise<PaginatedResponse<SnackWithAttachment>> {
     const andConditions: Prisma.Sql[] = [];
 
     if (category) {
@@ -175,21 +184,22 @@ export class PrismaSnacksRepository implements SnacksRepository {
         ? Prisma.sql`WHERE ${Prisma.join(andConditions, " AND ")}`
         : Prisma.sql``;
 
-    const snacksWithAttachment = await this.prisma.$queryRaw<
-      {
-        snack_id: string;
-        title: string;
-        description: string;
-        category: string;
-        ingredients: string[];
-        price: number;
-        user_id: string;
-        created_at: Date;
-        updated_at: Date;
-        attachment_url: string | null;
-        attachment_id: string;
-      }[]
-    >(Prisma.sql`
+    const [snacksWithAttachment, totalResult] = await Promise.all([
+      this.prisma.$queryRaw<
+        {
+          snack_id: string;
+          title: string;
+          description: string;
+          category: string;
+          ingredients: string[];
+          price: number;
+          user_id: string;
+          created_at: Date;
+          updated_at: Date;
+          attachment_url: string | null;
+          attachment_id: string;
+        }[]
+      >(Prisma.sql`
       SELECT 
         s.id as snack_id,
         s.title,
@@ -212,8 +222,28 @@ export class PrismaSnacksRepository implements SnacksRepository {
       ORDER BY s.title DESC
       LIMIT ${perPage}
       OFFSET ${(page - 1) * perPage}
-      `);
-    return snacksWithAttachment.map(PrismaSnackWithAttachmentsAdapter.toDomain);
+      `),
+
+      //get total count
+      this.prisma.$queryRaw<{ total: bigint }[]>(Prisma.sql`
+        SELECT COUNT(*) as total
+        FROM snacks s
+        ${whereClause}
+      `),
+    ]);
+
+    const hasMore = page * perPage < (totalResult[0].total ?? 0);
+
+    return {
+      data: snacksWithAttachment.map(
+        PrismaSnackWithAttachmentsAdapter.toDomain,
+      ),
+      pagination: {
+        total: Number(totalResult[0].total) ?? 0,
+        hasMore,
+        nextPage: hasMore ? page + 1 : null,
+      },
+    };
   }
 
   async create(data: Snack) {

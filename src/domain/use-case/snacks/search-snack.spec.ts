@@ -39,7 +39,7 @@ describe("Search many snacks", () => {
       perPage: 5,
     });
 
-    expect(snacks).toHaveLength(5);
+    expect(snacks.data).toHaveLength(5);
     expect(inMemorySnacksRepository.items).toHaveLength(12);
   });
 
@@ -48,8 +48,8 @@ describe("Search many snacks", () => {
       page: 1,
       title: "snack-5",
     });
-    expect(snacks).toHaveLength(1);
-    expect(snacks[0].title).toEqual("snack-5");
+    expect(snacks.data).toHaveLength(1);
+    expect(snacks.data[0].title).toEqual("snack-5");
 
     expect(inMemorySnacksRepository.items).toHaveLength(12);
   });
@@ -70,14 +70,13 @@ describe("Search many snacks", () => {
       page: 1,
       ingredients: ["rice", "sugar"],
     });
+    expect(snacks.data).toHaveLength(1);
 
-    expect(snacks).toHaveLength(1);
-
-    expect(snacks[0].ingredients).toEqual(
+    expect(snacks.data[0].ingredients).toEqual(
       expect.arrayContaining(["rice", "sugar"]),
     );
 
-    expect(snacks[0].title).toEqual("Snack Doe");
+    expect(snacks.data[0].title).toEqual("Snack Doe");
   });
 
   it("Should be able to search many snacks filtering by title and igredients", async () => {
@@ -99,12 +98,12 @@ describe("Search many snacks", () => {
       ingredients: ["rice", "sugar"],
     });
 
-    expect(snacks).toHaveLength(1);
+    expect(snacks.data).toHaveLength(1);
 
-    expect(snacks[0].ingredients).toEqual(
+    expect(snacks.data[0].ingredients).toEqual(
       expect.arrayContaining(["rice", "sugar"]),
     );
 
-    expect(snacks[0].title).toEqual("Snack Doe");
+    expect(snacks.data[0].title).toEqual("Snack Doe");
   });
 });

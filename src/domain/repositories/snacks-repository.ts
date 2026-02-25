@@ -2,6 +2,7 @@ import { PaginationParams } from "@/shared/pagination-params";
 import { Snack } from "../entities/snack";
 import { SnackWithAttachment } from "../entities/value-objects/snack-with-attachment";
 import { FOOD_CATEGORIES } from "../enums/food-categories";
+import { PaginatedResponse } from "@/shared/paginated-response";
 
 export interface FindSnacksProps {
   id: string;
@@ -17,10 +18,10 @@ export interface SearchManySnacksParams extends PaginationParams {
 export interface SnacksRepository {
   findById(id: string): Promise<Snack | null>;
   findByIdWithAttachment(id: string): Promise<SnackWithAttachment | null>;
-  searchMany(props: SearchManySnacksParams): Promise<Snack[]>;
+  searchMany(props: SearchManySnacksParams): Promise<PaginatedResponse<Snack>>;
   searchManyWithAttachments(
     props: SearchManySnacksParams,
-  ): Promise<SnackWithAttachment[]>;
+  ): Promise<PaginatedResponse<SnackWithAttachment>>;
   findActiveCategories(): Promise<FOOD_CATEGORIES[]>;
   create(snack: Snack): Promise<void>;
   update(snack: Snack): Promise<void>;

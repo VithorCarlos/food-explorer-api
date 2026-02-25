@@ -62,20 +62,20 @@ describe("Delete favorite", () => {
     );
 
     await sut.execute({
-      id: "favorite-01",
+      snackId: "snack-01",
       userId: "user-01",
     });
 
     expect(inMemoryFavoritesRepository.items).toHaveLength(1);
-    expect(inMemoryFavoritesRepository.items[0].id.toString()).toEqual(
-      "favorite-02",
+    expect(inMemoryFavoritesRepository.items[0].snackId.toString()).toEqual(
+      "snack-01",
     );
   });
 
   it("It should not be possible to delete a non-existent favorite", async () => {
     await expect(
       sut.execute({
-        id: "favorite-01",
+        snackId: "snack-01",
         userId: "user-01",
       }),
     ).rejects.toThrowError(FavoriteDoesNotExists);
@@ -94,7 +94,7 @@ describe("Delete favorite", () => {
 
     await expect(
       sut.execute({
-        id: "favorite-01",
+        snackId: "snack-01",
         userId: "different-user-id-for-this-snack",
       }),
     ).rejects.toThrowError(FavoriteNotFoundForThisUser);

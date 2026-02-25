@@ -3,13 +3,14 @@ import { FavoritesRepository } from "@/domain/repositories/favorites-repository"
 import { PaginationParams } from "@/shared/pagination-params";
 import { InMemorySnacksRepository } from "./in-memory-snacks-repository";
 import { FavoriteDetails } from "@/domain/entities/value-objects/favorite-details";
+import { PaginatedResponse } from "@/shared/paginated-response";
 
 export class InMemoryFavoritesRepository implements FavoritesRepository {
   constructor(private snacksRepository: InMemorySnacksRepository) {}
   public items: Favorite[] = [];
 
-  async findById(id: string) {
-    const item = this.items.find((item) => item.id.toString() === id);
+  async findBySnackId(snackId: string) {
+    const item = this.items.find((item) => item.snackId.toString() === snackId);
 
     if (!item) {
       return null;
@@ -32,7 +33,10 @@ export class InMemoryFavoritesRepository implements FavoritesRepository {
     return item;
   }
 
-  async findMany({ page, perPage }: PaginationParams, userId: string) {
+  async findMany(
+    { page, perPage }: PaginationParams,
+    userId: string,
+  ): Promise<PaginatedResponse<FavoriteDetails>> {
     const filteredItems = this.items
       .filter((item) => item.userId.toString() === userId)
       .slice((page - 1) * perPage, page * perPage);
@@ -42,24 +46,40 @@ export class InMemoryFavoritesRepository implements FavoritesRepository {
     );
 
     if (!favorite) {
-      return null;
+      return {
+        data: [],
+        pagination: {
+          hasMore: false,
+          nextPage: null,
+          total: 0,
+        },
+      };
     }
 
-    return filteredItems.map(({ snackId, id, userId }) =>
-      FavoriteDetails.create({
-        snackId,
-        favoriteId: id,
-        userId,
-        attachmentUrl: favorite.attachmentLink.attachmentId + ".png",
-        title: favorite.title,
-        category: favorite.category,
-        ingredients: favorite.ingredients,
-        price: favorite.price,
-        description: favorite.description,
-        createdAt: favorite.createdAt,
-        updatedAt: favorite.updatedAt!,
-      }),
-    );
+    const itemsIds = new Set(filteredItems.map((item) => item.id));
+    const total = itemsIds.size;
+    const hasMore = page * perPage < total;
+
+    return {
+      data: filteredItems.map(({ snackId, id, userId }) =>
+        FavoriteDetails.create({
+          snackId,
+          favoriteId: id,
+          userId,
+          attachmentUrl: favorite.attachmentLink.attachmentId + ".png",
+          title: favorite.title,
+          category: favorite.category,
+          ingredients: favorite.ingredients,
+          price: favorite.price,
+          description: favorite.description,
+        }),
+      ),
+      pagination: {
+        hasMore,
+        total,
+        nextPage: hasMore ? page + 1 : null,
+      },
+    };
   }
 
   async create(data: Favorite) {

@@ -6,12 +6,16 @@ import { PrismaService } from "../prisma";
 import { PrismaFavoriteDetailsAdapter } from "../adapters/prisma-favorite-details";
 import { Prisma } from "generated/prisma/client";
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
+import { PaginatedResponse } from "@/shared/paginated-response";
+import { FavoriteDetails } from "@/domain/entities/value-objects/favorite-details";
 
 export class PrismaFavoritesRepository implements FavoritesRepository {
   constructor(private prisma: PrismaService) {}
 
-  async findById(id: string) {
-    const favorite = await this.prisma.favorite.findFirst({ where: { id } });
+  async findBySnackId(snackId: string) {
+    const favorite = await this.prisma.favorite.findFirst({
+      where: { snackId },
+    });
 
     if (!favorite) {
       return null;
@@ -32,35 +36,25 @@ export class PrismaFavoritesRepository implements FavoritesRepository {
     return PrismaFavoriteAdapter.toDomain(favorite);
   }
 
-  async findBySnackId(snackId: string) {
-    const favorite = await this.prisma.favorite.findFirst({
-      where: {
-        snackId,
-      },
-    });
-
-    if (!favorite) {
-      return null;
-    }
-
-    return PrismaFavoriteAdapter.toDomain(favorite);
-  }
-
-  async findMany({ page, perPage }: PaginationParams, userId: string) {
-    const favorites = await this.prisma.$queryRaw<
-      {
-        favorite_id: string;
-        snack_id: string;
-        user_id: string;
-        attachment_url: string | null;
-        title: string;
-        category: FOOD_CATEGORIES;
-        ingredients: string[];
-        price: number;
-        description: string;
-      }[]
-    >(
-      Prisma.sql`
+  async findMany(
+    { page, perPage }: PaginationParams,
+    userId: string,
+  ): Promise<PaginatedResponse<FavoriteDetails>> {
+    const [favorites, total] = await Promise.all([
+      this.prisma.$queryRaw<
+        {
+          favorite_id: string;
+          snack_id: string;
+          user_id: string;
+          attachment_url: string | null;
+          title: string;
+          category: FOOD_CATEGORIES;
+          ingredients: string[];
+          price: number;
+          description: string;
+        }[]
+      >(
+        Prisma.sql`
           SELECT 
             f.id as favorite_id,
             f.user_id,
@@ -84,9 +78,20 @@ export class PrismaFavoritesRepository implements FavoritesRepository {
           LIMIT ${perPage} 
           OFFSET ${(page - 1) * perPage}
           `,
-    );
+      ),
+      this.prisma.favorite.count({ where: { userId } }),
+    ]);
 
-    return favorites.map(PrismaFavoriteDetailsAdapter.toDomain);
+    const hasMore = page * perPage < total;
+
+    return {
+      data: favorites.map(PrismaFavoriteDetailsAdapter.toDomain),
+      pagination: {
+        hasMore,
+        total,
+        nextPage: hasMore ? page + 1 : null,
+      },
+    };
   }
 
   async create(data: Favorite) {
@@ -94,10 +99,11 @@ export class PrismaFavoritesRepository implements FavoritesRepository {
     await this.prisma.favorite.create({ data: favorite });
   }
 
-  async delete(id: string) {
-    await this.prisma.favorite.delete({
+  async delete(snackId: string, userId: string) {
+    await this.prisma.favorite.deleteMany({
       where: {
-        id,
+        snackId,
+        userId,
       },
     });
   }

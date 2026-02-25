@@ -1,5 +1,4 @@
 import { FavoritesRepository } from "@/domain/repositories/favorites-repository";
-import { SnacksRepository } from "@/domain/repositories/snacks-repository";
 
 interface FindManyFavoriteRequest {
   userId: string;

@@ -7,6 +7,7 @@ import {
 import { InMemoryAttachmentLinkRepository } from "./in-memory-attachment-link-repository";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { FOOD_CATEGORIES } from "@/domain/enums/food-categories";
+import { PaginatedResponse } from "@/shared/paginated-response";
 
 export class InMemorySnacksRepository implements SnacksRepository {
   constructor(
@@ -31,12 +32,27 @@ export class InMemorySnacksRepository implements SnacksRepository {
     category,
     title,
     ingredients,
-  }: SearchManySnacksParams) {
+  }: SearchManySnacksParams): Promise<PaginatedResponse<Snack>> {
     if (!title && (!ingredients || ingredients.length === 0)) {
-      return this.items.slice((page - 1) * perPage, page * perPage);
+      const filteredItems = this.items.slice(
+        (page - 1) * perPage,
+        page * perPage,
+      );
+      const itemsIds = new Set(filteredItems.map((item) => item.id));
+      const total = itemsIds.size;
+      const hasMore = page * perPage < total;
+
+      return {
+        data: filteredItems,
+        pagination: {
+          total,
+          hasMore,
+          nextPage: hasMore ? page + 1 : null,
+        },
+      };
     }
 
-    return this.items
+    const filteredItems = this.items
       .filter((item) => {
         if (category && item.category !== category) {
           return false;
@@ -58,6 +74,19 @@ export class InMemorySnacksRepository implements SnacksRepository {
         return true;
       })
       .slice((page - 1) * perPage, page * perPage);
+
+    const itemsIds = new Set(filteredItems.map((item) => item.id));
+    const total = itemsIds.size;
+    const hasMore = page * perPage < total;
+
+    return {
+      data: filteredItems,
+      pagination: {
+        total,
+        hasMore,
+        nextPage: hasMore ? page + 1 : null,
+      },
+    };
   }
 
   async findActiveCategories(): Promise<FOOD_CATEGORIES[]> {
@@ -97,7 +126,7 @@ export class InMemorySnacksRepository implements SnacksRepository {
     category,
     title,
     ingredients,
-  }: SearchManySnacksParams): Promise<SnackWithAttachment[]> {
+  }: SearchManySnacksParams) {
     const filtered = this.items
       .filter((item) => {
         if (category && item.category !== category) return false;
@@ -116,7 +145,7 @@ export class InMemorySnacksRepository implements SnacksRepository {
       })
       .slice((page - 1) * perPage, page * perPage);
 
-    return filtered.map((snack) =>
+    const filteredItems = filtered.map((snack) =>
       SnackWithAttachment.create({
         title: snack.title,
         price: snack.price,
@@ -130,6 +159,18 @@ export class InMemorySnacksRepository implements SnacksRepository {
         userId: snack.userId,
       }),
     );
+    const itemsIds = new Set(filteredItems.map((item) => item.snackId));
+    const total = itemsIds.size;
+    const hasMore = page * perPage < total;
+
+    return {
+      data: filteredItems,
+      pagination: {
+        total,
+        hasMore,
+        nextPage: hasMore ? page + 1 : null,
+      },
+    };
   }
 
   async create(data: Snack) {

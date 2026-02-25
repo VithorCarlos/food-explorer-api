@@ -49,7 +49,8 @@ describe("Find many favorites", () => {
       page: 2,
     });
 
-    expect(favorites).toHaveLength(2);
+    expect(favorites?.data).toHaveLength(2);
+    expect(favorites?.pagination.total).toEqual(2);
     expect(inMemoryFavoritesRepository.items).toHaveLength(12);
   });
 });

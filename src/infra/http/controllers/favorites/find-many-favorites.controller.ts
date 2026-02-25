@@ -10,8 +10,8 @@ export const findManyFavoritesController = async (
   const userId = request.user.sub;
 
   const findManySchema = z.object({
-    page: z.number().optional(),
-    perPage: z.number().optional(),
+    page: z.coerce.number().min(1).default(1),
+    perPage: z.coerce.number().min(1).default(10),
   });
 
   const { page, perPage } = findManySchema.parse(request.query);
@@ -21,17 +21,16 @@ export const findManyFavoritesController = async (
       request.server.prisma,
     );
 
-    const { favorites } = await findManyFavoriteUseCase.execute({
+    const result = await findManyFavoriteUseCase.execute({
       userId,
       page,
       perPage,
     });
 
-    if (favorites) {
-      reply
-        .status(200)
-        .send({ favorites: favorites.map(FavoriteDetailsPresenter.toHTTP) });
-    }
+    return reply.status(200).send({
+      favorites: result.favorites.data.map(FavoriteDetailsPresenter.toHTTP),
+      pagination: result.favorites.pagination,
+    });
   } catch (error) {
     if (error instanceof Error) {
       reply.status(400).send({ message: error.message });

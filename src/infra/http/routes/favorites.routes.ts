@@ -53,7 +53,7 @@ export const favoritesRoutes = async (fastify: FastifyInstance) => {
         body: {
           type: "object",
           properties: {
-            id: { type: "string" },
+            snackId: { type: "string" },
           },
         },
         tags: ["Favorites"],

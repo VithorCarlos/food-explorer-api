@@ -9,10 +9,10 @@ export const deleteFavoriteController = async (
   const userId = request.user.sub;
 
   const deleteSchema = z.object({
-    id: z.string(),
+    snackId: z.string(),
   });
 
-  const { id } = deleteSchema.parse(request.body);
+  const { snackId } = deleteSchema.parse(request.body);
 
   try {
     const deleteFavoriteUseCase = makeDeleteFavoriteUseCase(
@@ -20,7 +20,7 @@ export const deleteFavoriteController = async (
     );
 
     await deleteFavoriteUseCase.execute({
-      id,
+      snackId,
       userId,
     });
 
