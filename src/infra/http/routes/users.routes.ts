@@ -5,6 +5,7 @@ import { updateUserController } from "../controllers/users/update-user.controlle
 import { deleteUserController } from "../controllers/users/delete-user.controller";
 import { refreshTokenController } from "../controllers/users/refresh-token.controller";
 import { verifyJWT } from "../middleware/verify-jwt";
+import { findUserByIdController } from "../controllers/users/find-users-by-id";
 
 export const usersRoutes = async (fastify: FastifyInstance) => {
   fastify.post(
@@ -111,6 +112,20 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
       preHandler: [verifyJWT],
     },
     updateUserController,
+  );
+
+  fastify.get(
+    "/users",
+    {
+      schema: {
+        security: [{ BearerAuth: [] }],
+        description: "Find User",
+        tags: ["User"],
+        summary: "Find User",
+      },
+      preHandler: [verifyJWT],
+    },
+    findUserByIdController,
   );
 
   fastify.delete(

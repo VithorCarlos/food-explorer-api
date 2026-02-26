@@ -2,6 +2,8 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
 import { makeUpdateUserUseCase } from "../../factories/make-update-user-use-case";
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
+import { PasswordAlreadyExists } from "@/domain/errors/password-already-exists";
+import { EmailAlreadyExists } from "@/domain/errors/email-already-exists";
 
 export const updateUserController = async (
   request: FastifyRequest,
@@ -35,6 +37,14 @@ export const updateUserController = async (
     });
   } catch (error) {
     if (error instanceof UserDoesNotExists) {
+      reply.status(400).send({ message: error.message });
+    }
+
+    if (error instanceof PasswordAlreadyExists) {
+      reply.status(400).send({ message: error.message });
+    }
+
+    if (error instanceof EmailAlreadyExists) {
       reply.status(400).send({ message: error.message });
     }
 

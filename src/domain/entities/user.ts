@@ -13,15 +13,9 @@ export interface UserProps {
   updatedAt?: Date | null;
 }
 
-interface SaveUserProps {
-  name?: string;
-  email?: string;
-  password?: string;
-}
-
 export class User extends BaseEntity<UserProps> {
   static create(
-    props: Optional<UserProps, "createdAt" | "role">,
+    props: Optional<UserProps, "createdAt" | "role" | "updatedAt">,
     id?: UniqueEntityId,
   ) {
     const user = new User(

@@ -4,6 +4,8 @@ import { UpdateUserUseCase } from "./update-user";
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 import { EmailAlreadyExists } from "@/domain/errors/email-already-exists";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
+import { PasswordAlreadyExists } from "@/domain/errors/password-already-exists";
+import { hash } from "bcryptjs";
 
 let sut: UpdateUserUseCase;
 let inMemoryUsersRepository: InMemoryUsersRepository;
@@ -50,20 +52,55 @@ describe("Update user", () => {
   });
 
   it("It should not be possible to update a user with existent email", async () => {
-    const user = makeUser({
-      email: "johndoe@gmail.com",
+    const user1 = makeUser({
+      email: "email1@gmail.com",
       id: new UniqueEntityId("user-1"),
     });
+    const user2 = makeUser({
+      email: "email2@gmail.com",
+      id: new UniqueEntityId("user-2"),
+    });
 
-    await inMemoryUsersRepository.create(user);
+    await inMemoryUsersRepository.create(user1);
+    await inMemoryUsersRepository.create(user2);
 
     await expect(
       sut.execute({
-        userId: user.id.toString(),
-        name: user.name,
-        email: "johndoe@gmail.com",
-        password: user.password,
+        userId: user2.id.toString(),
+        email: "email1@gmail.com",
       }),
     ).rejects.toThrowError(EmailAlreadyExists);
+  });
+
+  it("It should not be possible to update a user with existent password", async () => {
+    const hashedPassword = await hash("old-password", 6);
+
+    const user1 = makeUser({
+      id: new UniqueEntityId("user-1"),
+      password: hashedPassword,
+    });
+
+    await inMemoryUsersRepository.create(user1);
+
+    await expect(
+      sut.execute({
+        userId: user1.id.toString(),
+        password: "old-password",
+      }),
+    ).rejects.toThrowError(PasswordAlreadyExists);
+  });
+
+  it("Should be able to update only the name", async () => {
+    const user = makeUser({ id: new UniqueEntityId("user-1") });
+    await inMemoryUsersRepository.create(user);
+
+    const { user: updated } = await sut.execute({
+      userId: user.id.toString(),
+      name: "New Name",
+    });
+
+    expect(updated.name).toBe("New Name");
+    expect(updated.email).toBe(user.email);
+    expect(updated.password).toBe(user.password);
   });
 });

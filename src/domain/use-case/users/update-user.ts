@@ -1,7 +1,8 @@
 import { EmailAlreadyExists } from "@/domain/errors/email-already-exists";
+import { PasswordAlreadyExists } from "@/domain/errors/password-already-exists";
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 import { UsersRepository } from "@/domain/repositories/users-repository";
-import { hash } from "bcryptjs";
+import { compare, hash } from "bcryptjs";
 
 interface UpdateUserRequest {
   userId: string;
@@ -15,7 +16,6 @@ export class UpdateUserUseCase {
 
   async execute({ userId, name, email, password }: UpdateUserRequest) {
     const user = await this.usersRepository.findById(userId);
-
     if (!user) {
       throw new UserDoesNotExists();
     }
@@ -23,20 +23,26 @@ export class UpdateUserUseCase {
     let password_hash;
 
     if (password) {
+      const isSamePassword = await compare(password, user.password);
+
+      if (isSamePassword) {
+        throw new PasswordAlreadyExists();
+      }
+
       password_hash = await hash(password, 6);
     }
 
-    if (email && user.email === email) {
+    if (email && user.email !== email) {
       const userWithEmail = await this.usersRepository.findByEmail(email);
 
-      if (userWithEmail) {
+      if (userWithEmail && userWithEmail.id.toString() !== user.id.toString()) {
         throw new EmailAlreadyExists();
       }
     }
 
     if (name) user.name = name;
     if (email) user.email = email;
-    if (password) user.password = password;
+    if (password && password_hash) user.password = password_hash;
 
     await this.usersRepository.update(user);
 
