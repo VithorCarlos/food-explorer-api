@@ -277,7 +277,8 @@ export class PrismaSnacksRepository implements SnacksRepository {
     const snack = PrismaSnackAdapter.toPrisma(data);
     const snackId = data.id.toString();
     const userId = data.userId.toString();
-    const newAttachmentId = data.attachmentLink.attachmentId.toString();
+
+    const newAttachmentId = data.attachmentLink!.attachmentId.toString();
 
     const existingLink = await this.prisma.attachmentLink.findFirst({
       where: {
@@ -318,20 +319,22 @@ export class PrismaSnacksRepository implements SnacksRepository {
           });
         }
 
-        const newAttachmentLink = PrismaAttachmentLinkAdapter.toPrisma(
-          data.attachmentLink,
-        );
-        await tx.attachmentLink.create({
-          data: newAttachmentLink,
-        });
+        if (data.attachmentLink) {
+          const newAttachmentLink = PrismaAttachmentLinkAdapter.toPrisma(
+            data.attachmentLink,
+          );
+          await tx.attachmentLink.create({
+            data: newAttachmentLink,
+          });
 
-        await tx.attachment.update({
-          where: { id: newAttachmentId },
-          data: {
-            expiresAt: null,
-            status: ATTACHMENT_STATUS.LINKED,
-          },
-        });
+          await tx.attachment.update({
+            where: { id: newAttachmentId },
+            data: {
+              expiresAt: null,
+              status: ATTACHMENT_STATUS.LINKED,
+            },
+          });
+        }
       }
     });
 

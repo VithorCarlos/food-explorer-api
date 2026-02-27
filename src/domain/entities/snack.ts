@@ -7,10 +7,10 @@ import { RESOURSE_TYPE } from "generated/prisma/enums";
 
 export interface SnackProps {
   title: string;
-  description: string;
+  description?: string;
   attachmentLink?: AttachmentLink;
   category: FOOD_CATEGORIES;
-  ingredients: string[];
+  ingredients?: string[];
   price: number;
   userId: UniqueEntityId;
   createdAt: Date;
@@ -39,7 +39,7 @@ export class Snack extends BaseEntity<SnackProps> {
     this.touch();
   }
 
-  get description() {
+  get description(): string | undefined {
     return this.props.description;
   }
 
@@ -48,8 +48,8 @@ export class Snack extends BaseEntity<SnackProps> {
     this.touch();
   }
 
-  get attachmentLink() {
-    return this.props.attachmentLink!;
+  get attachmentLink(): AttachmentLink | undefined {
+    return this.props.attachmentLink;
   }
 
   set attachmentLink(attachmentLink: AttachmentLink) {
@@ -67,7 +67,7 @@ export class Snack extends BaseEntity<SnackProps> {
   }
 
   get ingredients() {
-    return this.props.ingredients;
+    return this.props.ingredients ?? [];
   }
 
   set ingredients(ingredients: string[]) {

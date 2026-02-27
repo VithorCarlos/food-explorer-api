@@ -51,7 +51,7 @@ model User {
 model Snack {
   id          String   @unique @default(uuid())
   title       String
-  description String
+  description String?
   category    String
   ingredients String[]
   price       Float

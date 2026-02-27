@@ -202,7 +202,7 @@ export type SnackGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type SnackGroupByOutputType = {
   id: string
   title: string
-  description: string
+  description: string | null
   category: string
   ingredients: string[]
   price: number
@@ -237,7 +237,7 @@ export type SnackWhereInput = {
   NOT?: Prisma.SnackWhereInput | Prisma.SnackWhereInput[]
   id?: Prisma.StringFilter<"Snack"> | string
   title?: Prisma.StringFilter<"Snack"> | string
-  description?: Prisma.StringFilter<"Snack"> | string
+  description?: Prisma.StringNullableFilter<"Snack"> | string | null
   category?: Prisma.StringFilter<"Snack"> | string
   ingredients?: Prisma.StringNullableListFilter<"Snack">
   price?: Prisma.FloatFilter<"Snack"> | number
@@ -251,7 +251,7 @@ export type SnackWhereInput = {
 export type SnackOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  description?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   category?: Prisma.SortOrder
   ingredients?: Prisma.SortOrder
   price?: Prisma.SortOrder
@@ -268,7 +268,7 @@ export type SnackWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.SnackWhereInput[]
   NOT?: Prisma.SnackWhereInput | Prisma.SnackWhereInput[]
   title?: Prisma.StringFilter<"Snack"> | string
-  description?: Prisma.StringFilter<"Snack"> | string
+  description?: Prisma.StringNullableFilter<"Snack"> | string | null
   category?: Prisma.StringFilter<"Snack"> | string
   ingredients?: Prisma.StringNullableListFilter<"Snack">
   price?: Prisma.FloatFilter<"Snack"> | number
@@ -282,7 +282,7 @@ export type SnackWhereUniqueInput = Prisma.AtLeast<{
 export type SnackOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
-  description?: Prisma.SortOrder
+  description?: Prisma.SortOrderInput | Prisma.SortOrder
   category?: Prisma.SortOrder
   ingredients?: Prisma.SortOrder
   price?: Prisma.SortOrder
@@ -302,7 +302,7 @@ export type SnackScalarWhereWithAggregatesInput = {
   NOT?: Prisma.SnackScalarWhereWithAggregatesInput | Prisma.SnackScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Snack"> | string
   title?: Prisma.StringWithAggregatesFilter<"Snack"> | string
-  description?: Prisma.StringWithAggregatesFilter<"Snack"> | string
+  description?: Prisma.StringNullableWithAggregatesFilter<"Snack"> | string | null
   category?: Prisma.StringWithAggregatesFilter<"Snack"> | string
   ingredients?: Prisma.StringNullableListFilter<"Snack">
   price?: Prisma.FloatWithAggregatesFilter<"Snack"> | number
@@ -314,7 +314,7 @@ export type SnackScalarWhereWithAggregatesInput = {
 export type SnackCreateInput = {
   id?: string
   title: string
-  description: string
+  description?: string | null
   category: string
   ingredients?: Prisma.SnackCreateingredientsInput | string[]
   price: number
@@ -327,7 +327,7 @@ export type SnackCreateInput = {
 export type SnackUncheckedCreateInput = {
   id?: string
   title: string
-  description: string
+  description?: string | null
   category: string
   ingredients?: Prisma.SnackCreateingredientsInput | string[]
   price: number
@@ -340,7 +340,7 @@ export type SnackUncheckedCreateInput = {
 export type SnackUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   ingredients?: Prisma.SnackUpdateingredientsInput | string[]
   price?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -353,7 +353,7 @@ export type SnackUpdateInput = {
 export type SnackUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   ingredients?: Prisma.SnackUpdateingredientsInput | string[]
   price?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -366,7 +366,7 @@ export type SnackUncheckedUpdateInput = {
 export type SnackCreateManyInput = {
   id?: string
   title: string
-  description: string
+  description?: string | null
   category: string
   ingredients?: Prisma.SnackCreateingredientsInput | string[]
   price: number
@@ -378,7 +378,7 @@ export type SnackCreateManyInput = {
 export type SnackUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   ingredients?: Prisma.SnackUpdateingredientsInput | string[]
   price?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -389,7 +389,7 @@ export type SnackUpdateManyMutationInput = {
 export type SnackUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   ingredients?: Prisma.SnackUpdateingredientsInput | string[]
   price?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -509,6 +509,10 @@ export type SnackCreateingredientsInput = {
   set: string[]
 }
 
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
 export type SnackUpdateingredientsInput = {
   set?: string[]
   push?: string | string[]
@@ -539,7 +543,7 @@ export type SnackUpdateOneRequiredWithoutFavoriteNestedInput = {
 export type SnackCreateWithoutUserInput = {
   id?: string
   title: string
-  description: string
+  description?: string | null
   category: string
   ingredients?: Prisma.SnackCreateingredientsInput | string[]
   price: number
@@ -551,7 +555,7 @@ export type SnackCreateWithoutUserInput = {
 export type SnackUncheckedCreateWithoutUserInput = {
   id?: string
   title: string
-  description: string
+  description?: string | null
   category: string
   ingredients?: Prisma.SnackCreateingredientsInput | string[]
   price: number
@@ -592,7 +596,7 @@ export type SnackScalarWhereInput = {
   NOT?: Prisma.SnackScalarWhereInput | Prisma.SnackScalarWhereInput[]
   id?: Prisma.StringFilter<"Snack"> | string
   title?: Prisma.StringFilter<"Snack"> | string
-  description?: Prisma.StringFilter<"Snack"> | string
+  description?: Prisma.StringNullableFilter<"Snack"> | string | null
   category?: Prisma.StringFilter<"Snack"> | string
   ingredients?: Prisma.StringNullableListFilter<"Snack">
   price?: Prisma.FloatFilter<"Snack"> | number
@@ -604,7 +608,7 @@ export type SnackScalarWhereInput = {
 export type SnackCreateWithoutFavoriteInput = {
   id?: string
   title: string
-  description: string
+  description?: string | null
   category: string
   ingredients?: Prisma.SnackCreateingredientsInput | string[]
   price: number
@@ -616,7 +620,7 @@ export type SnackCreateWithoutFavoriteInput = {
 export type SnackUncheckedCreateWithoutFavoriteInput = {
   id?: string
   title: string
-  description: string
+  description?: string | null
   category: string
   ingredients?: Prisma.SnackCreateingredientsInput | string[]
   price: number
@@ -644,7 +648,7 @@ export type SnackUpdateToOneWithWhereWithoutFavoriteInput = {
 export type SnackUpdateWithoutFavoriteInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   ingredients?: Prisma.SnackUpdateingredientsInput | string[]
   price?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -656,7 +660,7 @@ export type SnackUpdateWithoutFavoriteInput = {
 export type SnackUncheckedUpdateWithoutFavoriteInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   ingredients?: Prisma.SnackUpdateingredientsInput | string[]
   price?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -668,7 +672,7 @@ export type SnackUncheckedUpdateWithoutFavoriteInput = {
 export type SnackCreateManyUserInput = {
   id?: string
   title: string
-  description: string
+  description?: string | null
   category: string
   ingredients?: Prisma.SnackCreateingredientsInput | string[]
   price: number
@@ -679,7 +683,7 @@ export type SnackCreateManyUserInput = {
 export type SnackUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   ingredients?: Prisma.SnackUpdateingredientsInput | string[]
   price?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -691,7 +695,7 @@ export type SnackUpdateWithoutUserInput = {
 export type SnackUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   ingredients?: Prisma.SnackUpdateingredientsInput | string[]
   price?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -703,7 +707,7 @@ export type SnackUncheckedUpdateWithoutUserInput = {
 export type SnackUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
-  description?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   ingredients?: Prisma.SnackUpdateingredientsInput | string[]
   price?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -817,7 +821,7 @@ export type $SnackPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     title: string
-    description: string
+    description: string | null
     category: string
     ingredients: string[]
     price: number

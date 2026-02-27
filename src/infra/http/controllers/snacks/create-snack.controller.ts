@@ -10,11 +10,11 @@ export const createSnackController = async (
 ) => {
   const createSchema = z.object({
     title: z.string(),
-    description: z.string(),
+    description: z.string().optional(),
     category: z.enum(FOOD_CATEGORIES),
-    ingredients: z.string().array(),
+    ingredients: z.string().array().optional(),
     price: z.number().min(0),
-    attachmentId: z.string(),
+    attachmentId: z.string().optional(),
   });
 
   const { title, category, ingredients, price, description, attachmentId } =
@@ -27,11 +27,11 @@ export const createSnackController = async (
   const { snack: createdSnack } = await createSnackUseCase.execute({
     title,
     category,
-    ingredients,
+    ...(ingredients && { ingredients }),
+    ...(description && { description }),
+    ...(attachmentId && { attachmentId }),
     userId,
     price,
-    description,
-    attachmentId,
   });
 
   const snack = PrismaSnackAdapter.toPrisma(createdSnack);

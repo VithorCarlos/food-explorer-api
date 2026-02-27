@@ -76,30 +76,21 @@ export const snackRoutes = async (fastify: FastifyInstance) => {
         body: {
           type: "object",
           properties: {
-            title: { type: "string", default: "Mozzarella pizza" },
+            title: { type: "string" },
             attachmentId: { type: "string" },
             category: {
               type: "string",
               enum: Object.values(FOOD_CATEGORIES),
-              default: FOOD_CATEGORIES.MEATS,
             },
             ingredients: {
               type: "array",
-              default: ["cheese", "tomato", "onion"],
             },
-            price: { type: "number", default: 54 },
+            price: { type: "number" },
             description: {
               type: "string",
-              default: "A delicious pizza with melted cheese",
             },
           },
-          required: [
-            "title",
-            "category",
-            "price",
-            "description",
-            "attachmentId",
-          ],
+          required: ["title", "category", "price"],
         },
         response: {
           200: {

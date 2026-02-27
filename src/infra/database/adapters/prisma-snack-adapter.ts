@@ -22,7 +22,7 @@ export class PrismaSnackAdapter {
       ingredients,
       userId: userId.toString(),
       price,
-      description,
+      ...(description && { description }),
       createdAt,
       updatedAt,
     };
@@ -46,7 +46,7 @@ export class PrismaSnackAdapter {
         ingredients,
         userId: new UniqueEntityId(userId),
         price,
-        description,
+        ...(description && { description }),
         createdAt,
         updatedAt,
       },

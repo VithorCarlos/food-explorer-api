@@ -19,7 +19,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
           type: "object",
           properties: {
             email: { type: "string", default: "johndoe@gmail.com" },
-            password: { type: "string", default: "12345678" },
+            password: { type: "string", default: "123456" },
           },
           required: ["email", "password"],
         },
@@ -72,7 +72,7 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
           properties: {
             name: { type: "string", default: "John Doe" },
             email: { type: "string", default: "johndoe@gmail.com" },
-            password: { type: "string", default: "12345678" },
+            password: { type: "string", default: "123456" },
           },
           required: ["name", "email", "password"],
         },
