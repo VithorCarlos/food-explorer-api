@@ -1,12 +1,12 @@
 import { BaseEntity } from "@/shared/entity/base-identity";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { Optional } from "@/shared/optional";
-import { $Enums } from "generated/prisma/client";
+import { RESOURSE_TYPE } from "../enums/resource-type";
 
 export interface AttachmentLinkProps {
   attachmentId: UniqueEntityId;
   resourceId: UniqueEntityId;
-  resourceType: $Enums.RESOURSE_TYPE;
+  resourceType: RESOURSE_TYPE;
   linkedAt: Date;
 }
 

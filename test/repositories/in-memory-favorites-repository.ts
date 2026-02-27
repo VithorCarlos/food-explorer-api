@@ -1,16 +1,18 @@
 import { Favorite } from "@/domain/entities/favorite";
 import { FavoritesRepository } from "@/domain/repositories/favorites-repository";
 import { PaginationParams } from "@/shared/pagination-params";
-import { InMemorySnacksRepository } from "./in-memory-snacks-repository";
+import { InMemoryProductsRepository } from "./in-memory-products-repository";
 import { FavoriteDetails } from "@/domain/entities/value-objects/favorite-details";
 import { PaginatedResponse } from "@/shared/paginated-response";
 
 export class InMemoryFavoritesRepository implements FavoritesRepository {
-  constructor(private snacksRepository: InMemorySnacksRepository) {}
+  constructor(private productsRepository: InMemoryProductsRepository) {}
   public items: Favorite[] = [];
 
-  async findBySnackId(snackId: string) {
-    const item = this.items.find((item) => item.snackId.toString() === snackId);
+  async findByProductId(productId: string) {
+    const item = this.items.find(
+      (item) => item.productId.toString() === productId,
+    );
 
     if (!item) {
       return null;
@@ -19,11 +21,11 @@ export class InMemoryFavoritesRepository implements FavoritesRepository {
     return item;
   }
 
-  async findByUserAndSnackId(userId: string, snackId: string) {
+  async findByUserAndProductId(userId: string, productId: string) {
     const item = this.items.find(
       (item) =>
         item.userId.toString() === userId &&
-        item.snackId.toString() === snackId,
+        item.productId.toString() === productId,
     );
 
     if (!item) {
@@ -41,7 +43,7 @@ export class InMemoryFavoritesRepository implements FavoritesRepository {
       .filter((item) => item.userId.toString() === userId)
       .slice((page - 1) * perPage, page * perPage);
 
-    const favorite = this.snacksRepository.items.find(
+    const favorite = this.productsRepository.items.find(
       (item) => item.userId.toString() === userId,
     );
 
@@ -61,17 +63,17 @@ export class InMemoryFavoritesRepository implements FavoritesRepository {
     const hasMore = page * perPage < total;
 
     return {
-      data: filteredItems.map(({ snackId, id, userId }) =>
+      data: filteredItems.map(({ productId, id, userId }) =>
         FavoriteDetails.create({
-          snackId,
+          productId,
           favoriteId: id,
           userId,
-          attachmentUrl: favorite.attachmentLink.attachmentId + ".png",
+          attachmentUrl: favorite.attachmentLink?.attachmentId + ".png",
           title: favorite.title,
           category: favorite.category,
           ingredients: favorite.ingredients,
           price: favorite.price,
-          description: favorite.description,
+          ...(favorite.description && { description: favorite.description }),
         }),
       ),
       pagination: {

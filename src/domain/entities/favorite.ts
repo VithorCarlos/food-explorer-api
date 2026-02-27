@@ -3,7 +3,7 @@ import { BaseEntity } from "../../shared/entity/base-identity";
 
 export interface FavoriteProps {
   userId: UniqueEntityId;
-  snackId: UniqueEntityId;
+  productId: UniqueEntityId;
 }
 
 export class Favorite extends BaseEntity<FavoriteProps> {
@@ -22,7 +22,7 @@ export class Favorite extends BaseEntity<FavoriteProps> {
     return this.props.userId;
   }
 
-  get snackId() {
-    return this.props.snackId;
+  get productId() {
+    return this.props.productId;
   }
 }

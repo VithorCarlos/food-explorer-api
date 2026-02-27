@@ -1,7 +1,7 @@
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { BaseEntity } from "../../shared/entity/base-identity";
 import dayjs from "dayjs";
-import { ATTACHMENT_STATUS } from "generated/prisma/enums";
+import { ATTACHMENT_STATUS } from "../enums/attachment-status";
 
 export interface AttachmentProps {
   title: string;

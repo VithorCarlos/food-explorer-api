@@ -15,9 +15,9 @@ export const favoritesRoutes = async (fastify: FastifyInstance) => {
         body: {
           type: "object",
           properties: {
-            snackId: { type: "string" },
+            productId: { type: "string" },
           },
-          required: ["snackId"],
+          required: ["productId"],
         },
       },
       preHandler: [verifyJWT],
@@ -53,7 +53,7 @@ export const favoritesRoutes = async (fastify: FastifyInstance) => {
         body: {
           type: "object",
           properties: {
-            snackId: { type: "string" },
+            productId: { type: "string" },
           },
         },
         tags: ["Favorites"],

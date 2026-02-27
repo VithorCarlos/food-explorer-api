@@ -1,4 +1,5 @@
-import { ATTACHMENT_STATUS, RESOURSE_TYPE } from "generated/prisma/enums";
+import { ATTACHMENT_STATUS } from "../enums/attachment-status";
+import { RESOURSE_TYPE } from "../enums/resource-type";
 import { Attachment } from "./attachment";
 import { AttachmentLink } from "./attachment-link";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
@@ -16,7 +17,7 @@ describe("Attachment entity", () => {
     const attachmentLink = AttachmentLink.create({
       attachmentId: attachment.id,
       resourceId: new UniqueEntityId("1"),
-      resourceType: RESOURSE_TYPE.SNACK,
+      resourceType: RESOURSE_TYPE.PRODUCT,
       linkedAt: new Date(),
     });
 

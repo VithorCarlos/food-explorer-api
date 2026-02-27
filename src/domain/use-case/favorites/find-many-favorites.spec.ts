@@ -1,44 +1,44 @@
 import { InMemoryFavoritesRepository } from "test/repositories/in-memory-favorites-repository";
 import { makeFavorite } from "test/factories/make-favorite";
 import { FindManyFavoriteUseCase } from "./find-many-favorites";
-import { InMemorySnacksRepository } from "test/repositories/in-memory-snacks-repository";
+import { InMemoryProductsRepository } from "test/repositories/in-memory-products-repository";
 import { InMemoryAttachmentLinkRepository } from "test/repositories/in-memory-attachment-link-repository";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
-import { makeSnack } from "test/factories/make-snack";
+import { makeProduct } from "test/factories/make-product";
 
 let sut: FindManyFavoriteUseCase;
 let inMemoryFavoritesRepository: InMemoryFavoritesRepository;
-let inMemorySnacksRepository: InMemorySnacksRepository;
+let inMemoryProductsRepository: InMemoryProductsRepository;
 let inMemoryAttachmentLinkRepository: InMemoryAttachmentLinkRepository;
 
 describe("Find many favorites", () => {
   beforeEach(() => {
     inMemoryAttachmentLinkRepository = new InMemoryAttachmentLinkRepository();
-    inMemorySnacksRepository = new InMemorySnacksRepository(
+    inMemoryProductsRepository = new InMemoryProductsRepository(
       inMemoryAttachmentLinkRepository,
     );
     inMemoryFavoritesRepository = new InMemoryFavoritesRepository(
-      inMemorySnacksRepository,
+      inMemoryProductsRepository,
     );
     sut = new FindManyFavoriteUseCase(inMemoryFavoritesRepository);
   });
 
   it("Should be able to find many favorites", async () => {
     for (let i = 1; i <= 12; i++) {
-      await inMemorySnacksRepository.create(
-        makeSnack(
+      await inMemoryProductsRepository.create(
+        makeProduct(
           {
             attachmentId: new UniqueEntityId(`attachment-${i}`),
             userId: new UniqueEntityId("user-01"),
           },
-          new UniqueEntityId(`snack-${i}`),
+          new UniqueEntityId(`product-${i}`),
         ),
       );
       await inMemoryFavoritesRepository.create(
         makeFavorite(
           {
             userId: new UniqueEntityId("user-01"),
-            snackId: new UniqueEntityId(`snack-${i}`),
+            productId: new UniqueEntityId(`product-${i}`),
           },
           new UniqueEntityId(`favorite-${i}`),
         ),

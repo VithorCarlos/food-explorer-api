@@ -15,7 +15,7 @@ export class InMemoryRefreshTokenRepository implements RefreshTokenRepository {
   }
 
   async findById(id: string) {
-    const item = this.items.find((item) => item.id === id);
+    const item = this.items.find((item) => item.id.toString() === id);
 
     if (!item) {
       return null;
@@ -29,7 +29,7 @@ export class InMemoryRefreshTokenRepository implements RefreshTokenRepository {
   }
 
   async delete(id: string) {
-    const itemIndex = this.items.findIndex((item) => item.id === id);
+    const itemIndex = this.items.findIndex((item) => item.id.toString() === id);
 
     this.items.splice(itemIndex, 1);
   }

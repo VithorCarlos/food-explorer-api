@@ -4,7 +4,7 @@ export class FavoritePresenter {
   static toHTTP(favorite: Favorite) {
     return {
       id: favorite.id.toString(),
-      snackId: favorite.snackId.toString(),
+      productId: favorite.productId.toString(),
       userId: favorite.userId.toString(),
     };
   }

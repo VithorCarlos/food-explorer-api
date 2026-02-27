@@ -8,10 +8,10 @@ export const createFavoriteController = async (
   reply: FastifyReply,
 ) => {
   const createSchema = z.object({
-    snackId: z.string(),
+    productId: z.string(),
   });
 
-  const { snackId } = createSchema.parse(request.body);
+  const { productId } = createSchema.parse(request.body);
 
   const userId = request.user.sub;
 
@@ -22,7 +22,7 @@ export const createFavoriteController = async (
 
     const favorite = await createFavoriteUseCase.execute({
       userId,
-      snackId,
+      productId,
     });
 
     reply.status(201).send({ favorite: FavoritePresenter.toHTTP(favorite) });

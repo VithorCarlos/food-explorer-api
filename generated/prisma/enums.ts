@@ -11,11 +11,36 @@
 
 export const ROLE = {
   ADMIN: 'ADMIN',
-  CLIENT: 'CLIENT',
-  RESTAURANT: 'RESTAURANT'
+  CLIENT: 'CLIENT'
 } as const
 
 export type ROLE = (typeof ROLE)[keyof typeof ROLE]
+
+
+export const PRODUCT_CATEGORIES = {
+  SWEETS_AND_CAKES: 'SWEETS_AND_CAKES',
+  ARABIC: 'ARABIC',
+  ACAI: 'ACAI',
+  BRAZILIAN: 'BRAZILIAN',
+  CHINESE: 'CHINESE',
+  SAVORY_SNACKS: 'SAVORY_SNACKS',
+  ICE_CREAM: 'ICE_CREAM',
+  PIZZA: 'PIZZA',
+  PASTRY: 'PASTRY',
+  ITALIAN: 'ITALIAN',
+  APPETIZERS: 'APPETIZERS',
+  BAKERIES: 'BAKERIES',
+  HEALTHY: 'HEALTHY',
+  SNACKS: 'SNACKS',
+  MEAL_BOX: 'MEAL_BOX',
+  GOURMET: 'GOURMET',
+  VEGETARIAN: 'VEGETARIAN',
+  JAPANESE: 'JAPANESE',
+  MEATS: 'MEATS',
+  DRINKS: 'DRINKS'
+} as const
+
+export type PRODUCT_CATEGORIES = (typeof PRODUCT_CATEGORIES)[keyof typeof PRODUCT_CATEGORIES]
 
 
 export const ATTACHMENT_STATUS = {
@@ -27,9 +52,49 @@ export const ATTACHMENT_STATUS = {
 export type ATTACHMENT_STATUS = (typeof ATTACHMENT_STATUS)[keyof typeof ATTACHMENT_STATUS]
 
 
+export const ORDER_STATUS = {
+  DRAFT: 'DRAFT',
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  PREPARING: 'PREPARING',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type ORDER_STATUS = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS]
+
+
+export const PAYMENT_STATUS = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REFUSED: 'REFUSED',
+  CANCELLED: 'CANCELLED',
+  REFUNDED: 'REFUNDED'
+} as const
+
+export type PAYMENT_STATUS = (typeof PAYMENT_STATUS)[keyof typeof PAYMENT_STATUS]
+
+
+export const PRODUCT_STATUS = {
+  ACTIVE: 'ACTIVE',
+  PAUSED: 'PAUSED'
+} as const
+
+export type PRODUCT_STATUS = (typeof PRODUCT_STATUS)[keyof typeof PRODUCT_STATUS]
+
+
 export const RESOURSE_TYPE = {
   USER: 'USER',
-  SNACK: 'SNACK'
+  PRODUCT: 'PRODUCT'
 } as const
 
 export type RESOURSE_TYPE = (typeof RESOURSE_TYPE)[keyof typeof RESOURSE_TYPE]
+
+
+export const PAYMENT_METHOD = {
+  PIX: 'PIX',
+  CREDIT_CARD: 'CREDIT_CARD',
+  DEBIT_CARD: 'DEBIT_CARD'
+} as const
+
+export type PAYMENT_METHOD = (typeof PAYMENT_METHOD)[keyof typeof PAYMENT_METHOD]

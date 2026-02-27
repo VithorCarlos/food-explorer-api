@@ -3,14 +3,14 @@ import { ValueObject } from "@/shared/entity/value-object";
 
 interface FavoriteDetailsProps {
   favoriteId: UniqueEntityId;
-  snackId: UniqueEntityId;
+  productId: UniqueEntityId;
   userId: UniqueEntityId;
-  attachmentUrl: string | null;
+  attachmentUrl?: string | null;
   title: string;
   category: string;
-  ingredients: string[];
+  ingredients?: string[];
   price: number;
-  description: string;
+  description?: string;
 }
 
 export class FavoriteDetails extends ValueObject<FavoriteDetailsProps> {
@@ -18,8 +18,8 @@ export class FavoriteDetails extends ValueObject<FavoriteDetailsProps> {
     return this.props.favoriteId;
   }
 
-  get snackId() {
-    return this.props.snackId;
+  get productId() {
+    return this.props.productId;
   }
 
   get userId() {

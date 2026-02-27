@@ -32,6 +32,9 @@ export type UserMinAggregateOutputType = {
   role: $Enums.ROLE | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
+  deletionRequestedAt: Date | null
+  hardDeleteScheduledAt: Date | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -42,6 +45,9 @@ export type UserMaxAggregateOutputType = {
   role: $Enums.ROLE | null
   createdAt: Date | null
   updatedAt: Date | null
+  deletedAt: Date | null
+  deletionRequestedAt: Date | null
+  hardDeleteScheduledAt: Date | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -52,6 +58,9 @@ export type UserCountAggregateOutputType = {
   role: number
   createdAt: number
   updatedAt: number
+  deletedAt: number
+  deletionRequestedAt: number
+  hardDeleteScheduledAt: number
   _all: number
 }
 
@@ -64,6 +73,9 @@ export type UserMinAggregateInputType = {
   role?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
+  deletionRequestedAt?: true
+  hardDeleteScheduledAt?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -74,6 +86,9 @@ export type UserMaxAggregateInputType = {
   role?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
+  deletionRequestedAt?: true
+  hardDeleteScheduledAt?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -84,6 +99,9 @@ export type UserCountAggregateInputType = {
   role?: true
   createdAt?: true
   updatedAt?: true
+  deletedAt?: true
+  deletionRequestedAt?: true
+  hardDeleteScheduledAt?: true
   _all?: true
 }
 
@@ -167,6 +185,9 @@ export type UserGroupByOutputType = {
   role: $Enums.ROLE
   createdAt: Date
   updatedAt: Date
+  deletedAt: Date | null
+  deletionRequestedAt: Date | null
+  hardDeleteScheduledAt: Date | null
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -198,9 +219,13 @@ export type UserWhereInput = {
   role?: Prisma.EnumROLEFilter<"User"> | $Enums.ROLE
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  snacks?: Prisma.SnackListRelationFilter
+  deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  deletionRequestedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  hardDeleteScheduledAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  products?: Prisma.ProductListRelationFilter
   favorite?: Prisma.FavoriteListRelationFilter
   refreshToken?: Prisma.XOR<Prisma.RefreshTokenNullableScalarRelationFilter, Prisma.RefreshTokenWhereInput> | null
+  orders?: Prisma.OrderListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -211,9 +236,13 @@ export type UserOrderByWithRelationInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  snacks?: Prisma.SnackOrderByRelationAggregateInput
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletionRequestedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  hardDeleteScheduledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  products?: Prisma.ProductOrderByRelationAggregateInput
   favorite?: Prisma.FavoriteOrderByRelationAggregateInput
   refreshToken?: Prisma.RefreshTokenOrderByWithRelationInput
+  orders?: Prisma.OrderOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -227,9 +256,13 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   role?: Prisma.EnumROLEFilter<"User"> | $Enums.ROLE
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  snacks?: Prisma.SnackListRelationFilter
+  deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  deletionRequestedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  hardDeleteScheduledAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  products?: Prisma.ProductListRelationFilter
   favorite?: Prisma.FavoriteListRelationFilter
   refreshToken?: Prisma.XOR<Prisma.RefreshTokenNullableScalarRelationFilter, Prisma.RefreshTokenWhereInput> | null
+  orders?: Prisma.OrderListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -240,6 +273,9 @@ export type UserOrderByWithAggregationInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletionRequestedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  hardDeleteScheduledAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -256,6 +292,9 @@ export type UserScalarWhereWithAggregatesInput = {
   role?: Prisma.EnumROLEWithAggregatesFilter<"User"> | $Enums.ROLE
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  deletionRequestedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  hardDeleteScheduledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
 }
 
 export type UserCreateInput = {
@@ -266,9 +305,13 @@ export type UserCreateInput = {
   role?: $Enums.ROLE
   createdAt?: Date | string
   updatedAt?: Date | string
-  snacks?: Prisma.SnackCreateNestedManyWithoutUserInput
+  deletedAt?: Date | string | null
+  deletionRequestedAt?: Date | string | null
+  hardDeleteScheduledAt?: Date | string | null
+  products?: Prisma.ProductCreateNestedManyWithoutUserInput
   favorite?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   refreshToken?: Prisma.RefreshTokenCreateNestedOneWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -279,9 +322,13 @@ export type UserUncheckedCreateInput = {
   role?: $Enums.ROLE
   createdAt?: Date | string
   updatedAt?: Date | string
-  snacks?: Prisma.SnackUncheckedCreateNestedManyWithoutUserInput
+  deletedAt?: Date | string | null
+  deletionRequestedAt?: Date | string | null
+  hardDeleteScheduledAt?: Date | string | null
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutUserInput
   favorite?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   refreshToken?: Prisma.RefreshTokenUncheckedCreateNestedOneWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -292,9 +339,13 @@ export type UserUpdateInput = {
   role?: Prisma.EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  snacks?: Prisma.SnackUpdateManyWithoutUserNestedInput
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletionRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hardDeleteScheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  products?: Prisma.ProductUpdateManyWithoutUserNestedInput
   favorite?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   refreshToken?: Prisma.RefreshTokenUpdateOneWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -305,9 +356,13 @@ export type UserUncheckedUpdateInput = {
   role?: Prisma.EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  snacks?: Prisma.SnackUncheckedUpdateManyWithoutUserNestedInput
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletionRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hardDeleteScheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  products?: Prisma.ProductUncheckedUpdateManyWithoutUserNestedInput
   favorite?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   refreshToken?: Prisma.RefreshTokenUncheckedUpdateOneWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -318,6 +373,9 @@ export type UserCreateManyInput = {
   role?: $Enums.ROLE
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  deletionRequestedAt?: Date | string | null
+  hardDeleteScheduledAt?: Date | string | null
 }
 
 export type UserUpdateManyMutationInput = {
@@ -328,6 +386,9 @@ export type UserUpdateManyMutationInput = {
   role?: Prisma.EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletionRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hardDeleteScheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -338,6 +399,9 @@ export type UserUncheckedUpdateManyInput = {
   role?: Prisma.EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletionRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hardDeleteScheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -348,6 +412,9 @@ export type UserCountOrderByAggregateInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  deletionRequestedAt?: Prisma.SortOrder
+  hardDeleteScheduledAt?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -358,6 +425,9 @@ export type UserMaxOrderByAggregateInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  deletionRequestedAt?: Prisma.SortOrder
+  hardDeleteScheduledAt?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -368,6 +438,9 @@ export type UserMinOrderByAggregateInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  deletionRequestedAt?: Prisma.SortOrder
+  hardDeleteScheduledAt?: Prisma.SortOrder
 }
 
 export type UserScalarRelationFilter = {
@@ -387,18 +460,36 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-export type UserCreateNestedOneWithoutSnacksInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutSnacksInput, Prisma.UserUncheckedCreateWithoutSnacksInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSnacksInput
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
+export type UserCreateNestedOneWithoutProductsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProductsInput, Prisma.UserUncheckedCreateWithoutProductsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProductsInput
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUpdateOneRequiredWithoutSnacksNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutSnacksInput, Prisma.UserUncheckedCreateWithoutSnacksInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSnacksInput
-  upsert?: Prisma.UserUpsertWithoutSnacksInput
+export type UserUpdateOneRequiredWithoutProductsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProductsInput, Prisma.UserUncheckedCreateWithoutProductsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProductsInput
+  upsert?: Prisma.UserUpsertWithoutProductsInput
   connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSnacksInput, Prisma.UserUpdateWithoutSnacksInput>, Prisma.UserUncheckedUpdateWithoutSnacksInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProductsInput, Prisma.UserUpdateWithoutProductsInput>, Prisma.UserUncheckedUpdateWithoutProductsInput>
+}
+
+export type UserCreateNestedOneWithoutOrdersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutOrdersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutOrdersInput
+  upsert?: Prisma.UserUpsertWithoutOrdersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOrdersInput, Prisma.UserUpdateWithoutOrdersInput>, Prisma.UserUncheckedUpdateWithoutOrdersInput>
 }
 
 export type UserCreateNestedOneWithoutFavoriteInput = {
@@ -429,7 +520,7 @@ export type UserUpdateOneRequiredWithoutRefreshTokenNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRefreshTokenInput, Prisma.UserUpdateWithoutRefreshTokenInput>, Prisma.UserUncheckedUpdateWithoutRefreshTokenInput>
 }
 
-export type UserCreateWithoutSnacksInput = {
+export type UserCreateWithoutProductsInput = {
   id?: string
   name: string
   email: string
@@ -437,11 +528,95 @@ export type UserCreateWithoutSnacksInput = {
   role?: $Enums.ROLE
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  deletionRequestedAt?: Date | string | null
+  hardDeleteScheduledAt?: Date | string | null
+  favorite?: Prisma.FavoriteCreateNestedManyWithoutUserInput
+  refreshToken?: Prisma.RefreshTokenCreateNestedOneWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutProductsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  role?: $Enums.ROLE
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  deletionRequestedAt?: Date | string | null
+  hardDeleteScheduledAt?: Date | string | null
+  favorite?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
+  refreshToken?: Prisma.RefreshTokenUncheckedCreateNestedOneWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutProductsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutProductsInput, Prisma.UserUncheckedCreateWithoutProductsInput>
+}
+
+export type UserUpsertWithoutProductsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutProductsInput, Prisma.UserUncheckedUpdateWithoutProductsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutProductsInput, Prisma.UserUncheckedCreateWithoutProductsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutProductsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutProductsInput, Prisma.UserUncheckedUpdateWithoutProductsInput>
+}
+
+export type UserUpdateWithoutProductsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletionRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hardDeleteScheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  favorite?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
+  refreshToken?: Prisma.RefreshTokenUpdateOneWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutProductsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletionRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hardDeleteScheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  favorite?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
+  refreshToken?: Prisma.RefreshTokenUncheckedUpdateOneWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutOrdersInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  role?: $Enums.ROLE
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  deletionRequestedAt?: Date | string | null
+  hardDeleteScheduledAt?: Date | string | null
+  products?: Prisma.ProductCreateNestedManyWithoutUserInput
   favorite?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   refreshToken?: Prisma.RefreshTokenCreateNestedOneWithoutUserInput
 }
 
-export type UserUncheckedCreateWithoutSnacksInput = {
+export type UserUncheckedCreateWithoutOrdersInput = {
   id?: string
   name: string
   email: string
@@ -449,27 +624,31 @@ export type UserUncheckedCreateWithoutSnacksInput = {
   role?: $Enums.ROLE
   createdAt?: Date | string
   updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  deletionRequestedAt?: Date | string | null
+  hardDeleteScheduledAt?: Date | string | null
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutUserInput
   favorite?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   refreshToken?: Prisma.RefreshTokenUncheckedCreateNestedOneWithoutUserInput
 }
 
-export type UserCreateOrConnectWithoutSnacksInput = {
+export type UserCreateOrConnectWithoutOrdersInput = {
   where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutSnacksInput, Prisma.UserUncheckedCreateWithoutSnacksInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
 }
 
-export type UserUpsertWithoutSnacksInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutSnacksInput, Prisma.UserUncheckedUpdateWithoutSnacksInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutSnacksInput, Prisma.UserUncheckedCreateWithoutSnacksInput>
+export type UserUpsertWithoutOrdersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutOrdersInput, Prisma.UserUncheckedUpdateWithoutOrdersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutOrdersInput, Prisma.UserUncheckedCreateWithoutOrdersInput>
   where?: Prisma.UserWhereInput
 }
 
-export type UserUpdateToOneWithWhereWithoutSnacksInput = {
+export type UserUpdateToOneWithWhereWithoutOrdersInput = {
   where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutSnacksInput, Prisma.UserUncheckedUpdateWithoutSnacksInput>
+  data: Prisma.XOR<Prisma.UserUpdateWithoutOrdersInput, Prisma.UserUncheckedUpdateWithoutOrdersInput>
 }
 
-export type UserUpdateWithoutSnacksInput = {
+export type UserUpdateWithoutOrdersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -477,11 +656,15 @@ export type UserUpdateWithoutSnacksInput = {
   role?: Prisma.EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletionRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hardDeleteScheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  products?: Prisma.ProductUpdateManyWithoutUserNestedInput
   favorite?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   refreshToken?: Prisma.RefreshTokenUpdateOneWithoutUserNestedInput
 }
 
-export type UserUncheckedUpdateWithoutSnacksInput = {
+export type UserUncheckedUpdateWithoutOrdersInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
@@ -489,6 +672,10 @@ export type UserUncheckedUpdateWithoutSnacksInput = {
   role?: Prisma.EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletionRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hardDeleteScheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  products?: Prisma.ProductUncheckedUpdateManyWithoutUserNestedInput
   favorite?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   refreshToken?: Prisma.RefreshTokenUncheckedUpdateOneWithoutUserNestedInput
 }
@@ -501,8 +688,12 @@ export type UserCreateWithoutFavoriteInput = {
   role?: $Enums.ROLE
   createdAt?: Date | string
   updatedAt?: Date | string
-  snacks?: Prisma.SnackCreateNestedManyWithoutUserInput
+  deletedAt?: Date | string | null
+  deletionRequestedAt?: Date | string | null
+  hardDeleteScheduledAt?: Date | string | null
+  products?: Prisma.ProductCreateNestedManyWithoutUserInput
   refreshToken?: Prisma.RefreshTokenCreateNestedOneWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFavoriteInput = {
@@ -513,8 +704,12 @@ export type UserUncheckedCreateWithoutFavoriteInput = {
   role?: $Enums.ROLE
   createdAt?: Date | string
   updatedAt?: Date | string
-  snacks?: Prisma.SnackUncheckedCreateNestedManyWithoutUserInput
+  deletedAt?: Date | string | null
+  deletionRequestedAt?: Date | string | null
+  hardDeleteScheduledAt?: Date | string | null
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutUserInput
   refreshToken?: Prisma.RefreshTokenUncheckedCreateNestedOneWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFavoriteInput = {
@@ -541,8 +736,12 @@ export type UserUpdateWithoutFavoriteInput = {
   role?: Prisma.EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  snacks?: Prisma.SnackUpdateManyWithoutUserNestedInput
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletionRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hardDeleteScheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  products?: Prisma.ProductUpdateManyWithoutUserNestedInput
   refreshToken?: Prisma.RefreshTokenUpdateOneWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFavoriteInput = {
@@ -553,8 +752,12 @@ export type UserUncheckedUpdateWithoutFavoriteInput = {
   role?: Prisma.EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  snacks?: Prisma.SnackUncheckedUpdateManyWithoutUserNestedInput
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletionRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hardDeleteScheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  products?: Prisma.ProductUncheckedUpdateManyWithoutUserNestedInput
   refreshToken?: Prisma.RefreshTokenUncheckedUpdateOneWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRefreshTokenInput = {
@@ -565,8 +768,12 @@ export type UserCreateWithoutRefreshTokenInput = {
   role?: $Enums.ROLE
   createdAt?: Date | string
   updatedAt?: Date | string
-  snacks?: Prisma.SnackCreateNestedManyWithoutUserInput
+  deletedAt?: Date | string | null
+  deletionRequestedAt?: Date | string | null
+  hardDeleteScheduledAt?: Date | string | null
+  products?: Prisma.ProductCreateNestedManyWithoutUserInput
   favorite?: Prisma.FavoriteCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRefreshTokenInput = {
@@ -577,8 +784,12 @@ export type UserUncheckedCreateWithoutRefreshTokenInput = {
   role?: $Enums.ROLE
   createdAt?: Date | string
   updatedAt?: Date | string
-  snacks?: Prisma.SnackUncheckedCreateNestedManyWithoutUserInput
+  deletedAt?: Date | string | null
+  deletionRequestedAt?: Date | string | null
+  hardDeleteScheduledAt?: Date | string | null
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutUserInput
   favorite?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRefreshTokenInput = {
@@ -605,8 +816,12 @@ export type UserUpdateWithoutRefreshTokenInput = {
   role?: Prisma.EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  snacks?: Prisma.SnackUpdateManyWithoutUserNestedInput
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletionRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hardDeleteScheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  products?: Prisma.ProductUpdateManyWithoutUserNestedInput
   favorite?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRefreshTokenInput = {
@@ -617,8 +832,12 @@ export type UserUncheckedUpdateWithoutRefreshTokenInput = {
   role?: Prisma.EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  snacks?: Prisma.SnackUncheckedUpdateManyWithoutUserNestedInput
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletionRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hardDeleteScheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  products?: Prisma.ProductUncheckedUpdateManyWithoutUserNestedInput
   favorite?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -627,13 +846,15 @@ export type UserUncheckedUpdateWithoutRefreshTokenInput = {
  */
 
 export type UserCountOutputType = {
-  snacks: number
+  products: number
   favorite: number
+  orders: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  snacks?: boolean | UserCountOutputTypeCountSnacksArgs
+  products?: boolean | UserCountOutputTypeCountProductsArgs
   favorite?: boolean | UserCountOutputTypeCountFavoriteArgs
+  orders?: boolean | UserCountOutputTypeCountOrdersArgs
 }
 
 /**
@@ -649,8 +870,8 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountSnacksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.SnackWhereInput
+export type UserCountOutputTypeCountProductsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProductWhereInput
 }
 
 /**
@@ -658,6 +879,13 @@ export type UserCountOutputTypeCountSnacksArgs<ExtArgs extends runtime.Types.Ext
  */
 export type UserCountOutputTypeCountFavoriteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.FavoriteWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.OrderWhereInput
 }
 
 
@@ -669,9 +897,13 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  snacks?: boolean | Prisma.User$snacksArgs<ExtArgs>
+  deletedAt?: boolean
+  deletionRequestedAt?: boolean
+  hardDeleteScheduledAt?: boolean
+  products?: boolean | Prisma.User$productsArgs<ExtArgs>
   favorite?: boolean | Prisma.User$favoriteArgs<ExtArgs>
   refreshToken?: boolean | Prisma.User$refreshTokenArgs<ExtArgs>
+  orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -683,6 +915,9 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
+  deletionRequestedAt?: boolean
+  hardDeleteScheduledAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -693,6 +928,9 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
+  deletionRequestedAt?: boolean
+  hardDeleteScheduledAt?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -703,13 +941,17 @@ export type UserSelectScalar = {
   role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  deletedAt?: boolean
+  deletionRequestedAt?: boolean
+  hardDeleteScheduledAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "createdAt" | "updatedAt" | "deletedAt" | "deletionRequestedAt" | "hardDeleteScheduledAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  snacks?: boolean | Prisma.User$snacksArgs<ExtArgs>
+  products?: boolean | Prisma.User$productsArgs<ExtArgs>
   favorite?: boolean | Prisma.User$favoriteArgs<ExtArgs>
   refreshToken?: boolean | Prisma.User$refreshTokenArgs<ExtArgs>
+  orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -718,9 +960,10 @@ export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-    snacks: Prisma.$SnackPayload<ExtArgs>[]
+    products: Prisma.$ProductPayload<ExtArgs>[]
     favorite: Prisma.$FavoritePayload<ExtArgs>[]
     refreshToken: Prisma.$RefreshTokenPayload<ExtArgs> | null
+    orders: Prisma.$OrderPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -730,6 +973,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     role: $Enums.ROLE
     createdAt: Date
     updatedAt: Date
+    deletedAt: Date | null
+    deletionRequestedAt: Date | null
+    hardDeleteScheduledAt: Date | null
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1124,9 +1370,10 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  snacks<T extends Prisma.User$snacksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$snacksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SnackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  products<T extends Prisma.User$productsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$productsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   favorite<T extends Prisma.User$favoriteArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$favoriteArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   refreshToken<T extends Prisma.User$refreshTokenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshTokenArgs<ExtArgs>>): Prisma.Prisma__RefreshTokenClient<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  orders<T extends Prisma.User$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1163,6 +1410,9 @@ export interface UserFieldRefs {
   readonly role: Prisma.FieldRef<"User", 'ROLE'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly deletionRequestedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly hardDeleteScheduledAt: Prisma.FieldRef<"User", 'DateTime'>
 }
     
 
@@ -1551,27 +1801,27 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * User.snacks
+ * User.products
  */
-export type User$snacksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$productsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Snack
+   * Select specific fields to fetch from the Product
    */
-  select?: Prisma.SnackSelect<ExtArgs> | null
+  select?: Prisma.ProductSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Snack
+   * Omit specific fields from the Product
    */
-  omit?: Prisma.SnackOmit<ExtArgs> | null
+  omit?: Prisma.ProductOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.SnackInclude<ExtArgs> | null
-  where?: Prisma.SnackWhereInput
-  orderBy?: Prisma.SnackOrderByWithRelationInput | Prisma.SnackOrderByWithRelationInput[]
-  cursor?: Prisma.SnackWhereUniqueInput
+  include?: Prisma.ProductInclude<ExtArgs> | null
+  where?: Prisma.ProductWhereInput
+  orderBy?: Prisma.ProductOrderByWithRelationInput | Prisma.ProductOrderByWithRelationInput[]
+  cursor?: Prisma.ProductWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.SnackScalarFieldEnum | Prisma.SnackScalarFieldEnum[]
+  distinct?: Prisma.ProductScalarFieldEnum | Prisma.ProductScalarFieldEnum[]
 }
 
 /**
@@ -1615,6 +1865,30 @@ export type User$refreshTokenArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   include?: Prisma.RefreshTokenInclude<ExtArgs> | null
   where?: Prisma.RefreshTokenWhereInput
+}
+
+/**
+ * User.orders
+ */
+export type User$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Order
+   */
+  select?: Prisma.OrderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Order
+   */
+  omit?: Prisma.OrderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.OrderInclude<ExtArgs> | null
+  where?: Prisma.OrderWhereInput
+  orderBy?: Prisma.OrderOrderByWithRelationInput | Prisma.OrderOrderByWithRelationInput[]
+  cursor?: Prisma.OrderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
 }
 
 /**

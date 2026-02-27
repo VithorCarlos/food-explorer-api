@@ -5,7 +5,7 @@ export function makeFavorite(data: FavoriteProps, id?: UniqueEntityId) {
   const favorite = Favorite.create(
     {
       userId: data.userId,
-      snackId: data.snackId,
+      productId: data.productId,
     },
     id,
   );

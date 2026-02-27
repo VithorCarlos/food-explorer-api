@@ -6,7 +6,7 @@ import { usersRoutes } from "./infra/http/routes/users.routes";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import cors from "@fastify/cors";
-import { snackRoutes } from "./infra/http/routes/snacks.routes";
+import { productsRoutes } from "./infra/http/routes/products.routes";
 import { favoritesRoutes } from "./infra/http/routes/favorites.routes";
 import { globalErrorHandler } from "./infra/http/middleware/global-error-handler";
 import multipart from "@fastify/multipart";
@@ -42,7 +42,7 @@ export async function buildApp() {
   });
 
   app.register(cors, {
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3000", "http://192.168.0.4:3000"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   });
@@ -76,7 +76,7 @@ export async function buildApp() {
     transformSpecificationClone: true,
   });
   app.register(usersRoutes);
-  app.register(snackRoutes, { prefix: "snack" });
+  app.register(productsRoutes, { prefix: "product" });
   app.register(favoritesRoutes, { prefix: "favorite" });
   app.register(uploadRoutes, { prefix: "upload" });
 

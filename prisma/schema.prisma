@@ -17,7 +17,29 @@ datasource db {
 enum ROLE {
   ADMIN
   CLIENT
-  RESTAURANT
+}
+
+enum PRODUCT_CATEGORIES {
+  SWEETS_AND_CAKES
+  ARABIC
+  ACAI
+  BRAZILIAN
+  CHINESE
+  SAVORY_SNACKS
+  ICE_CREAM
+  PIZZA
+  PASTRY
+  ITALIAN
+  APPETIZERS
+  BAKERIES
+  HEALTHY
+  SNACKS
+  MEAL_BOX
+  GOURMET
+  VEGETARIAN
+  JAPANESE
+  MEATS
+  DRINKS
 }
 
 enum ATTACHMENT_STATUS {
@@ -26,61 +48,167 @@ enum ATTACHMENT_STATUS {
   EXPIRED
 }
 
+enum ORDER_STATUS {
+  DRAFT
+  PENDING
+  PAID
+  PREPARING
+  DELIVERED
+  CANCELLED
+}
+
+enum PAYMENT_STATUS {
+  PENDING
+  APPROVED
+  REFUSED
+  CANCELLED
+  REFUNDED
+}
+
+enum PRODUCT_STATUS {
+  ACTIVE
+  PAUSED
+}
+
 enum RESOURSE_TYPE {
   USER
-  SNACK
+  PRODUCT
+}
+
+enum PAYMENT_METHOD {
+  PIX
+  CREDIT_CARD
+  DEBIT_CARD
 }
 
 model User {
-  id       String @unique @default(uuid())
+  id       String @id @default(uuid())
   name     String
   email    String @unique
   password String
   role     ROLE   @default(CLIENT)
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+  createdAt             DateTime  @default(now()) @map("created_at")
+  updatedAt             DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt             DateTime? @map("deleted_at")
+  deletionRequestedAt   DateTime?
+  hardDeleteScheduledAt DateTime?
 
-  snacks       Snack[]
+  products     Product[]
   favorite     Favorite[]
   refreshToken RefreshToken?
+  orders       Order[]
 
   @@map("users")
 }
 
-model Snack {
-  id          String   @unique @default(uuid())
+model Product {
+  id          String             @id @default(uuid())
   title       String
   description String?
-  category    String
+  category    PRODUCT_CATEGORIES
   ingredients String[]
-  price       Float
+  price       Decimal            @db.Decimal(10, 2)
+  status      PRODUCT_STATUS     @default(ACTIVE)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Restrict)
+  userId String @map("user_id")
+
+  favorite   Favorite[]
+  orderItems OrderItem[]
+
+  @@map("products")
+}
+
+model Order {
+  id          String       @id @default(uuid())
+  status      ORDER_STATUS @default(DRAFT)
+  totalAmount Decimal      @map("total_amount") @db.Decimal(10, 2)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @map("user_id")
+  user       User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  userId     String      @map("user_id")
+  orderItems OrderItem[]
 
-  favorite Favorite[]
+  payments Payment[]
 
-  @@map("snacks")
+  @@map("orders")
+}
+
+model OrderItem {
+  id       String  @id @default(uuid())
+  title    String
+  price    Decimal @db.Decimal(10, 2)
+  subtotal Decimal @db.Decimal(10, 2)
+  quantity Int
+
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId String @map("order_id")
+
+  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+  productId String  @map("product_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("order_items")
+}
+
+model Payment {
+  id               String  @id @default(uuid())
+  gatewayPaymentId String? @unique @map("gateway_payment_id")
+
+  method    PAYMENT_METHOD
+  status    PAYMENT_STATUS @default(PENDING)
+  amount    Decimal        @db.Decimal(10, 2)
+  gateway   String
+  createdAt DateTime       @default(now()) @map("created_at")
+  updatedAt DateTime       @default(now()) @updatedAt @map("updated_at")
+
+  order               Order                @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  orderId             String               @map("order_id")
+  paymentTransactions PaymentTransaction[]
+
+  @@map("payments")
+}
+
+model PaymentTransaction {
+  id                   String         @id @default(uuid())
+  gateway              String
+  gatewayTransactionId String         @unique @map("gateway_transaction_id")
+  eventType            String         @map("event_type")
+  status               PAYMENT_STATUS @default(PENDING)
+
+  responsePayload Json @map("response_payload")
+
+  payment   Payment @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+  paymentId String  @map("payment_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("payment_transactions")
 }
 
 model Favorite {
-  id String @unique @default(uuid())
+  id String @id @default(uuid())
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @map("user_id")
 
-  snack   Snack  @relation(fields: [snackId], references: [id], onDelete: Cascade)
-  snackId String @map("snack_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String  @map("product_id")
 
+  @@unique([userId, productId])
   @@map("favorites")
 }
 
 model RefreshToken {
-  id     String @unique @default(uuid())
+  id     String @id @default(uuid())
   userId String @unique @map("user_id")
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -90,7 +218,7 @@ model RefreshToken {
 }
 
 model Attachment {
-  id        String    @unique @default(uuid())
+  id        String    @id @default(uuid())
   title     String
   url       String
   createdAt DateTime  @default(now()) @map("created_at")
@@ -104,7 +232,7 @@ model Attachment {
 }
 
 model AttachmentLink {
-  id           String        @unique @default(uuid())
+  id           String        @id @default(uuid())
   attachmentId String        @map("attachment_id")
   resourceId   String        @map("resource_id")
   resourceType RESOURSE_TYPE @map("resource_type")

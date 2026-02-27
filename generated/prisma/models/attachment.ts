@@ -339,10 +339,6 @@ export type AttachmentScalarRelationFilter = {
   isNot?: Prisma.AttachmentWhereInput
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type EnumATTACHMENT_STATUSFieldUpdateOperationsInput = {
   set?: $Enums.ATTACHMENT_STATUS
 }

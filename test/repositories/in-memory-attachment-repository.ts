@@ -9,6 +9,8 @@ export class InMemoryAttachmentRepository implements AttachmentRepository {
   }
 
   async delete(id: string): Promise<void> {
-    this.items = this.items.filter((attachment) => attachment.id !== id);
+    this.items = this.items.filter(
+      (attachment) => attachment.id.toString() !== id,
+    );
   }
 }

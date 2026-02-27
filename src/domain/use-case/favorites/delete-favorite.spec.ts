@@ -5,25 +5,25 @@ import { makeFavorite } from "test/factories/make-favorite";
 import { FavoriteNotFoundForThisUser } from "@/domain/errors/favorite-not-found-for-this-user";
 import { InMemoryUsersRepository } from "test/repositories/in-memory-users-repository";
 import { makeUser } from "test/factories/make-user";
-import { InMemorySnacksRepository } from "test/repositories/in-memory-snacks-repository";
+import { InMemoryProductsRepository } from "test/repositories/in-memory-products-repository";
 import { InMemoryAttachmentLinkRepository } from "test/repositories/in-memory-attachment-link-repository";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
-import { makeSnack } from "test/factories/make-snack";
+import { makeProduct } from "test/factories/make-product";
 
 let sut: DeleteFavoriteUseCase;
 let inMemoryFavoritesRepository: InMemoryFavoritesRepository;
 let inMemoryUsersRepository: InMemoryUsersRepository;
-let inMemorySnacksRepository: InMemorySnacksRepository;
+let inMemoryProductsRepository: InMemoryProductsRepository;
 let inMemoryAttachmentLinkRepository: InMemoryAttachmentLinkRepository;
 
 describe("Delete favorite", () => {
   beforeEach(() => {
     inMemoryAttachmentLinkRepository = new InMemoryAttachmentLinkRepository();
-    inMemorySnacksRepository = new InMemorySnacksRepository(
+    inMemoryProductsRepository = new InMemoryProductsRepository(
       inMemoryAttachmentLinkRepository,
     );
     inMemoryFavoritesRepository = new InMemoryFavoritesRepository(
-      inMemorySnacksRepository,
+      inMemoryProductsRepository,
     );
     inMemoryUsersRepository = new InMemoryUsersRepository();
     sut = new DeleteFavoriteUseCase(inMemoryFavoritesRepository);
@@ -32,8 +32,8 @@ describe("Delete favorite", () => {
       makeUser({ id: new UniqueEntityId("user-01") }),
     );
 
-    inMemorySnacksRepository.create(
-      makeSnack(
+    inMemoryProductsRepository.create(
+      makeProduct(
         { attachmentId: new UniqueEntityId("attachment-01") },
         new UniqueEntityId("user-01"),
       ),
@@ -45,7 +45,7 @@ describe("Delete favorite", () => {
       makeFavorite(
         {
           userId: new UniqueEntityId("user-01"),
-          snackId: new UniqueEntityId("snack-01"),
+          productId: new UniqueEntityId("product-01"),
         },
         new UniqueEntityId("favorite-01"),
       ),
@@ -55,27 +55,27 @@ describe("Delete favorite", () => {
       makeFavorite(
         {
           userId: new UniqueEntityId("user-02"),
-          snackId: new UniqueEntityId("snack-02"),
+          productId: new UniqueEntityId("product-02"),
         },
         new UniqueEntityId("favorite-02"),
       ),
     );
 
     await sut.execute({
-      snackId: "snack-01",
+      productId: "product-01",
       userId: "user-01",
     });
 
     expect(inMemoryFavoritesRepository.items).toHaveLength(1);
-    expect(inMemoryFavoritesRepository.items[0].snackId.toString()).toEqual(
-      "snack-01",
+    expect(inMemoryFavoritesRepository.items[0].productId.toString()).toEqual(
+      "product-01",
     );
   });
 
   it("It should not be possible to delete a non-existent favorite", async () => {
     await expect(
       sut.execute({
-        snackId: "snack-01",
+        productId: "product-01",
         userId: "user-01",
       }),
     ).rejects.toThrowError(FavoriteDoesNotExists);
@@ -84,7 +84,7 @@ describe("Delete favorite", () => {
   it("Should not be possible to delete a favorite with different user Id created for this one", async () => {
     const favorite = makeFavorite(
       {
-        snackId: new UniqueEntityId("snack-01"),
+        productId: new UniqueEntityId("product-01"),
         userId: new UniqueEntityId("user-01"),
       },
       new UniqueEntityId("favorite-01"),
@@ -94,8 +94,8 @@ describe("Delete favorite", () => {
 
     await expect(
       sut.execute({
-        snackId: "snack-01",
-        userId: "different-user-id-for-this-snack",
+        productId: "product-01",
+        userId: "different-user-id-for-this-product",
       }),
     ).rejects.toThrowError(FavoriteNotFoundForThisUser);
   });

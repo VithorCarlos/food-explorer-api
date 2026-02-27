@@ -1,29 +1,32 @@
 import { Favorite } from "@/domain/entities/favorite";
-import { SnackNotFoundForThisUser } from "@/domain/errors/snack-not-found-for-this-user";
+import { ProductNotFoundForThisUser } from "@/domain/errors/product-not-found-for-this-user";
 import { FavoritesRepository } from "@/domain/repositories/favorites-repository";
-import { SnacksRepository } from "@/domain/repositories/snacks-repository";
+import { ProductsRepository } from "@/domain/repositories/products-repository";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 
 interface CreateFavoriteRequest {
   userId: string;
-  snackId: string;
+  productId: string;
 }
 
 export class CreateFavoriteUseCase {
   constructor(
     private favoritesRepository: FavoritesRepository,
-    private snacksRepository: SnacksRepository,
+    private productsRepository: ProductsRepository,
   ) {}
 
-  async execute({ userId, snackId }: CreateFavoriteRequest): Promise<Favorite> {
-    const snack = await this.snacksRepository.findById(snackId);
+  async execute({
+    userId,
+    productId,
+  }: CreateFavoriteRequest): Promise<Favorite> {
+    const product = await this.productsRepository.findById(productId);
 
-    if (!snack) {
-      throw new SnackNotFoundForThisUser();
+    if (!product) {
+      throw new ProductNotFoundForThisUser();
     }
 
     const alreadyFavorited =
-      await this.favoritesRepository.findByUserAndSnackId(userId, snackId);
+      await this.favoritesRepository.findByUserAndProductId(userId, productId);
 
     if (alreadyFavorited) {
       return alreadyFavorited;
@@ -31,7 +34,7 @@ export class CreateFavoriteUseCase {
 
     const favorite = Favorite.create({
       userId: new UniqueEntityId(userId),
-      snackId: new UniqueEntityId(snackId),
+      productId: new UniqueEntityId(productId),
     });
 
     await this.favoritesRepository.create(favorite);

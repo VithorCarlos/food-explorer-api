@@ -43,10 +43,30 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
- * Model Snack
+ * Model Product
  * 
  */
-export type Snack = Prisma.SnackModel
+export type Product = Prisma.ProductModel
+/**
+ * Model Order
+ * 
+ */
+export type Order = Prisma.OrderModel
+/**
+ * Model OrderItem
+ * 
+ */
+export type OrderItem = Prisma.OrderItemModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model PaymentTransaction
+ * 
+ */
+export type PaymentTransaction = Prisma.PaymentTransactionModel
 /**
  * Model Favorite
  * 

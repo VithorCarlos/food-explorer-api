@@ -3,15 +3,15 @@ import { FavoriteNotFoundForThisUser } from "@/domain/errors/favorite-not-found-
 import { FavoritesRepository } from "@/domain/repositories/favorites-repository";
 
 interface DeleteFavoriteRequest {
-  snackId: string;
+  productId: string;
   userId: string;
 }
 
 export class DeleteFavoriteUseCase {
   constructor(private favoritesRepository: FavoritesRepository) {}
 
-  async execute({ snackId, userId }: DeleteFavoriteRequest) {
-    const favorite = await this.favoritesRepository.findBySnackId(snackId);
+  async execute({ productId, userId }: DeleteFavoriteRequest) {
+    const favorite = await this.favoritesRepository.findByProductId(productId);
 
     if (!favorite) {
       throw new FavoriteDoesNotExists();
@@ -21,7 +21,7 @@ export class DeleteFavoriteUseCase {
       throw new FavoriteNotFoundForThisUser();
     }
 
-    await this.favoritesRepository.delete(snackId, userId);
+    await this.favoritesRepository.delete(productId, userId);
 
     return { favorite };
   }

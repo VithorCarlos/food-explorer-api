@@ -1,22 +1,22 @@
 import { FindAttachmentByResourceUseCase } from "./find-attachment-by-resourse";
-import { InMemorySnacksRepository } from "test/repositories/in-memory-snacks-repository";
-import { makeSnack } from "test/factories/make-snack";
+import { InMemoryProductsRepository } from "test/repositories/in-memory-products-repository";
+import { makeProduct } from "test/factories/make-product";
 import { AttachmentNotFoundError } from "@/domain/errors/attachment-not-found";
 import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
 import { InMemoryAttachmentLinkRepository } from "test/repositories/in-memory-attachment-link-repository";
 import { makeAttachment } from "test/factories/make-attachment";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
-import { RESOURSE_TYPE } from "generated/prisma/enums";
+import { RESOURSE_TYPE } from "@/domain/enums/resource-type";
 
 let sut: FindAttachmentByResourceUseCase;
-let inMemorySnackRepository: InMemorySnacksRepository;
+let inMemoryProductRepository: InMemoryProductsRepository;
 let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
 let inMemoryAttachmentLinkRepository: InMemoryAttachmentLinkRepository;
 
 describe("Find attachment by resource", () => {
   beforeEach(() => {
     inMemoryAttachmentLinkRepository = new InMemoryAttachmentLinkRepository();
-    inMemorySnackRepository = new InMemorySnacksRepository(
+    inMemoryProductRepository = new InMemoryProductsRepository(
       inMemoryAttachmentLinkRepository,
     );
     inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
@@ -26,18 +26,18 @@ describe("Find attachment by resource", () => {
   it("Should be able to find an attachment by resource", async () => {
     const attachment = makeAttachment({ title: "food.png" });
 
-    const snack = makeSnack(
-      { id: new UniqueEntityId("snack-01"), attachmentId: attachment.id },
+    const product = makeProduct(
+      { id: new UniqueEntityId("product-01"), attachmentId: attachment.id },
       new UniqueEntityId("user-01"),
     );
 
-    await inMemorySnackRepository.create(snack);
+    await inMemoryProductRepository.create(product);
 
     await inMemoryAttachmentRepository.create(attachment);
 
     const { attachmentLinks } = await sut.execute({
-      resourceId: snack.id.toString(),
-      resourceType: RESOURSE_TYPE.SNACK,
+      resourceId: product.id.toString(),
+      resourceType: RESOURSE_TYPE.PRODUCT,
     });
 
     expect(inMemoryAttachmentRepository.items[0]).toEqual(
@@ -52,7 +52,7 @@ describe("Find attachment by resource", () => {
 
     expect(attachmentLinks[0]).toEqual(
       expect.objectContaining({
-        resourceId: inMemorySnackRepository.items[0].id,
+        resourceId: inMemoryProductRepository.items[0].id,
       }),
     );
 
@@ -63,7 +63,7 @@ describe("Find attachment by resource", () => {
     await expect(
       sut.execute({
         resourceId: "1",
-        resourceType: RESOURSE_TYPE.SNACK,
+        resourceType: RESOURSE_TYPE.PRODUCT,
       }),
     ).rejects.toThrowError(AttachmentNotFoundError);
   });

@@ -1,10 +1,10 @@
+import { RESOURSE_TYPE } from "@/domain/enums/resource-type";
 import { AttachmentNotFoundError } from "@/domain/errors/attachment-not-found";
 import { AttachmentLinkRepository } from "@/domain/repositories/attachment-link-repository";
-import { $Enums } from "generated/prisma/client";
 
 interface FindAttachmentByResourceRequest {
   resourceId: string;
-  resourceType: $Enums.RESOURSE_TYPE;
+  resourceType: RESOURSE_TYPE;
 }
 
 export class FindAttachmentByResourceUseCase {

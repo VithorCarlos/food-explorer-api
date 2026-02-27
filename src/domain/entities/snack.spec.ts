@@ -1,19 +1,22 @@
 import { randomUUID } from "node:crypto";
-import { Snack } from "./snack";
-import { FOOD_CATEGORIES } from "../enums/food-categories";
+import { Product } from "./product";
+import { PRODUCT_CATEGORIES } from "../enums/product-categories";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 
-describe("Snack entity", () => {
+describe("Product entity", () => {
   it("Should be able to create user entity", () => {
-    const snack = Snack.create({
-      id: randomUUID(),
-      title: "My title",
-      description: "My description",
-      category: "my-category" as FOOD_CATEGORIES,
-      price: 89.3,
-      ingredients: ["igrendient-1", "igredient-2"],
-      userId: "user-1",
-    });
+    const product = Product.create(
+      {
+        title: "My title",
+        description: "My description",
+        category: "my-category" as PRODUCT_CATEGORIES,
+        price: 89.3,
+        ingredients: ["igrendient-1", "igredient-2"],
+        userId: new UniqueEntityId("user-1"),
+      },
+      new UniqueEntityId(),
+    );
 
-    expect(snack).toBeDefined();
+    expect(product).toBeDefined();
   });
 });

@@ -1,4 +1,3 @@
-import { $Enums } from "generated/prisma/client";
 import { BaseEntity } from "../../shared/entity/base-identity";
 import { ROLE } from "../enums/role";
 import { Optional } from "@/shared/optional";
@@ -8,7 +7,7 @@ export interface UserProps {
   name: string;
   email: string;
   password: string;
-  role: $Enums.ROLE;
+  role: ROLE;
   createdAt: Date;
   updatedAt?: Date | null;
 }

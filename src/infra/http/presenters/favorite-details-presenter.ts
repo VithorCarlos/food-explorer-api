@@ -4,7 +4,7 @@ export class FavoriteDetailsPresenter {
   static toHTTP(FavoriteDetails: FavoriteDetails) {
     return {
       favoriteId: FavoriteDetails.favoriteId.toString(),
-      snackId: FavoriteDetails.snackId.toString(),
+      productId: FavoriteDetails.productId.toString(),
       userId: FavoriteDetails.userId.toString(),
       attachmentUrl: FavoriteDetails.attachmentUrl,
       title: FavoriteDetails.title,
