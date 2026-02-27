@@ -152,7 +152,7 @@ export class PrismaProductsRepository implements ProductsRepository {
 
     if (category) {
       andConditions.push(
-        Prisma.sql`LOWER(s.category) = ${category.toLowerCase()}`,
+        Prisma.sql`s.category = ${category as PRODUCT_CATEGORIES}`,
       );
     }
 
