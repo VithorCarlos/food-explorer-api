@@ -76,6 +76,15 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
           },
           required: ["name", "email", "password"],
         },
+        response: {
+          201: {
+            description: "Successful response",
+            type: "object",
+            properties: {
+              id: { type: "string" },
+            },
+          },
+        },
       },
     },
     registerUserController,
