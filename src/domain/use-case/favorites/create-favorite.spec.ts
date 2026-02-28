@@ -4,7 +4,7 @@ import { InMemoryFavoritesRepository } from "test/repositories/in-memory-favorit
 import { InMemoryUsersRepository } from "test/repositories/in-memory-users-repository";
 import { makeUser } from "test/factories/make-user";
 import { makeProduct } from "test/factories/make-product";
-import { InMemoryAttachmentLinkRepository } from "test/repositories/in-memory-attachment-link-repository";
+import { InMemoryProductAttachmentRepository } from "test/repositories/in-memory-product-attachment-repository";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { makeFavorite } from "test/factories/make-favorite";
 import { ProductNotFoundForThisUser } from "@/domain/errors/product-not-found-for-this-user";
@@ -13,13 +13,14 @@ let sut: CreateFavoriteUseCase;
 let inMemoryFavoritesRepository: InMemoryFavoritesRepository;
 let inMemoryUsersRepository: InMemoryUsersRepository;
 let inMemoryProductsRepository: InMemoryProductsRepository;
-let inMemoryAttachmentLinkRepository: InMemoryAttachmentLinkRepository;
+let inMemoryProductAttachmentRepository: InMemoryProductAttachmentRepository;
 
 describe("Create favorite", () => {
   beforeEach(() => {
-    inMemoryAttachmentLinkRepository = new InMemoryAttachmentLinkRepository();
+    inMemoryProductAttachmentRepository =
+      new InMemoryProductAttachmentRepository();
     inMemoryProductsRepository = new InMemoryProductsRepository(
-      inMemoryAttachmentLinkRepository,
+      inMemoryProductAttachmentRepository,
     );
     inMemoryFavoritesRepository = new InMemoryFavoritesRepository(
       inMemoryProductsRepository,

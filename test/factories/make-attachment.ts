@@ -1,5 +1,4 @@
 import { Attachment, AttachmentProps } from "@/domain/entities/attachment";
-import { ATTACHMENT_STATUS } from "@/domain/enums/attachment-status";
 import { PrismaAttachmentAdapter } from "@/infra/database/adapters/prisma-attachment-adapter";
 import { PrismaService } from "@/infra/database/prisma";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
@@ -13,7 +12,6 @@ export function makeAttachment(
     {
       title: faker.lorem.slug() + ".png",
       url: faker.image.url(),
-      status: data.status ?? ATTACHMENT_STATUS.PENDING,
       ...data,
     },
     id,

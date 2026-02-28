@@ -4,24 +4,17 @@ import {
   ProductsRepository,
 } from "@/domain/repositories/products-repository";
 import { PrismaService } from "../prisma";
-import { PrismaAttachmentLinkAdapter } from "../adapters/prisma-attachment-link-adater";
-import {
-  ATTACHMENT_STATUS,
-  Prisma,
-  PRODUCT_CATEGORIES,
-  RESOURSE_TYPE,
-} from "generated/prisma/client";
-import { Uploader } from "@/domain/storage/uploader";
+import { PrismaProductAttachmentAdapter } from "../adapters/prisma-product-attachment-adater";
+import { Prisma, PRODUCT_CATEGORIES } from "generated/prisma/client";
 import { PaginatedResponse } from "@/shared/paginated-response";
 import { ProductWithAttachment } from "@/domain/entities/value-objects/product-with-attachment";
 import { PrismaProductAdapter } from "../adapters/prisma-product-adapter";
 import { PrismaProductWithAttachmentsAdapter } from "../adapters/prisma-product-with-attachments-adapter";
+import { DomainEvents } from "@/domain/events/domain-events";
+import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 
 export class PrismaProductsRepository implements ProductsRepository {
-  constructor(
-    private prisma: PrismaService,
-    private uploader: Uploader,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   async findById(id: string) {
     const product = await this.prisma.product.findFirst({
@@ -36,49 +29,32 @@ export class PrismaProductsRepository implements ProductsRepository {
   }
 
   async findByIdWithAttachment(id: string) {
-    const products = await this.prisma.$queryRaw<
-      {
-        product_id: string;
-        title: string;
-        description: string;
-        category: string;
-        ingredients: string[];
-        price: number;
-        user_id: string;
-        created_at: Date;
-        updated_at: Date;
-        attachment_url: string | null;
-        attachment_id: string;
-      }[]
-    >(
-      Prisma.sql`
-      SELECT 
-        s.id as product_id,
-        s.title,
-        s.description,
-        s.category,
-        s.ingredients,
-        s.price,
-        s.user_id,
-        s.created_at,
-        s.updated_at,
-        al.attachment_id,
-        a.url as attachment_url
-      FROM products s
-      LEFT JOIN attachment_link al 
-        ON al.resource_id = s.id
-        AND al.resource_type = 'PRODUCT'
-      LEFT JOIN attachment a
-        ON a.id = al.attachment_id
-      WHERE s.id = ${id}
-      `,
-    );
+    const product = await this.prisma.product.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        productAttachments: {
+          take: 1,
+          where: { isMain: true },
+          select: {
+            productId: true,
+            attachmentId: true,
+            attachment: {
+              select: {
+                url: true,
+              },
+            },
+          },
+        },
+      },
+    });
 
-    if (products.length === 0) {
+    if (!product) {
       return null;
     }
 
-    return PrismaProductWithAttachmentsAdapter.toDomain(products[0]);
+    return PrismaProductWithAttachmentsAdapter.toDomain(product);
   }
 
   async searchMany({
@@ -88,25 +64,34 @@ export class PrismaProductsRepository implements ProductsRepository {
     title,
     ingredients,
   }: SearchManyProductsParams): Promise<PaginatedResponse<Product>> {
-    const searchConditions = [];
+    const searchConditions: Prisma.ProductWhereInput[] = [];
+
+    if (category) {
+      searchConditions.push({
+        category,
+      });
+    }
 
     if (title) {
       searchConditions.push({
         title: {
           contains: title,
+          mode: "insensitive",
         },
       });
     }
 
-    if (ingredients) {
+    if (ingredients && ingredients.length > 0) {
       searchConditions.push({
         ingredients: {
           hasSome: ingredients,
         },
       });
     }
-    const where = {
+
+    const where: Prisma.ProductWhereInput = {
       category,
+      status: "ACTIVE",
       ...(searchConditions.length > 0 && {
         OR: searchConditions,
       }),
@@ -114,6 +99,7 @@ export class PrismaProductsRepository implements ProductsRepository {
     const [products, total] = await Promise.all([
       this.prisma.product.findMany({
         where,
+
         skip: (page - 1) * perPage,
         orderBy: {
           title: "desc",
@@ -148,100 +134,75 @@ export class PrismaProductsRepository implements ProductsRepository {
   }: SearchManyProductsParams): Promise<
     PaginatedResponse<ProductWithAttachment>
   > {
-    const andConditions: Prisma.Sql[] = [];
+    const searchConditions: Prisma.ProductWhereInput[] = [];
 
     if (category) {
-      andConditions.push(
-        Prisma.sql`s.category = ${category as PRODUCT_CATEGORIES}`,
-      );
+      searchConditions.push({
+        category,
+      });
     }
 
-    const searchConditions: Prisma.Sql[] = [];
-
     if (title) {
-      const cleanTitle = `%${title.trim().toLowerCase()}%`;
-      searchConditions.push(Prisma.sql`LOWER(s.title) LIKE ${cleanTitle}`);
+      searchConditions.push({
+        title: {
+          contains: title,
+          mode: "insensitive",
+        },
+      });
     }
 
     if (ingredients && ingredients.length > 0) {
-      const ingredientsSql = ingredients.map((ing) => {
-        const cleanIng = `%${ing.trim().toLowerCase()}%`;
-
-        return Prisma.sql`LOWER(array_to_string(s.ingredients, ',')) LIKE ${cleanIng}`;
+      searchConditions.push({
+        ingredients: {
+          hasSome: ingredients,
+        },
       });
-
-      searchConditions.push(
-        Prisma.sql`(${Prisma.join(ingredientsSql, " OR ")})`,
-      );
     }
 
-    if (searchConditions.length > 0) {
-      andConditions.push(
-        Prisma.sql`(${Prisma.join(searchConditions, " OR ")})`,
-      );
-    }
+    const where: Prisma.ProductWhereInput = {
+      category,
+      status: "ACTIVE",
+      ...(searchConditions.length > 0 && {
+        OR: searchConditions,
+      }),
+    };
 
-    const whereClause =
-      andConditions.length > 0
-        ? Prisma.sql`WHERE ${Prisma.join(andConditions, " AND ")}`
-        : Prisma.sql``;
+    const [products, total] = await Promise.all([
+      this.prisma.product.findMany({
+        where,
+        include: {
+          productAttachments: {
+            take: 1,
+            where: { isMain: true },
+            select: {
+              productId: true,
+              attachmentId: true,
 
-    const [productsWithAttachment, totalResult] = await Promise.all([
-      this.prisma.$queryRaw<
-        {
-          product_id: string;
-          title: string;
-          description: string;
-          category: string;
-          ingredients: string[];
-          price: number;
-          user_id: string;
-          created_at: Date;
-          updated_at: Date;
-          attachment_url: string | null;
-          attachment_id: string;
-        }[]
-      >(Prisma.sql`
-      SELECT 
-        s.id as product_id,
-        s.title,
-        s.description,
-        s.category,
-        s.ingredients,
-        s.price,
-        s.user_id,
-        s.created_at,
-        s.updated_at,
-        al.attachment_id,
-        a.url as attachment_url
-      FROM products s
-      LEFT JOIN attachment_link al 
-        ON al.resource_id = s.id
-        AND al.resource_type = 'PRODUCT'
-      LEFT JOIN attachment a
-        ON a.id = al.attachment_id
-      ${whereClause}
-      ORDER BY s.title DESC
-      LIMIT ${perPage}
-      OFFSET ${(page - 1) * perPage}
-      `),
-
-      //get total count
-      this.prisma.$queryRaw<{ total: bigint }[]>(Prisma.sql`
-        SELECT COUNT(*) as total
-        FROM products s
-        ${whereClause}
-      `),
+              attachment: {
+                select: {
+                  url: true,
+                },
+              },
+            },
+          },
+        },
+        skip: (page - 1) * perPage,
+        orderBy: {
+          title: "desc",
+        },
+        take: perPage,
+      }),
+      await this.prisma.product.count({
+        where: { status: "ACTIVE" },
+      }),
     ]);
 
-    const hasMore = page * perPage < (totalResult[0].total ?? 0);
+    const hasMore = page * perPage < (total ?? 0);
 
     return {
-      data: productsWithAttachment.map(
-        PrismaProductWithAttachmentsAdapter.toDomain,
-      ),
+      data: products.map(PrismaProductWithAttachmentsAdapter.toDomain),
       pagination: {
-        total: Number(totalResult[0].total) ?? 0,
+        total: total ?? 0,
         hasMore,
         nextPage: hasMore ? page + 1 : null,
       },
@@ -256,20 +217,13 @@ export class PrismaProductsRepository implements ProductsRepository {
         data: product,
       });
 
-      if (data.attachmentLink) {
-        const attachmentLink = PrismaAttachmentLinkAdapter.toPrisma(
-          data.attachmentLink,
+      if (data.attachment) {
+        const productAttachment = PrismaProductAttachmentAdapter.toPrisma(
+          data.attachment,
         );
 
-        await tx.attachmentLink.create({
-          data: attachmentLink,
-        });
-
-        await tx.attachment.update({
-          where: {
-            id: attachmentLink.attachmentId,
-          },
-          data: { expiresAt: null, status: ATTACHMENT_STATUS.LINKED },
+        await tx.productAttachment.create({
+          data: productAttachment,
         });
       }
     });
@@ -280,18 +234,17 @@ export class PrismaProductsRepository implements ProductsRepository {
     const productId = data.id.toString();
     const userId = data.userId.toString();
 
-    const newAttachmentId = data.attachmentLink?.attachmentId.toString();
+    const newAttachmentId = data.attachment?.attachmentId.toString();
 
-    const existingLink = await this.prisma.attachmentLink.findFirst({
-      where: {
-        resourceId: productId,
-        resourceType: RESOURSE_TYPE.PRODUCT,
-      },
-      include: { attachment: true },
-    });
+    const existingProductAttachment =
+      await this.prisma.productAttachment.findFirst({
+        where: {
+          productId,
+        },
+        include: { attachment: true },
+      });
 
-    const oldAttachmentId = existingLink?.attachmentId;
-    const oldAttachmentUrl = existingLink?.attachment?.url;
+    const oldAttachmentId = existingProductAttachment?.attachmentId;
     const isNewAttachment = oldAttachmentId !== newAttachmentId;
 
     await this.prisma.$transaction(async (tx) => {
@@ -307,62 +260,57 @@ export class PrismaProductsRepository implements ProductsRepository {
         },
       });
 
-      if (isNewAttachment) {
-        await tx.attachmentLink.deleteMany({
+      if (!isNewAttachment) return;
+
+      if (oldAttachmentId) {
+        await tx.productAttachment.deleteMany({
           where: {
-            resourceId: productId,
-            resourceType: RESOURSE_TYPE.PRODUCT,
+            productId,
           },
         });
+      }
 
-        if (oldAttachmentId) {
-          await tx.attachment.delete({
-            where: { id: oldAttachmentId },
-          });
-        }
+      if (isNewAttachment && data.attachment) {
+        const newAttachmentProduct = PrismaProductAttachmentAdapter.toPrisma(
+          data.attachment,
+        );
 
-        if (data.attachmentLink) {
-          const newAttachmentLink = PrismaAttachmentLinkAdapter.toPrisma(
-            data.attachmentLink,
-          );
-          await tx.attachmentLink.create({
-            data: newAttachmentLink,
-          });
-
-          await tx.attachment.update({
-            where: { id: newAttachmentId },
-            data: {
-              expiresAt: null,
-              status: ATTACHMENT_STATUS.LINKED,
-            },
-          });
-        }
+        await tx.productAttachment.create({
+          data: newAttachmentProduct,
+        });
       }
     });
 
-    if (isNewAttachment && oldAttachmentUrl) {
-      await this.uploader.delete({ key: oldAttachmentUrl });
+    if (isNewAttachment && oldAttachmentId) {
+      const remainingProducsAttachments =
+        await this.prisma.productAttachment.count({
+          where: { attachmentId: oldAttachmentId },
+        });
+
+      if (remainingProducsAttachments === 0 && existingProductAttachment) {
+        DomainEvents.dispatchEventsForAggregate(data.id);
+
+        await this.prisma.attachment.delete({
+          where: { id: oldAttachmentId },
+        });
+      }
     }
   }
 
   async delete(id: string) {
-    const attachmentLink = await this.prisma.attachmentLink.findFirst({
+    const productAttachment = await this.prisma.productAttachment.findFirst({
       where: {
-        resourceId: id,
-        resourceType: RESOURSE_TYPE.PRODUCT,
+        productId: id,
       },
       include: {
         attachment: true,
       },
     });
 
-    if (attachmentLink) {
-      await Promise.all([
-        this.prisma.attachment.delete({
-          where: { id: attachmentLink.attachmentId },
-        }),
-        this.uploader.delete({ key: attachmentLink.attachment.url }),
-      ]);
+    if (productAttachment) {
+      await this.prisma.attachment.delete({
+        where: { id: productAttachment.attachmentId },
+      });
     }
 
     await this.prisma.product.delete({
@@ -370,5 +318,7 @@ export class PrismaProductsRepository implements ProductsRepository {
         id,
       },
     });
+
+    DomainEvents.dispatchEventsForAggregate(new UniqueEntityId(id));
   }
 }

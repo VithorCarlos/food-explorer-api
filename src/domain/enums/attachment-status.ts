@@ -1,5 +1,0 @@
-export enum ATTACHMENT_STATUS {
-  PENDING = "PENDING",
-  LINKED = "LINKED",
-  EXPIRED = "EXPIRED",
-}

@@ -5,8 +5,8 @@ import { buildApp } from "@/app";
 import { FastifyInstance } from "fastify";
 import { AttachmentFactory } from "test/factories/make-attachment";
 import { UserFactory } from "test/factories/make-user";
-import { RESOURSE_TYPE } from "generated/prisma/enums";
 import { makeProduct } from "test/factories/make-product";
+import { ROLE } from "@/domain/enums/role";
 
 describe("Create Product(e2e)", () => {
   let app: FastifyInstance;
@@ -26,14 +26,14 @@ describe("Create Product(e2e)", () => {
     await app.close();
   });
 
-  it.skip("should be able to create an product", async () => {
+  it("should be able to create an product", async () => {
     const email = "johndoe@gmail.com";
     const password = "12345";
 
     const user = await userFactory.makeUserToPrisma({
       email,
       password,
-      role: "ADMIN",
+      role: ROLE.ADMIN,
     });
 
     const attachment = await attachmentFactory.makeAttachmentToPrisma();
@@ -60,16 +60,17 @@ describe("Create Product(e2e)", () => {
 
     const productResponse = response.body.product;
 
-    const attachmentLinkOnDatabase = await prisma.attachmentLink.findMany({
-      where: {
-        resourceId: productResponse.id.toString(),
-        resourceType: RESOURSE_TYPE.PRODUCT,
+    const productAttachmentOnDatabase = await prisma.productAttachment.findMany(
+      {
+        where: {
+          productId: productResponse.id.toString(),
+        },
       },
-    });
+    );
 
     expect(productResponse.id.toString()).toEqual(expect.any(String));
-    expect(attachmentLinkOnDatabase).toHaveLength(1);
-    expect(attachmentLinkOnDatabase[0].attachmentId).toEqual(
+    expect(productAttachmentOnDatabase).toHaveLength(1);
+    expect(productAttachmentOnDatabase[0].attachmentId).toEqual(
       attachment.id.toString(),
     );
   });

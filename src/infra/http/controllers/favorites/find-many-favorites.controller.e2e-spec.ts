@@ -37,7 +37,7 @@ describe("Find many favorites (e2e)", () => {
     await app.close();
   });
 
-  test.skip("[GET] /favorite", async () => {
+  test("[GET] /favorite", async () => {
     const user = await userFactory.makeUserToPrisma();
 
     let products: Product[] = [];
@@ -71,9 +71,10 @@ describe("Find many favorites (e2e)", () => {
 
     const response = await request(app.server)
       .get("/favorite")
-      .query({ page: "1", perPage: "10" })
+      .query({ page: 2, perPage: 10 })
       .set("Cookie", [`${TOKEN.ACCESS_TOKEN}=${accessToken}`]);
 
+    expect(response.body.favorites).toHaveLength(2);
     expect(response.statusCode).toEqual(200);
   });
 });

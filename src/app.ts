@@ -13,6 +13,7 @@ import multipart from "@fastify/multipart";
 import { uploadRoutes } from "./infra/http/routes/upload.routes";
 import { PrismaService } from "./infra/database/prisma";
 import { TOKEN } from "./domain/enums/token";
+import { makeDomainEvents } from "./infra/http/factories/make-domain-events";
 
 export async function buildApp() {
   const app = fastify({
@@ -23,6 +24,8 @@ export async function buildApp() {
   const prisma = new PrismaService();
 
   app.decorate("prisma", prisma);
+
+  makeDomainEvents(prisma);
 
   app.register(multipart, {
     limits: { fileSize: 2 * 1024 * 1024 }, // 2mb

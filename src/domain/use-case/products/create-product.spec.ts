@@ -1,18 +1,19 @@
 import { CreateProductUseCase } from "./create-product";
 import { makeProduct } from "test/factories/make-product";
-import { InMemoryAttachmentLinkRepository } from "test/repositories/in-memory-attachment-link-repository";
+import { InMemoryProductAttachmentRepository } from "test/repositories/in-memory-product-attachment-repository";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { InMemoryProductsRepository } from "test/repositories/in-memory-products-repository";
 
 let sut: CreateProductUseCase;
 let inMemoryProductsRepository: InMemoryProductsRepository;
-let inMemoryAttachmentLinkRepository: InMemoryAttachmentLinkRepository;
+let inMemoryProductAttachmentRepository: InMemoryProductAttachmentRepository;
 
 describe("Create product", () => {
   beforeEach(() => {
-    inMemoryAttachmentLinkRepository = new InMemoryAttachmentLinkRepository();
+    inMemoryProductAttachmentRepository =
+      new InMemoryProductAttachmentRepository();
     inMemoryProductsRepository = new InMemoryProductsRepository(
-      inMemoryAttachmentLinkRepository,
+      inMemoryProductAttachmentRepository,
     );
     sut = new CreateProductUseCase(inMemoryProductsRepository);
   });
@@ -35,17 +36,17 @@ describe("Create product", () => {
 
     expect(product).toEqual(expect.objectContaining({ title: "product-1" }));
     expect(product.id.toString()).toEqual(expect.any(String));
-    expect(product.attachmentLink?.attachmentId).toEqual(
+    expect(product.attachment?.attachmentId).toEqual(
       new UniqueEntityId("attachment-01"),
     );
-    expect(product.attachmentLink?.resourceId).toEqual(product.id);
+    expect(product.attachment?.productId).toEqual(product.id);
 
     expect(inMemoryProductsRepository.items[0].title).toEqual("product-1");
     expect(inMemoryProductsRepository.items[0].id).toEqual(product.id);
-    expect(inMemoryAttachmentLinkRepository.items).toEqual([
-      product.attachmentLink,
+    expect(inMemoryProductAttachmentRepository.items).toEqual([
+      product.attachment,
     ]);
-    expect(inMemoryAttachmentLinkRepository.items[0].attachmentId).toEqual(
+    expect(inMemoryProductAttachmentRepository.items[0].attachmentId).toEqual(
       new UniqueEntityId("attachment-01"),
     );
   });

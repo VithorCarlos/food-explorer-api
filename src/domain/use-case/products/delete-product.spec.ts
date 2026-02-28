@@ -3,19 +3,21 @@ import { makeProduct } from "test/factories/make-product";
 import { DeleteProductUseCase } from "./delete-product";
 import { ProductDoesNotExists } from "@/domain/errors/product-does-not-exists";
 import { ProductNotFoundForThisUser } from "@/domain/errors/product-not-found-for-this-user";
-import { InMemoryAttachmentLinkRepository } from "test/repositories/in-memory-attachment-link-repository";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
+import { InMemoryProductAttachmentRepository } from "test/repositories/in-memory-product-attachment-repository";
 
 let sut: DeleteProductUseCase;
-let inMemoryAttachmentLinkRepository: InMemoryAttachmentLinkRepository;
+let inMemoryProductAttachmentRepository: InMemoryProductAttachmentRepository;
 
 let inMemoryProductsRepository: InMemoryProductsRepository;
 
 describe("Delete product", () => {
   beforeEach(() => {
-    inMemoryAttachmentLinkRepository = new InMemoryAttachmentLinkRepository();
+    inMemoryProductAttachmentRepository =
+      new InMemoryProductAttachmentRepository();
+
     inMemoryProductsRepository = new InMemoryProductsRepository(
-      inMemoryAttachmentLinkRepository,
+      inMemoryProductAttachmentRepository,
     );
     sut = new DeleteProductUseCase(inMemoryProductsRepository);
   });
@@ -47,10 +49,10 @@ describe("Delete product", () => {
     });
 
     expect(inMemoryProductsRepository.items).toHaveLength(1);
-    expect(inMemoryAttachmentLinkRepository.items).toHaveLength(1);
-    expect(inMemoryAttachmentLinkRepository.items[0].attachmentId).not.toEqual(
-      "attachment-01",
-    );
+    expect(inMemoryProductAttachmentRepository.items).toHaveLength(1);
+    expect(
+      inMemoryProductAttachmentRepository.items[0].attachmentId,
+    ).not.toEqual("attachment-01");
     expect(inMemoryProductsRepository.items[0].id.toString()).toEqual(
       "product-02",
     );

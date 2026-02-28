@@ -6,21 +6,22 @@ import { FavoriteNotFoundForThisUser } from "@/domain/errors/favorite-not-found-
 import { InMemoryUsersRepository } from "test/repositories/in-memory-users-repository";
 import { makeUser } from "test/factories/make-user";
 import { InMemoryProductsRepository } from "test/repositories/in-memory-products-repository";
-import { InMemoryAttachmentLinkRepository } from "test/repositories/in-memory-attachment-link-repository";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { makeProduct } from "test/factories/make-product";
+import { InMemoryProductAttachmentRepository } from "test/repositories/in-memory-product-attachment-repository";
 
 let sut: DeleteFavoriteUseCase;
 let inMemoryFavoritesRepository: InMemoryFavoritesRepository;
 let inMemoryUsersRepository: InMemoryUsersRepository;
 let inMemoryProductsRepository: InMemoryProductsRepository;
-let inMemoryAttachmentLinkRepository: InMemoryAttachmentLinkRepository;
+let inMemoryProductAttachmentRepository: InMemoryProductAttachmentRepository;
 
 describe("Delete favorite", () => {
   beforeEach(() => {
-    inMemoryAttachmentLinkRepository = new InMemoryAttachmentLinkRepository();
+    inMemoryProductAttachmentRepository =
+      new InMemoryProductAttachmentRepository();
     inMemoryProductsRepository = new InMemoryProductsRepository(
-      inMemoryAttachmentLinkRepository,
+      inMemoryProductAttachmentRepository,
     );
     inMemoryFavoritesRepository = new InMemoryFavoritesRepository(
       inMemoryProductsRepository,

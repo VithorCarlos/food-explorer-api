@@ -8,12 +8,7 @@ export interface FavoriteProps {
 
 export class Favorite extends BaseEntity<FavoriteProps> {
   static create(props: FavoriteProps, id?: UniqueEntityId) {
-    const favorite = new Favorite(
-      {
-        ...props,
-      },
-      id,
-    );
+    const favorite = new Favorite(props, id);
 
     return favorite;
   }

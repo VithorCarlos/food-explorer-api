@@ -1,19 +1,20 @@
 import { makeProduct } from "test/factories/make-product";
 import { FindOneProductUseCase } from "./find-one-product";
-import { InMemoryAttachmentLinkRepository } from "test/repositories/in-memory-attachment-link-repository";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { InMemoryProductsRepository } from "test/repositories/in-memory-products-repository";
 import { ProductDoesNotExists } from "@/domain/errors/product-does-not-exists";
+import { InMemoryProductAttachmentRepository } from "test/repositories/in-memory-product-attachment-repository";
 
 let sut: FindOneProductUseCase;
 let inMemoryProductsRepository: InMemoryProductsRepository;
-let inMemoryAttachmentLinkRepository: InMemoryAttachmentLinkRepository;
+let inMemoryProductAttachmentRepository: InMemoryProductAttachmentRepository;
 
 describe("Find one product", () => {
   beforeEach(() => {
-    inMemoryAttachmentLinkRepository = new InMemoryAttachmentLinkRepository();
+    inMemoryProductAttachmentRepository =
+      new InMemoryProductAttachmentRepository();
     inMemoryProductsRepository = new InMemoryProductsRepository(
-      inMemoryAttachmentLinkRepository,
+      inMemoryProductAttachmentRepository,
     );
     sut = new FindOneProductUseCase(inMemoryProductsRepository);
   });

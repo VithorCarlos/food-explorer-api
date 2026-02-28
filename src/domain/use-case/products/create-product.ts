@@ -1,4 +1,5 @@
 import { Product } from "@/domain/entities/product";
+import { ProductAttachment } from "@/domain/entities/product-attachment";
 import { PRODUCT_CATEGORIES } from "@/domain/enums/product-categories";
 import { ProductsRepository } from "@/domain/repositories/products-repository";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";

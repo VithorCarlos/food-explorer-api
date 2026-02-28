@@ -2,29 +2,39 @@ import { FavoriteDetails } from "@/domain/entities/value-objects/favorite-detail
 import { PRODUCT_CATEGORIES } from "@/domain/enums/product-categories";
 import { env } from "@/env";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
+import { Decimal } from "generated/prisma/internal/prismaNamespace";
 
 interface PrismaFavoriteDetails {
-  favorite_id: string;
-  product_id: string;
-  user_id: string;
-  attachment_url: string | null;
-  title: string;
-  category: PRODUCT_CATEGORIES;
-  price: number;
+  id: string;
+  userId: string;
+  productId: string;
+  product: {
+    title: string;
+    category: keyof typeof PRODUCT_CATEGORIES;
+    price: Decimal;
+    productAttachments: {
+      attachment: {
+        url: string;
+      };
+    }[];
+  };
 }
 
 export class PrismaFavoriteDetailsAdapter {
   static toDomain(raw: PrismaFavoriteDetails): FavoriteDetails {
+    const attachment = raw.product?.productAttachments[0]?.attachment;
     return FavoriteDetails.create({
-      favoriteId: new UniqueEntityId(raw.favorite_id),
-      productId: new UniqueEntityId(raw.product_id),
-      userId: new UniqueEntityId(raw.user_id),
-      attachmentUrl: raw.attachment_url
-        ? `${env.CLOUDFARE_PUBLIC_CDN}/${raw.attachment_url}`
-        : null,
-      title: raw.title,
-      category: raw.category,
-      price: raw.price,
+      title: raw.product.title,
+      category: raw.product.category,
+      price: Number(raw.product.price),
+      favoriteId: new UniqueEntityId(raw.id),
+      productId: new UniqueEntityId(raw.productId),
+      userId: new UniqueEntityId(raw.userId),
+      ...(attachment && {
+        attachmentUrl: attachment.url
+          ? `${env.CLOUDFARE_PUBLIC_CDN}/${attachment.url}`
+          : null,
+      }),
     });
   }
 }

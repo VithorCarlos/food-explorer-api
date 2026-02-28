@@ -1,19 +1,20 @@
 import { makeProduct } from "test/factories/make-product";
-import { InMemoryAttachmentLinkRepository } from "test/repositories/in-memory-attachment-link-repository";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { FindActiveCategoriesUseCase } from "./find-active-product-categories";
 import { PRODUCT_CATEGORIES } from "@/domain/enums/product-categories";
 import { InMemoryProductsRepository } from "test/repositories/in-memory-products-repository";
+import { InMemoryProductAttachmentRepository } from "test/repositories/in-memory-product-attachment-repository";
 
 let sut: FindActiveCategoriesUseCase;
 let inMemoryProductsRepository: InMemoryProductsRepository;
-let inMemoryAttachmentLinkRepository: InMemoryAttachmentLinkRepository;
+let inMemoryProductAttachmentRepository: InMemoryProductAttachmentRepository;
 
 describe("Find Actice Categories", () => {
   beforeEach(() => {
-    inMemoryAttachmentLinkRepository = new InMemoryAttachmentLinkRepository();
+    inMemoryProductAttachmentRepository =
+      new InMemoryProductAttachmentRepository();
     inMemoryProductsRepository = new InMemoryProductsRepository(
-      inMemoryAttachmentLinkRepository,
+      inMemoryProductAttachmentRepository,
     );
     sut = new FindActiveCategoriesUseCase(inMemoryProductsRepository);
   });

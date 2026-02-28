@@ -9,11 +9,12 @@ interface ProductWithAttachmentProps {
   title: string;
   description?: string;
   category: PRODUCT_CATEGORIES;
-  ingredients: string[];
+  ingredients?: string[];
   price: number;
   userId: UniqueEntityId;
   createdAt: Date;
   updatedAt?: Date;
+  favoriteId?: string;
 }
 
 export class ProductWithAttachment extends ValueObject<ProductWithAttachmentProps> {

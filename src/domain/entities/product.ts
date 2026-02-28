@@ -2,13 +2,14 @@ import { BaseEntity } from "../../shared/entity/base-identity";
 import { Optional } from "@/shared/optional";
 import { PRODUCT_CATEGORIES } from "../enums/product-categories";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
-import { AttachmentLink } from "./attachment-link";
-import { RESOURSE_TYPE } from "../enums/resource-type";
+import { ProductAttachment } from "./product-attachment";
+import { AggregateRoot } from "@/shared/entity/aggregate-root";
+import { ProductAttachmentChangedEvent } from "../events/product-attachment-changed-event";
 
 export interface ProductProps {
   title: string;
   description?: string;
-  attachmentLink?: AttachmentLink;
+  attachment?: ProductAttachment;
   category: PRODUCT_CATEGORIES;
   ingredients?: string[];
   price: number;
@@ -17,7 +18,7 @@ export interface ProductProps {
   updatedAt?: Date;
 }
 
-export class Product extends BaseEntity<ProductProps> {
+export class Product extends AggregateRoot<ProductProps> {
   static create(
     props: Optional<ProductProps, "createdAt">,
     id?: UniqueEntityId,
@@ -51,12 +52,12 @@ export class Product extends BaseEntity<ProductProps> {
     this.touch();
   }
 
-  get attachmentLink(): AttachmentLink | undefined {
-    return this.props.attachmentLink;
+  get attachment(): ProductAttachment | undefined {
+    return this.props.attachment;
   }
 
-  set attachmentLink(attachmentLink: AttachmentLink) {
-    this.props.attachmentLink = attachmentLink;
+  set attachment(productAttachment: ProductAttachment) {
+    this.props.attachment = productAttachment;
     this.touch();
   }
 
@@ -106,13 +107,23 @@ export class Product extends BaseEntity<ProductProps> {
   }
 
   changeAttachment(attachmentId: UniqueEntityId) {
-    const attachmentLink = AttachmentLink.create({
+    const oldAttachment = this.props.attachment;
+
+    const productAttachment = ProductAttachment.create({
       attachmentId,
-      resourceId: this.id,
-      resourceType: RESOURSE_TYPE.PRODUCT,
-      linkedAt: new Date(),
+      isMain: true,
+      position: 0,
+      productId: this.id,
     });
 
-    this.attachmentLink = attachmentLink;
+    this.attachment = productAttachment;
+
+    if (oldAttachment) {
+      this.removeAttachment();
+    }
+  }
+
+  removeAttachment() {
+    this.addDomainEvent(new ProductAttachmentChangedEvent(this.id));
   }
 }

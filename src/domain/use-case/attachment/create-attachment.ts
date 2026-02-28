@@ -1,6 +1,5 @@
 import { Attachment } from "@/domain/entities/attachment";
 import { InvalidAttachmentTypeError } from "@/domain/errors/invalid-attachment-type";
-import { AttachmentLinkRepository } from "@/domain/repositories/attachment-link-repository";
 import { AttachmentRepository } from "@/domain/repositories/attachment-repository";
 import { Uploader } from "@/domain/storage/uploader";
 

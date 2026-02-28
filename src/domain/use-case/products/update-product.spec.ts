@@ -3,7 +3,7 @@ import { makeProduct } from "test/factories/make-product";
 import { InMemoryUsersRepository } from "test/repositories/in-memory-users-repository";
 import { makeUser } from "test/factories/make-user";
 import { PRODUCT_CATEGORIES } from "@/domain/enums/product-categories";
-import { InMemoryAttachmentLinkRepository } from "test/repositories/in-memory-attachment-link-repository";
+import { InMemoryProductAttachmentRepository } from "test/repositories/in-memory-product-attachment-repository";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { InMemoryProductsRepository } from "test/repositories/in-memory-products-repository";
 import { ProductDoesNotExists } from "@/domain/errors/product-does-not-exists";
@@ -11,15 +11,16 @@ import { ProductNotFoundForThisUser } from "@/domain/errors/product-not-found-fo
 
 let sut: UdpateProductUseCase;
 let inMemoryProductsRepository: InMemoryProductsRepository;
-let inMemoryAttachmentLinkRepository: InMemoryAttachmentLinkRepository;
+let inMemoryProductAttachmentRepository: InMemoryProductAttachmentRepository;
 
 let inMemoryUsersRepository: InMemoryUsersRepository;
 
 describe("Update product", () => {
   beforeEach(() => {
-    inMemoryAttachmentLinkRepository = new InMemoryAttachmentLinkRepository();
+    inMemoryProductAttachmentRepository =
+      new InMemoryProductAttachmentRepository();
     inMemoryProductsRepository = new InMemoryProductsRepository(
-      inMemoryAttachmentLinkRepository,
+      inMemoryProductAttachmentRepository,
     );
     inMemoryUsersRepository = new InMemoryUsersRepository();
     sut = new UdpateProductUseCase(inMemoryProductsRepository);
@@ -77,11 +78,11 @@ describe("Update product", () => {
 
     expect(product.id.toString()).toEqual("product-01");
 
-    expect(product.attachmentLink?.attachmentId.toString()).not.toEqual(
+    expect(product.attachment?.attachmentId.toString()).not.toEqual(
       "attachment-01",
     );
 
-    expect(product.attachmentLink?.attachmentId.toString()).toEqual(
+    expect(product.attachment?.attachmentId.toString()).toEqual(
       "new-attachment",
     );
     expect(product.userId.toString()).toEqual("user-01");

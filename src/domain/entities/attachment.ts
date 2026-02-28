@@ -1,6 +1,5 @@
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { BaseEntity } from "../../shared/entity/base-identity";
-import { ATTACHMENT_STATUS } from "../enums/attachment-status";
 
 export interface AttachmentProps {
   title: string;

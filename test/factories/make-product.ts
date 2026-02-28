@@ -1,6 +1,5 @@
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { faker } from "@faker-js/faker";
-import { AttachmentLink } from "@/domain/entities/attachment-link";
 import { PRODUCT_CATEGORIES } from "@/domain/enums/product-categories";
 import { Product, ProductProps } from "@/domain/entities/product";
 import { RESOURSE_TYPE } from "@/domain/enums/resource-type";
@@ -29,13 +28,7 @@ export function makeProduct(
   );
 
   if (data.attachmentId) {
-    const attachmentLInk = AttachmentLink.create({
-      attachmentId: data.attachmentId,
-      resourceId: product.id,
-      resourceType: RESOURSE_TYPE.PRODUCT,
-    });
-
-    product.attachmentLink = attachmentLInk;
+    product.changeAttachment(data.attachmentId);
   }
 
   return product;

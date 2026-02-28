@@ -21,6 +21,8 @@ export class DeleteProductUseCase {
       throw new ProductNotFoundForThisUser();
     }
 
+    product.removeAttachment();
+
     await this.productsRepository.delete(product.id.toString());
   }
 }
