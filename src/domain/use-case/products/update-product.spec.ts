@@ -8,22 +8,32 @@ import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { InMemoryProductsRepository } from "test/repositories/in-memory-products-repository";
 import { ProductDoesNotExists } from "@/domain/errors/product-does-not-exists";
 import { ProductNotFoundForThisUser } from "@/domain/errors/product-not-found-for-this-user";
+import { FakerUploader } from "test/storage/faker-uploader";
+import { InMemoryAttachmentRepository } from "test/repositories/in-memory-attachment-repository";
+import { OnProductAttachmentChanged } from "@/domain/subscribers/on-product-attachment-changed";
+import { makeAttachment } from "test/factories/make-attachment";
 
 let sut: UdpateProductUseCase;
 let inMemoryProductsRepository: InMemoryProductsRepository;
 let inMemoryProductAttachmentRepository: InMemoryProductAttachmentRepository;
-
 let inMemoryUsersRepository: InMemoryUsersRepository;
+let fakerUploader: FakerUploader;
+let inMemoryAttachmentRepository: InMemoryAttachmentRepository;
 
 describe("Update product", () => {
   beforeEach(() => {
+    inMemoryAttachmentRepository = new InMemoryAttachmentRepository();
+    fakerUploader = new FakerUploader();
+
     inMemoryProductAttachmentRepository =
-      new InMemoryProductAttachmentRepository();
+      new InMemoryProductAttachmentRepository(inMemoryAttachmentRepository);
     inMemoryProductsRepository = new InMemoryProductsRepository(
       inMemoryProductAttachmentRepository,
     );
     inMemoryUsersRepository = new InMemoryUsersRepository();
     sut = new UdpateProductUseCase(inMemoryProductsRepository);
+
+    new OnProductAttachmentChanged(inMemoryAttachmentRepository, fakerUploader);
   });
 
   it("Should be able to update an product", async () => {
@@ -58,15 +68,25 @@ describe("Update product", () => {
     expect(product.userId.toString()).toEqual("user-01");
   });
 
-  it("Should be able to update an product with attachment", async () => {
+  it.only("Should be able to update an product with attachment", async () => {
+    const attachment = makeAttachment({}, new UniqueEntityId("attachment-1"));
+    await inMemoryAttachmentRepository.create(attachment);
+
+    fakerUploader.upload({
+      fileName: attachment.url,
+      body: Buffer.from("test-file.png"),
+      fileType: "png",
+    });
+
     const makedUser = makeUser({ id: new UniqueEntityId("user-01") });
     const makedProduct = makeProduct(
       {
         id: new UniqueEntityId("product-01"),
-        attachmentId: new UniqueEntityId("attachment-01"),
+        attachmentId: attachment.id,
       },
       makedUser.id,
     );
+
     await inMemoryUsersRepository.create(makedUser);
     await inMemoryProductsRepository.create(makedProduct);
 
@@ -75,8 +95,8 @@ describe("Update product", () => {
       userId: "user-01",
       attachmentId: "new-attachment",
     });
-
     expect(product.id.toString()).toEqual("product-01");
+    expect(inMemoryAttachmentRepository.items).toHaveLength(0);
 
     expect(product.attachment?.attachmentId.toString()).not.toEqual(
       "attachment-01",

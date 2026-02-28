@@ -12,13 +12,12 @@ interface Upload {
 export class FakerUploader implements Uploader {
   public uploads: Upload[] = [];
   async upload({ fileName }: UploaderParams): Promise<{ url: string }> {
-    const url = randomUUID();
+    const url = fileName ?? randomUUID();
 
     this.uploads.push({
       fileName,
       url,
     });
-
     return { url };
   }
 

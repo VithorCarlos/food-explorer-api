@@ -119,11 +119,18 @@ export class Product extends AggregateRoot<ProductProps> {
     this.attachment = productAttachment;
 
     if (oldAttachment) {
-      this.removeAttachment();
+      this.removeAttachment(oldAttachment.attachmentId);
     }
   }
 
-  removeAttachment() {
-    this.addDomainEvent(new ProductAttachmentChangedEvent(this.id));
+  removeAttachment(attachmentIdToRemove?: UniqueEntityId) {
+    const idToDispatch =
+      attachmentIdToRemove ?? this.props.attachment?.attachmentId;
+
+    if (idToDispatch) {
+      this.addDomainEvent(
+        new ProductAttachmentChangedEvent(this.id, idToDispatch),
+      );
+    }
   }
 }

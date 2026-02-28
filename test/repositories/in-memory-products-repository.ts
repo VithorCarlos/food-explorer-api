@@ -9,10 +9,11 @@ import {
 import { ProductWithAttachment } from "@/domain/entities/value-objects/product-with-attachment";
 import { InMemoryProductAttachmentRepository } from "./in-memory-product-attachment-repository";
 import { DomainEvents } from "@/domain/events/domain-events";
+import { InMemoryAttachmentRepository } from "./in-memory-attachment-repository";
 
 export class InMemoryProductsRepository implements ProductsRepository {
   constructor(
-    private inMemoryProductAttachmentRepository: InMemoryProductAttachmentRepository,
+    private productAttachmentRepository: InMemoryProductAttachmentRepository,
   ) {}
   public items: Product[] = [];
   public productsWithAttachments: ProductWithAttachment[] = [];
@@ -180,24 +181,24 @@ export class InMemoryProductsRepository implements ProductsRepository {
     this.items.push(data);
 
     if (data.attachment) {
-      await this.inMemoryProductAttachmentRepository.create(data.attachment);
+      await this.productAttachmentRepository.create(data.attachment);
     }
   }
 
   async update(data: Product) {
     const itemIndex = this.items.findIndex((item) => item.id === data.id);
 
-    const linkIndex = this.inMemoryProductAttachmentRepository.items.findIndex(
-      (item) => item.productId.equals(data.id),
+    const linkIndex = this.productAttachmentRepository.items.findIndex((item) =>
+      item.productId.equals(data.id),
     );
 
     if (linkIndex >= 0) {
       DomainEvents.dispatchEventsForAggregate(data.id);
-      this.inMemoryProductAttachmentRepository.items.splice(linkIndex, 1);
+      this.productAttachmentRepository.items.splice(linkIndex, 1);
     }
 
     if (data.attachment) {
-      this.inMemoryProductAttachmentRepository.create(data.attachment);
+      this.productAttachmentRepository.create(data.attachment);
     }
 
     this.items[itemIndex] = data;
@@ -206,17 +207,19 @@ export class InMemoryProductsRepository implements ProductsRepository {
   async delete(id: string) {
     const itemIndex = this.items.findIndex((item) => item.id.toString() === id);
 
-    const linkIndex = this.inMemoryProductAttachmentRepository.items.findIndex(
-      (item) => item.productId.equals(new UniqueEntityId(id)),
-    );
+    if (itemIndex === -1) return;
 
-    if (itemIndex >= 0) {
-      this.items.splice(itemIndex, 1);
+    const productAttachmentIndex =
+      this.productAttachmentRepository.items.findIndex((item) =>
+        item.productId.equals(new UniqueEntityId(id)),
+      );
+
+    this.items.splice(itemIndex, 1);
+
+    if (productAttachmentIndex >= 0) {
+      this.productAttachmentRepository.items.splice(productAttachmentIndex, 1);
     }
 
-    if (linkIndex >= 0) {
-      DomainEvents.dispatchEventsForAggregate(new UniqueEntityId(id));
-      this.inMemoryProductAttachmentRepository.items.splice(linkIndex, 1);
-    }
+    DomainEvents.dispatchEventsForAggregate(new UniqueEntityId(id));
   }
 }

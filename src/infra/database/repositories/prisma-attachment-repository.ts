@@ -6,6 +6,18 @@ import { AttachmentRepository } from "@/domain/repositories/attachment-repositor
 export class PrismaAttachmentRepository implements AttachmentRepository {
   constructor(private prisma: PrismaService) {}
 
+  async findById(id: string): Promise<Attachment | null> {
+    const attachment = await this.prisma.attachment.findFirst({
+      where: { id },
+    });
+
+    if (!attachment) {
+      return null;
+    }
+
+    return PrismaAttachmentAdapter.toDomain(attachment);
+  }
+
   async create(attachment: Attachment) {
     const attachmentData = PrismaAttachmentAdapter.toPrisma(attachment);
 

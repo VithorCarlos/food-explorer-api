@@ -4,8 +4,10 @@ import { DomainEvent } from "./domain-event";
 export class ProductAttachmentChangedEvent implements DomainEvent {
   public ocurredAt: Date;
 
-  constructor(public readonly productId: UniqueEntityId) {
-    console.log({ productId });
+  constructor(
+    public readonly productId: UniqueEntityId,
+    public readonly attachmentId: UniqueEntityId,
+  ) {
     this.ocurredAt = new Date();
   }
 

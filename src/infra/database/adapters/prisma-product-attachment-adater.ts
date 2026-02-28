@@ -16,7 +16,7 @@ interface ProductAttachmentBindProps {
     id: string;
     url: string;
     title: string;
-    createdAt: Date;
+    createdAt?: Date;
   };
 }
 
