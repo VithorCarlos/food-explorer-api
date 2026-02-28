@@ -3,17 +3,6 @@ import { UniqueEntityId } from "@/shared/entity/unique-entity-id";
 import { Prisma } from "generated/prisma/browser";
 import { Favorite as RowFavorites } from "generated/prisma/client";
 
-export interface CustomBindProps {
-  favoriteId: string;
-  productId: string;
-  userId: string;
-  title: string;
-  category: string;
-  ingredients: string[];
-  price: number;
-  description: string;
-}
-
 export class PrismaFavoriteAdapter {
   static toPrisma({
     id,

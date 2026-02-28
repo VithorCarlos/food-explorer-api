@@ -24,7 +24,7 @@ export const deleteFavoriteController = async (
       userId,
     });
 
-    reply.status(200);
+    reply.status(204);
   } catch (error) {
     if (error instanceof Error) {
       reply.status(400).send({ message: error.message });

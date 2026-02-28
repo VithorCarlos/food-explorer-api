@@ -8,10 +8,9 @@ export const findManyFavoritesController = async (
   reply: FastifyReply,
 ) => {
   const userId = request.user.sub;
-
   const findManySchema = z.object({
-    page: z.coerce.number().min(1).default(1),
-    perPage: z.coerce.number().min(1).default(10),
+    page: z.coerce.number().min(1),
+    perPage: z.coerce.number().min(1),
   });
 
   const { page, perPage } = findManySchema.parse(request.query);
@@ -27,7 +26,7 @@ export const findManyFavoritesController = async (
       perPage,
     });
 
-    return reply.status(200).send({
+    reply.status(200).send({
       favorites: result.favorites.data.map(FavoriteDetailsPresenter.toHTTP),
       pagination: result.favorites.pagination,
     });

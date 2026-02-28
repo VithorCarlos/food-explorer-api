@@ -29,8 +29,6 @@ export type AttachmentMinAggregateOutputType = {
   title: string | null
   url: string | null
   createdAt: Date | null
-  expiresAt: Date | null
-  status: $Enums.ATTACHMENT_STATUS | null
 }
 
 export type AttachmentMaxAggregateOutputType = {
@@ -38,8 +36,6 @@ export type AttachmentMaxAggregateOutputType = {
   title: string | null
   url: string | null
   createdAt: Date | null
-  expiresAt: Date | null
-  status: $Enums.ATTACHMENT_STATUS | null
 }
 
 export type AttachmentCountAggregateOutputType = {
@@ -47,8 +43,6 @@ export type AttachmentCountAggregateOutputType = {
   title: number
   url: number
   createdAt: number
-  expiresAt: number
-  status: number
   _all: number
 }
 
@@ -58,8 +52,6 @@ export type AttachmentMinAggregateInputType = {
   title?: true
   url?: true
   createdAt?: true
-  expiresAt?: true
-  status?: true
 }
 
 export type AttachmentMaxAggregateInputType = {
@@ -67,8 +59,6 @@ export type AttachmentMaxAggregateInputType = {
   title?: true
   url?: true
   createdAt?: true
-  expiresAt?: true
-  status?: true
 }
 
 export type AttachmentCountAggregateInputType = {
@@ -76,8 +66,6 @@ export type AttachmentCountAggregateInputType = {
   title?: true
   url?: true
   createdAt?: true
-  expiresAt?: true
-  status?: true
   _all?: true
 }
 
@@ -158,8 +146,6 @@ export type AttachmentGroupByOutputType = {
   title: string
   url: string
   createdAt: Date
-  expiresAt: Date | null
-  status: $Enums.ATTACHMENT_STATUS
   _count: AttachmentCountAggregateOutputType | null
   _min: AttachmentMinAggregateOutputType | null
   _max: AttachmentMaxAggregateOutputType | null
@@ -188,9 +174,8 @@ export type AttachmentWhereInput = {
   title?: Prisma.StringFilter<"Attachment"> | string
   url?: Prisma.StringFilter<"Attachment"> | string
   createdAt?: Prisma.DateTimeFilter<"Attachment"> | Date | string
-  expiresAt?: Prisma.DateTimeNullableFilter<"Attachment"> | Date | string | null
-  status?: Prisma.EnumATTACHMENT_STATUSFilter<"Attachment"> | $Enums.ATTACHMENT_STATUS
-  links?: Prisma.AttachmentLinkListRelationFilter
+  productAttachments?: Prisma.ProductAttachmentListRelationFilter
+  userAttachments?: Prisma.UserAttachmentListRelationFilter
 }
 
 export type AttachmentOrderByWithRelationInput = {
@@ -198,9 +183,8 @@ export type AttachmentOrderByWithRelationInput = {
   title?: Prisma.SortOrder
   url?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  status?: Prisma.SortOrder
-  links?: Prisma.AttachmentLinkOrderByRelationAggregateInput
+  productAttachments?: Prisma.ProductAttachmentOrderByRelationAggregateInput
+  userAttachments?: Prisma.UserAttachmentOrderByRelationAggregateInput
 }
 
 export type AttachmentWhereUniqueInput = Prisma.AtLeast<{
@@ -211,9 +195,8 @@ export type AttachmentWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"Attachment"> | string
   url?: Prisma.StringFilter<"Attachment"> | string
   createdAt?: Prisma.DateTimeFilter<"Attachment"> | Date | string
-  expiresAt?: Prisma.DateTimeNullableFilter<"Attachment"> | Date | string | null
-  status?: Prisma.EnumATTACHMENT_STATUSFilter<"Attachment"> | $Enums.ATTACHMENT_STATUS
-  links?: Prisma.AttachmentLinkListRelationFilter
+  productAttachments?: Prisma.ProductAttachmentListRelationFilter
+  userAttachments?: Prisma.UserAttachmentListRelationFilter
 }, "id">
 
 export type AttachmentOrderByWithAggregationInput = {
@@ -221,8 +204,6 @@ export type AttachmentOrderByWithAggregationInput = {
   title?: Prisma.SortOrder
   url?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
-  status?: Prisma.SortOrder
   _count?: Prisma.AttachmentCountOrderByAggregateInput
   _max?: Prisma.AttachmentMaxOrderByAggregateInput
   _min?: Prisma.AttachmentMinOrderByAggregateInput
@@ -236,8 +217,6 @@ export type AttachmentScalarWhereWithAggregatesInput = {
   title?: Prisma.StringWithAggregatesFilter<"Attachment"> | string
   url?: Prisma.StringWithAggregatesFilter<"Attachment"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Attachment"> | Date | string
-  expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Attachment"> | Date | string | null
-  status?: Prisma.EnumATTACHMENT_STATUSWithAggregatesFilter<"Attachment"> | $Enums.ATTACHMENT_STATUS
 }
 
 export type AttachmentCreateInput = {
@@ -245,9 +224,8 @@ export type AttachmentCreateInput = {
   title: string
   url: string
   createdAt?: Date | string
-  expiresAt?: Date | string | null
-  status?: $Enums.ATTACHMENT_STATUS
-  links?: Prisma.AttachmentLinkCreateNestedManyWithoutAttachmentInput
+  productAttachments?: Prisma.ProductAttachmentCreateNestedManyWithoutAttachmentInput
+  userAttachments?: Prisma.UserAttachmentCreateNestedManyWithoutAttachmentInput
 }
 
 export type AttachmentUncheckedCreateInput = {
@@ -255,9 +233,8 @@ export type AttachmentUncheckedCreateInput = {
   title: string
   url: string
   createdAt?: Date | string
-  expiresAt?: Date | string | null
-  status?: $Enums.ATTACHMENT_STATUS
-  links?: Prisma.AttachmentLinkUncheckedCreateNestedManyWithoutAttachmentInput
+  productAttachments?: Prisma.ProductAttachmentUncheckedCreateNestedManyWithoutAttachmentInput
+  userAttachments?: Prisma.UserAttachmentUncheckedCreateNestedManyWithoutAttachmentInput
 }
 
 export type AttachmentUpdateInput = {
@@ -265,9 +242,8 @@ export type AttachmentUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  status?: Prisma.EnumATTACHMENT_STATUSFieldUpdateOperationsInput | $Enums.ATTACHMENT_STATUS
-  links?: Prisma.AttachmentLinkUpdateManyWithoutAttachmentNestedInput
+  productAttachments?: Prisma.ProductAttachmentUpdateManyWithoutAttachmentNestedInput
+  userAttachments?: Prisma.UserAttachmentUpdateManyWithoutAttachmentNestedInput
 }
 
 export type AttachmentUncheckedUpdateInput = {
@@ -275,9 +251,8 @@ export type AttachmentUncheckedUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  status?: Prisma.EnumATTACHMENT_STATUSFieldUpdateOperationsInput | $Enums.ATTACHMENT_STATUS
-  links?: Prisma.AttachmentLinkUncheckedUpdateManyWithoutAttachmentNestedInput
+  productAttachments?: Prisma.ProductAttachmentUncheckedUpdateManyWithoutAttachmentNestedInput
+  userAttachments?: Prisma.UserAttachmentUncheckedUpdateManyWithoutAttachmentNestedInput
 }
 
 export type AttachmentCreateManyInput = {
@@ -285,8 +260,6 @@ export type AttachmentCreateManyInput = {
   title: string
   url: string
   createdAt?: Date | string
-  expiresAt?: Date | string | null
-  status?: $Enums.ATTACHMENT_STATUS
 }
 
 export type AttachmentUpdateManyMutationInput = {
@@ -294,8 +267,6 @@ export type AttachmentUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  status?: Prisma.EnumATTACHMENT_STATUSFieldUpdateOperationsInput | $Enums.ATTACHMENT_STATUS
 }
 
 export type AttachmentUncheckedUpdateManyInput = {
@@ -303,8 +274,6 @@ export type AttachmentUncheckedUpdateManyInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  status?: Prisma.EnumATTACHMENT_STATUSFieldUpdateOperationsInput | $Enums.ATTACHMENT_STATUS
 }
 
 export type AttachmentCountOrderByAggregateInput = {
@@ -312,8 +281,6 @@ export type AttachmentCountOrderByAggregateInput = {
   title?: Prisma.SortOrder
   url?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  expiresAt?: Prisma.SortOrder
-  status?: Prisma.SortOrder
 }
 
 export type AttachmentMaxOrderByAggregateInput = {
@@ -321,8 +288,6 @@ export type AttachmentMaxOrderByAggregateInput = {
   title?: Prisma.SortOrder
   url?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  expiresAt?: Prisma.SortOrder
-  status?: Prisma.SortOrder
 }
 
 export type AttachmentMinOrderByAggregateInput = {
@@ -330,8 +295,6 @@ export type AttachmentMinOrderByAggregateInput = {
   title?: Prisma.SortOrder
   url?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  expiresAt?: Prisma.SortOrder
-  status?: Prisma.SortOrder
 }
 
 export type AttachmentScalarRelationFilter = {
@@ -339,74 +302,128 @@ export type AttachmentScalarRelationFilter = {
   isNot?: Prisma.AttachmentWhereInput
 }
 
-export type EnumATTACHMENT_STATUSFieldUpdateOperationsInput = {
-  set?: $Enums.ATTACHMENT_STATUS
-}
-
-export type AttachmentCreateNestedOneWithoutLinksInput = {
-  create?: Prisma.XOR<Prisma.AttachmentCreateWithoutLinksInput, Prisma.AttachmentUncheckedCreateWithoutLinksInput>
-  connectOrCreate?: Prisma.AttachmentCreateOrConnectWithoutLinksInput
+export type AttachmentCreateNestedOneWithoutProductAttachmentsInput = {
+  create?: Prisma.XOR<Prisma.AttachmentCreateWithoutProductAttachmentsInput, Prisma.AttachmentUncheckedCreateWithoutProductAttachmentsInput>
+  connectOrCreate?: Prisma.AttachmentCreateOrConnectWithoutProductAttachmentsInput
   connect?: Prisma.AttachmentWhereUniqueInput
 }
 
-export type AttachmentUpdateOneRequiredWithoutLinksNestedInput = {
-  create?: Prisma.XOR<Prisma.AttachmentCreateWithoutLinksInput, Prisma.AttachmentUncheckedCreateWithoutLinksInput>
-  connectOrCreate?: Prisma.AttachmentCreateOrConnectWithoutLinksInput
-  upsert?: Prisma.AttachmentUpsertWithoutLinksInput
+export type AttachmentUpdateOneRequiredWithoutProductAttachmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.AttachmentCreateWithoutProductAttachmentsInput, Prisma.AttachmentUncheckedCreateWithoutProductAttachmentsInput>
+  connectOrCreate?: Prisma.AttachmentCreateOrConnectWithoutProductAttachmentsInput
+  upsert?: Prisma.AttachmentUpsertWithoutProductAttachmentsInput
   connect?: Prisma.AttachmentWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.AttachmentUpdateToOneWithWhereWithoutLinksInput, Prisma.AttachmentUpdateWithoutLinksInput>, Prisma.AttachmentUncheckedUpdateWithoutLinksInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AttachmentUpdateToOneWithWhereWithoutProductAttachmentsInput, Prisma.AttachmentUpdateWithoutProductAttachmentsInput>, Prisma.AttachmentUncheckedUpdateWithoutProductAttachmentsInput>
 }
 
-export type AttachmentCreateWithoutLinksInput = {
+export type AttachmentCreateNestedOneWithoutUserAttachmentsInput = {
+  create?: Prisma.XOR<Prisma.AttachmentCreateWithoutUserAttachmentsInput, Prisma.AttachmentUncheckedCreateWithoutUserAttachmentsInput>
+  connectOrCreate?: Prisma.AttachmentCreateOrConnectWithoutUserAttachmentsInput
+  connect?: Prisma.AttachmentWhereUniqueInput
+}
+
+export type AttachmentUpdateOneRequiredWithoutUserAttachmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.AttachmentCreateWithoutUserAttachmentsInput, Prisma.AttachmentUncheckedCreateWithoutUserAttachmentsInput>
+  connectOrCreate?: Prisma.AttachmentCreateOrConnectWithoutUserAttachmentsInput
+  upsert?: Prisma.AttachmentUpsertWithoutUserAttachmentsInput
+  connect?: Prisma.AttachmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AttachmentUpdateToOneWithWhereWithoutUserAttachmentsInput, Prisma.AttachmentUpdateWithoutUserAttachmentsInput>, Prisma.AttachmentUncheckedUpdateWithoutUserAttachmentsInput>
+}
+
+export type AttachmentCreateWithoutProductAttachmentsInput = {
   id?: string
   title: string
   url: string
   createdAt?: Date | string
-  expiresAt?: Date | string | null
-  status?: $Enums.ATTACHMENT_STATUS
+  userAttachments?: Prisma.UserAttachmentCreateNestedManyWithoutAttachmentInput
 }
 
-export type AttachmentUncheckedCreateWithoutLinksInput = {
+export type AttachmentUncheckedCreateWithoutProductAttachmentsInput = {
   id?: string
   title: string
   url: string
   createdAt?: Date | string
-  expiresAt?: Date | string | null
-  status?: $Enums.ATTACHMENT_STATUS
+  userAttachments?: Prisma.UserAttachmentUncheckedCreateNestedManyWithoutAttachmentInput
 }
 
-export type AttachmentCreateOrConnectWithoutLinksInput = {
+export type AttachmentCreateOrConnectWithoutProductAttachmentsInput = {
   where: Prisma.AttachmentWhereUniqueInput
-  create: Prisma.XOR<Prisma.AttachmentCreateWithoutLinksInput, Prisma.AttachmentUncheckedCreateWithoutLinksInput>
+  create: Prisma.XOR<Prisma.AttachmentCreateWithoutProductAttachmentsInput, Prisma.AttachmentUncheckedCreateWithoutProductAttachmentsInput>
 }
 
-export type AttachmentUpsertWithoutLinksInput = {
-  update: Prisma.XOR<Prisma.AttachmentUpdateWithoutLinksInput, Prisma.AttachmentUncheckedUpdateWithoutLinksInput>
-  create: Prisma.XOR<Prisma.AttachmentCreateWithoutLinksInput, Prisma.AttachmentUncheckedCreateWithoutLinksInput>
+export type AttachmentUpsertWithoutProductAttachmentsInput = {
+  update: Prisma.XOR<Prisma.AttachmentUpdateWithoutProductAttachmentsInput, Prisma.AttachmentUncheckedUpdateWithoutProductAttachmentsInput>
+  create: Prisma.XOR<Prisma.AttachmentCreateWithoutProductAttachmentsInput, Prisma.AttachmentUncheckedCreateWithoutProductAttachmentsInput>
   where?: Prisma.AttachmentWhereInput
 }
 
-export type AttachmentUpdateToOneWithWhereWithoutLinksInput = {
+export type AttachmentUpdateToOneWithWhereWithoutProductAttachmentsInput = {
   where?: Prisma.AttachmentWhereInput
-  data: Prisma.XOR<Prisma.AttachmentUpdateWithoutLinksInput, Prisma.AttachmentUncheckedUpdateWithoutLinksInput>
+  data: Prisma.XOR<Prisma.AttachmentUpdateWithoutProductAttachmentsInput, Prisma.AttachmentUncheckedUpdateWithoutProductAttachmentsInput>
 }
 
-export type AttachmentUpdateWithoutLinksInput = {
+export type AttachmentUpdateWithoutProductAttachmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  status?: Prisma.EnumATTACHMENT_STATUSFieldUpdateOperationsInput | $Enums.ATTACHMENT_STATUS
+  userAttachments?: Prisma.UserAttachmentUpdateManyWithoutAttachmentNestedInput
 }
 
-export type AttachmentUncheckedUpdateWithoutLinksInput = {
+export type AttachmentUncheckedUpdateWithoutProductAttachmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  status?: Prisma.EnumATTACHMENT_STATUSFieldUpdateOperationsInput | $Enums.ATTACHMENT_STATUS
+  userAttachments?: Prisma.UserAttachmentUncheckedUpdateManyWithoutAttachmentNestedInput
+}
+
+export type AttachmentCreateWithoutUserAttachmentsInput = {
+  id?: string
+  title: string
+  url: string
+  createdAt?: Date | string
+  productAttachments?: Prisma.ProductAttachmentCreateNestedManyWithoutAttachmentInput
+}
+
+export type AttachmentUncheckedCreateWithoutUserAttachmentsInput = {
+  id?: string
+  title: string
+  url: string
+  createdAt?: Date | string
+  productAttachments?: Prisma.ProductAttachmentUncheckedCreateNestedManyWithoutAttachmentInput
+}
+
+export type AttachmentCreateOrConnectWithoutUserAttachmentsInput = {
+  where: Prisma.AttachmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.AttachmentCreateWithoutUserAttachmentsInput, Prisma.AttachmentUncheckedCreateWithoutUserAttachmentsInput>
+}
+
+export type AttachmentUpsertWithoutUserAttachmentsInput = {
+  update: Prisma.XOR<Prisma.AttachmentUpdateWithoutUserAttachmentsInput, Prisma.AttachmentUncheckedUpdateWithoutUserAttachmentsInput>
+  create: Prisma.XOR<Prisma.AttachmentCreateWithoutUserAttachmentsInput, Prisma.AttachmentUncheckedCreateWithoutUserAttachmentsInput>
+  where?: Prisma.AttachmentWhereInput
+}
+
+export type AttachmentUpdateToOneWithWhereWithoutUserAttachmentsInput = {
+  where?: Prisma.AttachmentWhereInput
+  data: Prisma.XOR<Prisma.AttachmentUpdateWithoutUserAttachmentsInput, Prisma.AttachmentUncheckedUpdateWithoutUserAttachmentsInput>
+}
+
+export type AttachmentUpdateWithoutUserAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  productAttachments?: Prisma.ProductAttachmentUpdateManyWithoutAttachmentNestedInput
+}
+
+export type AttachmentUncheckedUpdateWithoutUserAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  url?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  productAttachments?: Prisma.ProductAttachmentUncheckedUpdateManyWithoutAttachmentNestedInput
 }
 
 
@@ -415,11 +432,13 @@ export type AttachmentUncheckedUpdateWithoutLinksInput = {
  */
 
 export type AttachmentCountOutputType = {
-  links: number
+  productAttachments: number
+  userAttachments: number
 }
 
 export type AttachmentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  links?: boolean | AttachmentCountOutputTypeCountLinksArgs
+  productAttachments?: boolean | AttachmentCountOutputTypeCountProductAttachmentsArgs
+  userAttachments?: boolean | AttachmentCountOutputTypeCountUserAttachmentsArgs
 }
 
 /**
@@ -435,8 +454,15 @@ export type AttachmentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.E
 /**
  * AttachmentCountOutputType without action
  */
-export type AttachmentCountOutputTypeCountLinksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.AttachmentLinkWhereInput
+export type AttachmentCountOutputTypeCountProductAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProductAttachmentWhereInput
+}
+
+/**
+ * AttachmentCountOutputType without action
+ */
+export type AttachmentCountOutputTypeCountUserAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserAttachmentWhereInput
 }
 
 
@@ -445,9 +471,8 @@ export type AttachmentSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   title?: boolean
   url?: boolean
   createdAt?: boolean
-  expiresAt?: boolean
-  status?: boolean
-  links?: boolean | Prisma.Attachment$linksArgs<ExtArgs>
+  productAttachments?: boolean | Prisma.Attachment$productAttachmentsArgs<ExtArgs>
+  userAttachments?: boolean | Prisma.Attachment$userAttachmentsArgs<ExtArgs>
   _count?: boolean | Prisma.AttachmentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["attachment"]>
 
@@ -456,8 +481,6 @@ export type AttachmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   title?: boolean
   url?: boolean
   createdAt?: boolean
-  expiresAt?: boolean
-  status?: boolean
 }, ExtArgs["result"]["attachment"]>
 
 export type AttachmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -465,8 +488,6 @@ export type AttachmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   title?: boolean
   url?: boolean
   createdAt?: boolean
-  expiresAt?: boolean
-  status?: boolean
 }, ExtArgs["result"]["attachment"]>
 
 export type AttachmentSelectScalar = {
@@ -474,13 +495,12 @@ export type AttachmentSelectScalar = {
   title?: boolean
   url?: boolean
   createdAt?: boolean
-  expiresAt?: boolean
-  status?: boolean
 }
 
-export type AttachmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "url" | "createdAt" | "expiresAt" | "status", ExtArgs["result"]["attachment"]>
+export type AttachmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "url" | "createdAt", ExtArgs["result"]["attachment"]>
 export type AttachmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  links?: boolean | Prisma.Attachment$linksArgs<ExtArgs>
+  productAttachments?: boolean | Prisma.Attachment$productAttachmentsArgs<ExtArgs>
+  userAttachments?: boolean | Prisma.Attachment$userAttachmentsArgs<ExtArgs>
   _count?: boolean | Prisma.AttachmentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AttachmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -489,15 +509,14 @@ export type AttachmentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.E
 export type $AttachmentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Attachment"
   objects: {
-    links: Prisma.$AttachmentLinkPayload<ExtArgs>[]
+    productAttachments: Prisma.$ProductAttachmentPayload<ExtArgs>[]
+    userAttachments: Prisma.$UserAttachmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     title: string
     url: string
     createdAt: Date
-    expiresAt: Date | null
-    status: $Enums.ATTACHMENT_STATUS
   }, ExtArgs["result"]["attachment"]>
   composites: {}
 }
@@ -892,7 +911,8 @@ readonly fields: AttachmentFieldRefs;
  */
 export interface Prisma__AttachmentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  links<T extends Prisma.Attachment$linksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Attachment$linksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttachmentLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  productAttachments<T extends Prisma.Attachment$productAttachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Attachment$productAttachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userAttachments<T extends Prisma.Attachment$userAttachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Attachment$userAttachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -926,8 +946,6 @@ export interface AttachmentFieldRefs {
   readonly title: Prisma.FieldRef<"Attachment", 'String'>
   readonly url: Prisma.FieldRef<"Attachment", 'String'>
   readonly createdAt: Prisma.FieldRef<"Attachment", 'DateTime'>
-  readonly expiresAt: Prisma.FieldRef<"Attachment", 'DateTime'>
-  readonly status: Prisma.FieldRef<"Attachment", 'ATTACHMENT_STATUS'>
 }
     
 
@@ -1316,27 +1334,51 @@ export type AttachmentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.In
 }
 
 /**
- * Attachment.links
+ * Attachment.productAttachments
  */
-export type Attachment$linksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Attachment$productAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the AttachmentLink
+   * Select specific fields to fetch from the ProductAttachment
    */
-  select?: Prisma.AttachmentLinkSelect<ExtArgs> | null
+  select?: Prisma.ProductAttachmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the AttachmentLink
+   * Omit specific fields from the ProductAttachment
    */
-  omit?: Prisma.AttachmentLinkOmit<ExtArgs> | null
+  omit?: Prisma.ProductAttachmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.AttachmentLinkInclude<ExtArgs> | null
-  where?: Prisma.AttachmentLinkWhereInput
-  orderBy?: Prisma.AttachmentLinkOrderByWithRelationInput | Prisma.AttachmentLinkOrderByWithRelationInput[]
-  cursor?: Prisma.AttachmentLinkWhereUniqueInput
+  include?: Prisma.ProductAttachmentInclude<ExtArgs> | null
+  where?: Prisma.ProductAttachmentWhereInput
+  orderBy?: Prisma.ProductAttachmentOrderByWithRelationInput | Prisma.ProductAttachmentOrderByWithRelationInput[]
+  cursor?: Prisma.ProductAttachmentWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.AttachmentLinkScalarFieldEnum | Prisma.AttachmentLinkScalarFieldEnum[]
+  distinct?: Prisma.ProductAttachmentScalarFieldEnum | Prisma.ProductAttachmentScalarFieldEnum[]
+}
+
+/**
+ * Attachment.userAttachments
+ */
+export type Attachment$userAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserAttachment
+   */
+  select?: Prisma.UserAttachmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserAttachment
+   */
+  omit?: Prisma.UserAttachmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserAttachmentInclude<ExtArgs> | null
+  where?: Prisma.UserAttachmentWhereInput
+  orderBy?: Prisma.UserAttachmentOrderByWithRelationInput | Prisma.UserAttachmentOrderByWithRelationInput[]
+  cursor?: Prisma.UserAttachmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserAttachmentScalarFieldEnum | Prisma.UserAttachmentScalarFieldEnum[]
 }
 
 /**

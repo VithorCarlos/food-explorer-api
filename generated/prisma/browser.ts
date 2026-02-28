@@ -63,7 +63,12 @@ export type RefreshToken = Prisma.RefreshTokenModel
  */
 export type Attachment = Prisma.AttachmentModel
 /**
- * Model AttachmentLink
+ * Model ProductAttachment
  * 
  */
-export type AttachmentLink = Prisma.AttachmentLinkModel
+export type ProductAttachment = Prisma.ProductAttachmentModel
+/**
+ * Model UserAttachment
+ * 
+ */
+export type UserAttachment = Prisma.UserAttachmentModel

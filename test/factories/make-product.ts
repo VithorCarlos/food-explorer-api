@@ -4,6 +4,8 @@ import { AttachmentLink } from "@/domain/entities/attachment-link";
 import { PRODUCT_CATEGORIES } from "@/domain/enums/product-categories";
 import { Product, ProductProps } from "@/domain/entities/product";
 import { RESOURSE_TYPE } from "@/domain/enums/resource-type";
+import { PrismaProductAdapter } from "@/infra/database/adapters/prisma-product-adapter";
+import { PrismaService } from "@/infra/database/prisma";
 
 export function makeProduct(
   data: Partial<
@@ -37,4 +39,22 @@ export function makeProduct(
   }
 
   return product;
+}
+
+export class ProductFactory {
+  constructor(private prisma: PrismaService) {}
+
+  async makeProductToPrisma(
+    data: Partial<
+      ProductProps & { id?: UniqueEntityId; attachmentId?: UniqueEntityId }
+    > = {},
+  ): Promise<Product> {
+    const product = makeProduct(data);
+
+    await this.prisma.product.create({
+      data: PrismaProductAdapter.toPrisma(product),
+    });
+
+    return product;
+  }
 }

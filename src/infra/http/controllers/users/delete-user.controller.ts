@@ -20,7 +20,7 @@ export const deleteUserController = async (
 
     // await deleteRefreshTokenUserUseCase.execute({ userId });
 
-    reply.status(200).send();
+    reply.status(204).send();
   } catch (error) {
     if (error instanceof UserDoesNotExists) {
       reply.status(400).send({ message: error.message });

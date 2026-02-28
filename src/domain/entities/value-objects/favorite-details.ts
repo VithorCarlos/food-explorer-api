@@ -8,9 +8,7 @@ interface FavoriteDetailsProps {
   attachmentUrl?: string | null;
   title: string;
   category: string;
-  ingredients?: string[];
   price: number;
-  description?: string;
 }
 
 export class FavoriteDetails extends ValueObject<FavoriteDetailsProps> {
@@ -34,20 +32,12 @@ export class FavoriteDetails extends ValueObject<FavoriteDetailsProps> {
     return this.props.title;
   }
 
-  get ingredients() {
-    return this.props.ingredients;
-  }
-
   get category() {
     return this.props.category;
   }
 
   get price() {
     return this.props.price;
-  }
-
-  get description() {
-    return this.props.description;
   }
 
   static create(props: FavoriteDetailsProps) {

@@ -18,15 +18,13 @@ export const registerUserController = async (
   try {
     const registerUseCase = makeRegisterUserUseCase(request.server.prisma);
 
-    const { user } = await registerUseCase.execute({
+    await registerUseCase.execute({
       name,
       email,
       password,
     });
 
-    reply.status(201).send({
-      id: user.id.toString(),
-    });
+    reply.status(201).send();
   } catch (error) {
     if (error instanceof UserAlreadyExists) {
       reply.status(400).send({ message: error.message });

@@ -10,6 +10,7 @@ export const refreshTokenController = async (
 ) => {
   try {
     const refreshToken = request.cookies[TOKEN.REFRESH_TOKEN];
+
     if (!refreshToken) {
       throw new RefreshTokenNotFoundError();
     }
@@ -32,6 +33,7 @@ export const refreshTokenController = async (
     });
 
     reply
+
       .setCookie(TOKEN.ACCESS_TOKEN, newAccessToken, {
         path: "/",
         maxAge: 15 * 60,

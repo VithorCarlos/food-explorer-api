@@ -1,7 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { UserDoesNotExists } from "@/domain/errors/user-does-not-exists";
 import { makeFindUserByIdUseCase } from "../../factories/make-find-user-by-id-use-case";
-import { PrismaUserAdapter } from "@/infra/database/adapters/prisma-user-adapter";
 
 export const findUserByIdController = async (
   request: FastifyRequest,

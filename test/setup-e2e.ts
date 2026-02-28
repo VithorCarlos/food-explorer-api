@@ -34,6 +34,7 @@ beforeAll(async () => {
     adapter,
   });
 
+  await prisma.$executeRawUnsafe(`SET search_path TO "${schemaId}"`);
   execSync("npx prisma migrate deploy");
 });
 

@@ -393,7 +393,8 @@ export const ModelName = {
   Favorite: 'Favorite',
   RefreshToken: 'RefreshToken',
   Attachment: 'Attachment',
-  AttachmentLink: 'AttachmentLink'
+  ProductAttachment: 'ProductAttachment',
+  UserAttachment: 'UserAttachment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -409,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "product" | "order" | "orderItem" | "payment" | "paymentTransaction" | "favorite" | "refreshToken" | "attachment" | "attachmentLink"
+    modelProps: "user" | "product" | "order" | "orderItem" | "payment" | "paymentTransaction" | "favorite" | "refreshToken" | "attachment" | "productAttachment" | "userAttachment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1079,77 +1080,151 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    AttachmentLink: {
-      payload: Prisma.$AttachmentLinkPayload<ExtArgs>
-      fields: Prisma.AttachmentLinkFieldRefs
+    ProductAttachment: {
+      payload: Prisma.$ProductAttachmentPayload<ExtArgs>
+      fields: Prisma.ProductAttachmentFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.AttachmentLinkFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttachmentLinkPayload> | null
+          args: Prisma.ProductAttachmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductAttachmentPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.AttachmentLinkFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttachmentLinkPayload>
+          args: Prisma.ProductAttachmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductAttachmentPayload>
         }
         findFirst: {
-          args: Prisma.AttachmentLinkFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttachmentLinkPayload> | null
+          args: Prisma.ProductAttachmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductAttachmentPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.AttachmentLinkFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttachmentLinkPayload>
+          args: Prisma.ProductAttachmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductAttachmentPayload>
         }
         findMany: {
-          args: Prisma.AttachmentLinkFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttachmentLinkPayload>[]
+          args: Prisma.ProductAttachmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductAttachmentPayload>[]
         }
         create: {
-          args: Prisma.AttachmentLinkCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttachmentLinkPayload>
+          args: Prisma.ProductAttachmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductAttachmentPayload>
         }
         createMany: {
-          args: Prisma.AttachmentLinkCreateManyArgs<ExtArgs>
+          args: Prisma.ProductAttachmentCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.AttachmentLinkCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttachmentLinkPayload>[]
+          args: Prisma.ProductAttachmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductAttachmentPayload>[]
         }
         delete: {
-          args: Prisma.AttachmentLinkDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttachmentLinkPayload>
+          args: Prisma.ProductAttachmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductAttachmentPayload>
         }
         update: {
-          args: Prisma.AttachmentLinkUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttachmentLinkPayload>
+          args: Prisma.ProductAttachmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductAttachmentPayload>
         }
         deleteMany: {
-          args: Prisma.AttachmentLinkDeleteManyArgs<ExtArgs>
+          args: Prisma.ProductAttachmentDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.AttachmentLinkUpdateManyArgs<ExtArgs>
+          args: Prisma.ProductAttachmentUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.AttachmentLinkUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttachmentLinkPayload>[]
+          args: Prisma.ProductAttachmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductAttachmentPayload>[]
         }
         upsert: {
-          args: Prisma.AttachmentLinkUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$AttachmentLinkPayload>
+          args: Prisma.ProductAttachmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProductAttachmentPayload>
         }
         aggregate: {
-          args: Prisma.AttachmentLinkAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateAttachmentLink>
+          args: Prisma.ProductAttachmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProductAttachment>
         }
         groupBy: {
-          args: Prisma.AttachmentLinkGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AttachmentLinkGroupByOutputType>[]
+          args: Prisma.ProductAttachmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProductAttachmentGroupByOutputType>[]
         }
         count: {
-          args: Prisma.AttachmentLinkCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AttachmentLinkCountAggregateOutputType> | number
+          args: Prisma.ProductAttachmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProductAttachmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    UserAttachment: {
+      payload: Prisma.$UserAttachmentPayload<ExtArgs>
+      fields: Prisma.UserAttachmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UserAttachmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAttachmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UserAttachmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAttachmentPayload>
+        }
+        findFirst: {
+          args: Prisma.UserAttachmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAttachmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UserAttachmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAttachmentPayload>
+        }
+        findMany: {
+          args: Prisma.UserAttachmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAttachmentPayload>[]
+        }
+        create: {
+          args: Prisma.UserAttachmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAttachmentPayload>
+        }
+        createMany: {
+          args: Prisma.UserAttachmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UserAttachmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAttachmentPayload>[]
+        }
+        delete: {
+          args: Prisma.UserAttachmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAttachmentPayload>
+        }
+        update: {
+          args: Prisma.UserAttachmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAttachmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.UserAttachmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UserAttachmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UserAttachmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAttachmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.UserAttachmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UserAttachmentPayload>
+        }
+        aggregate: {
+          args: Prisma.UserAttachmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUserAttachment>
+        }
+        groupBy: {
+          args: Prisma.UserAttachmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserAttachmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UserAttachmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UserAttachmentCountAggregateOutputType> | number
         }
       }
     }
@@ -1302,23 +1377,30 @@ export const AttachmentScalarFieldEnum = {
   id: 'id',
   title: 'title',
   url: 'url',
-  createdAt: 'createdAt',
-  expiresAt: 'expiresAt',
-  status: 'status'
+  createdAt: 'createdAt'
 } as const
 
 export type AttachmentScalarFieldEnum = (typeof AttachmentScalarFieldEnum)[keyof typeof AttachmentScalarFieldEnum]
 
 
-export const AttachmentLinkScalarFieldEnum = {
+export const ProductAttachmentScalarFieldEnum = {
   id: 'id',
+  isMain: 'isMain',
+  position: 'position',
   attachmentId: 'attachmentId',
-  resourceId: 'resourceId',
-  resourceType: 'resourceType',
-  linkedAt: 'linkedAt'
+  productId: 'productId'
 } as const
 
-export type AttachmentLinkScalarFieldEnum = (typeof AttachmentLinkScalarFieldEnum)[keyof typeof AttachmentLinkScalarFieldEnum]
+export type ProductAttachmentScalarFieldEnum = (typeof ProductAttachmentScalarFieldEnum)[keyof typeof ProductAttachmentScalarFieldEnum]
+
+
+export const UserAttachmentScalarFieldEnum = {
+  id: 'id',
+  attachmentId: 'attachmentId',
+  userId: 'userId'
+} as const
+
+export type UserAttachmentScalarFieldEnum = (typeof UserAttachmentScalarFieldEnum)[keyof typeof UserAttachmentScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1522,30 +1604,9 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
- * Reference to a field of type 'ATTACHMENT_STATUS'
+ * Reference to a field of type 'Boolean'
  */
-export type EnumATTACHMENT_STATUSFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ATTACHMENT_STATUS'>
-    
-
-
-/**
- * Reference to a field of type 'ATTACHMENT_STATUS[]'
- */
-export type ListEnumATTACHMENT_STATUSFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ATTACHMENT_STATUS[]'>
-    
-
-
-/**
- * Reference to a field of type 'RESOURSE_TYPE'
- */
-export type EnumRESOURSE_TYPEFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RESOURSE_TYPE'>
-    
-
-
-/**
- * Reference to a field of type 'RESOURSE_TYPE[]'
- */
-export type ListEnumRESOURSE_TYPEFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RESOURSE_TYPE[]'>
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -1666,7 +1727,8 @@ export type GlobalOmitConfig = {
   favorite?: Prisma.FavoriteOmit
   refreshToken?: Prisma.RefreshTokenOmit
   attachment?: Prisma.AttachmentOmit
-  attachmentLink?: Prisma.AttachmentLinkOmit
+  productAttachment?: Prisma.ProductAttachmentOmit
+  userAttachment?: Prisma.UserAttachmentOmit
 }
 
 /* Types for Logging */

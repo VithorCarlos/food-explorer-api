@@ -42,12 +42,6 @@ enum PRODUCT_CATEGORIES {
   DRINKS
 }
 
-enum ATTACHMENT_STATUS {
-  PENDING
-  LINKED
-  EXPIRED
-}
-
 enum ORDER_STATUS {
   DRAFT
   PENDING
@@ -91,13 +85,14 @@ model User {
   createdAt             DateTime  @default(now()) @map("created_at")
   updatedAt             DateTime  @default(now()) @updatedAt @map("updated_at")
   deletedAt             DateTime? @map("deleted_at")
-  deletionRequestedAt   DateTime?
-  hardDeleteScheduledAt DateTime?
+  deletionRequestedAt   DateTime? @map("deletion_requested_at")
+  hardDeleteScheduledAt DateTime? @map("hard_delete_scheduled_at")
 
-  products     Product[]
-  favorite     Favorite[]
-  refreshToken RefreshToken?
-  orders       Order[]
+  products        Product[]
+  favorite        Favorite[]
+  refreshToken    RefreshToken?
+  orders          Order[]
+  userAttachments UserAttachment[]
 
   @@map("users")
 }
@@ -118,8 +113,9 @@ model Product {
   user   User   @relation(fields: [userId], references: [id], onDelete: Restrict)
   userId String @map("user_id")
 
-  favorite   Favorite[]
-  orderItems OrderItem[]
+  favorite           Favorite[]
+  orderItems         OrderItem[]
+  productAttachments ProductAttachment[]
 
   @@map("products")
 }
@@ -218,29 +214,42 @@ model RefreshToken {
 }
 
 model Attachment {
-  id        String    @id @default(uuid())
-  title     String
-  url       String
-  createdAt DateTime  @default(now()) @map("created_at")
-  expiresAt DateTime? @map("expires_at")
+  id    String @id @default(uuid())
+  title String
+  url   String
 
-  status ATTACHMENT_STATUS @default(PENDING)
+  createdAt          DateTime            @default(now()) @map("created_at")
+  productAttachments ProductAttachment[]
+  userAttachments    UserAttachment[]
 
-  links AttachmentLink[]
-
-  @@map("attachment")
+  @@map("attachments")
 }
 
-model AttachmentLink {
-  id           String        @id @default(uuid())
-  attachmentId String        @map("attachment_id")
-  resourceId   String        @map("resource_id")
-  resourceType RESOURSE_TYPE @map("resource_type")
-  linkedAt     DateTime      @default(now()) @map("linked_at")
+model ProductAttachment {
+  id String @id @default(uuid())
 
-  attachment Attachment @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
+  isMain   Boolean @default(false) @map("is_main")
+  position Int     @default(0)
 
-  @@unique([attachmentId, resourceId, resourceType])
-  @@index([resourceId, resourceType], name: "idx_resource")
-  @@map("attachment_link")
+  attachment   Attachment @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
+  attachmentId String     @map("attachment_id")
+
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String  @map("product_id")
+
+  @@unique([attachmentId, productId])
+  @@map("product_attachments")
+}
+
+model UserAttachment {
+  id String @id @default(uuid())
+
+  attachment   Attachment @relation(fields: [attachmentId], references: [id], onDelete: Cascade)
+  attachmentId String     @map("attachment_id")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
+
+  @@unique([attachmentId, userId])
+  @@map("user_attachments")
 }

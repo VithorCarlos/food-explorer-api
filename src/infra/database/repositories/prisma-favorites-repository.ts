@@ -49,39 +49,35 @@ export class PrismaFavoritesRepository implements FavoritesRepository {
           attachment_url: string | null;
           title: string;
           category: PRODUCT_CATEGORIES;
-          ingredients: string[];
           price: number;
-          description: string;
         }[]
       >(
         Prisma.sql`
           SELECT 
             f.id as favorite_id,
+            f.product_id,
             f.user_id,
-            s.id as product_id,
-            s.title,
-            s.description,
-            s.category,
-            s.ingredients,
-            s.price,
+            p.id as product_id,
+            p.title,
+            p.category,
+            p.price,
             al.attachment_id,
             a.url as attachment_url
           FROM favorites f
-          INNER JOIN products s ON s.id = f.product_id
+          INNER JOIN products p ON p.id = f.product_id
           LEFT JOIN attachment_link al 
-            ON al.resource_id = s.id
+            ON al.resource_id = p.id
             AND al.resource_type = 'PRODUCT'
           LEFT JOIN attachment a
             ON a.id = al.attachment_id
           WHERE f.user_id = ${userId}
-          ORDER BY s.title DESC
+          ORDER BY p.title DESC
           LIMIT ${perPage} 
           OFFSET ${(page - 1) * perPage}
           `,
       ),
       this.prisma.favorite.count({ where: { userId } }),
     ]);
-
     const hasMore = page * perPage < total;
 
     return {

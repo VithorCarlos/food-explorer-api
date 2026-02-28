@@ -5,7 +5,7 @@ import { updateUserController } from "../controllers/users/update-user.controlle
 import { deleteUserController } from "../controllers/users/delete-user.controller";
 import { refreshTokenController } from "../controllers/users/refresh-token.controller";
 import { verifyJWT } from "../middleware/verify-jwt";
-import { findUserByIdController } from "../controllers/users/find-users-by-id";
+import { findUserByIdController } from "../controllers/users/find-users-by-id.controller";
 
 export const usersRoutes = async (fastify: FastifyInstance) => {
   fastify.post(
@@ -79,10 +79,6 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
         response: {
           201: {
             description: "Successful response",
-            type: "object",
-            properties: {
-              id: { type: "string" },
-            },
           },
         },
       },
@@ -109,12 +105,6 @@ export const usersRoutes = async (fastify: FastifyInstance) => {
         response: {
           204: {
             description: "Successful response",
-            type: "object",
-            properties: {
-              name: { type: "string" },
-              email: { type: "string" },
-              updated_at: { type: "string" },
-            },
           },
         },
       },

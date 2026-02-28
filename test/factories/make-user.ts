@@ -11,7 +11,7 @@ export function makeUser(
   const user = User.create(
     {
       name: faker.person.fullName(),
-      email: faker.internet.email({ firstName: "johndoe" }),
+      email: faker.internet.email({ firstName: "john" }),
       password: faker.internet.password(),
       ...rest,
     },
@@ -24,7 +24,9 @@ export function makeUser(
 export class UserFactory {
   constructor(private prisma: PrismaService) {}
 
-  async makeUserToPrisma(data: Partial<UserProps> = {}): Promise<User> {
+  async makeUserToPrisma(
+    data: Partial<UserProps & { id?: UniqueEntityId }> = {},
+  ): Promise<User> {
     const user = makeUser(data);
 
     await this.prisma.user.create({ data: PrismaUserAdapter.toPrisma(user) });

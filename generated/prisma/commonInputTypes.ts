@@ -342,38 +342,17 @@ export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
   _max?: Prisma.NestedJsonFilter<$PrismaModel>
 }
 
-export type EnumATTACHMENT_STATUSFilter<$PrismaModel = never> = {
-  equals?: $Enums.ATTACHMENT_STATUS | Prisma.EnumATTACHMENT_STATUSFieldRefInput<$PrismaModel>
-  in?: $Enums.ATTACHMENT_STATUS[] | Prisma.ListEnumATTACHMENT_STATUSFieldRefInput<$PrismaModel>
-  notIn?: $Enums.ATTACHMENT_STATUS[] | Prisma.ListEnumATTACHMENT_STATUSFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumATTACHMENT_STATUSFilter<$PrismaModel> | $Enums.ATTACHMENT_STATUS
+export type BoolFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
 }
 
-export type EnumATTACHMENT_STATUSWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.ATTACHMENT_STATUS | Prisma.EnumATTACHMENT_STATUSFieldRefInput<$PrismaModel>
-  in?: $Enums.ATTACHMENT_STATUS[] | Prisma.ListEnumATTACHMENT_STATUSFieldRefInput<$PrismaModel>
-  notIn?: $Enums.ATTACHMENT_STATUS[] | Prisma.ListEnumATTACHMENT_STATUSFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumATTACHMENT_STATUSWithAggregatesFilter<$PrismaModel> | $Enums.ATTACHMENT_STATUS
+export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumATTACHMENT_STATUSFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumATTACHMENT_STATUSFilter<$PrismaModel>
-}
-
-export type EnumRESOURSE_TYPEFilter<$PrismaModel = never> = {
-  equals?: $Enums.RESOURSE_TYPE | Prisma.EnumRESOURSE_TYPEFieldRefInput<$PrismaModel>
-  in?: $Enums.RESOURSE_TYPE[] | Prisma.ListEnumRESOURSE_TYPEFieldRefInput<$PrismaModel>
-  notIn?: $Enums.RESOURSE_TYPE[] | Prisma.ListEnumRESOURSE_TYPEFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumRESOURSE_TYPEFilter<$PrismaModel> | $Enums.RESOURSE_TYPE
-}
-
-export type EnumRESOURSE_TYPEWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.RESOURSE_TYPE | Prisma.EnumRESOURSE_TYPEFieldRefInput<$PrismaModel>
-  in?: $Enums.RESOURSE_TYPE[] | Prisma.ListEnumRESOURSE_TYPEFieldRefInput<$PrismaModel>
-  notIn?: $Enums.RESOURSE_TYPE[] | Prisma.ListEnumRESOURSE_TYPEFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumRESOURSE_TYPEWithAggregatesFilter<$PrismaModel> | $Enums.RESOURSE_TYPE
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumRESOURSE_TYPEFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumRESOURSE_TYPEFilter<$PrismaModel>
+  _min?: Prisma.NestedBoolFilter<$PrismaModel>
+  _max?: Prisma.NestedBoolFilter<$PrismaModel>
 }
 
 export type NestedStringFilter<$PrismaModel = never> = {
@@ -690,38 +669,17 @@ export type NestedJsonFilterBase<$PrismaModel = never> = {
   not?: runtime.InputJsonValue | Prisma.JsonFieldRefInput<$PrismaModel> | Prisma.JsonNullValueFilter
 }
 
-export type NestedEnumATTACHMENT_STATUSFilter<$PrismaModel = never> = {
-  equals?: $Enums.ATTACHMENT_STATUS | Prisma.EnumATTACHMENT_STATUSFieldRefInput<$PrismaModel>
-  in?: $Enums.ATTACHMENT_STATUS[] | Prisma.ListEnumATTACHMENT_STATUSFieldRefInput<$PrismaModel>
-  notIn?: $Enums.ATTACHMENT_STATUS[] | Prisma.ListEnumATTACHMENT_STATUSFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumATTACHMENT_STATUSFilter<$PrismaModel> | $Enums.ATTACHMENT_STATUS
+export type NestedBoolFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
 }
 
-export type NestedEnumATTACHMENT_STATUSWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.ATTACHMENT_STATUS | Prisma.EnumATTACHMENT_STATUSFieldRefInput<$PrismaModel>
-  in?: $Enums.ATTACHMENT_STATUS[] | Prisma.ListEnumATTACHMENT_STATUSFieldRefInput<$PrismaModel>
-  notIn?: $Enums.ATTACHMENT_STATUS[] | Prisma.ListEnumATTACHMENT_STATUSFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumATTACHMENT_STATUSWithAggregatesFilter<$PrismaModel> | $Enums.ATTACHMENT_STATUS
+export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumATTACHMENT_STATUSFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumATTACHMENT_STATUSFilter<$PrismaModel>
-}
-
-export type NestedEnumRESOURSE_TYPEFilter<$PrismaModel = never> = {
-  equals?: $Enums.RESOURSE_TYPE | Prisma.EnumRESOURSE_TYPEFieldRefInput<$PrismaModel>
-  in?: $Enums.RESOURSE_TYPE[] | Prisma.ListEnumRESOURSE_TYPEFieldRefInput<$PrismaModel>
-  notIn?: $Enums.RESOURSE_TYPE[] | Prisma.ListEnumRESOURSE_TYPEFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumRESOURSE_TYPEFilter<$PrismaModel> | $Enums.RESOURSE_TYPE
-}
-
-export type NestedEnumRESOURSE_TYPEWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.RESOURSE_TYPE | Prisma.EnumRESOURSE_TYPEFieldRefInput<$PrismaModel>
-  in?: $Enums.RESOURSE_TYPE[] | Prisma.ListEnumRESOURSE_TYPEFieldRefInput<$PrismaModel>
-  notIn?: $Enums.RESOURSE_TYPE[] | Prisma.ListEnumRESOURSE_TYPEFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumRESOURSE_TYPEWithAggregatesFilter<$PrismaModel> | $Enums.RESOURSE_TYPE
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumRESOURSE_TYPEFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumRESOURSE_TYPEFilter<$PrismaModel>
+  _min?: Prisma.NestedBoolFilter<$PrismaModel>
+  _max?: Prisma.NestedBoolFilter<$PrismaModel>
 }
 
 

@@ -10,9 +10,7 @@ interface PrismaFavoriteDetails {
   attachment_url: string | null;
   title: string;
   category: PRODUCT_CATEGORIES;
-  ingredients: string[];
   price: number;
-  description: string;
 }
 
 export class PrismaFavoriteDetailsAdapter {
@@ -26,9 +24,7 @@ export class PrismaFavoriteDetailsAdapter {
         : null,
       title: raw.title,
       category: raw.category,
-      ingredients: raw.ingredients,
       price: raw.price,
-      description: raw.description,
     });
   }
 }

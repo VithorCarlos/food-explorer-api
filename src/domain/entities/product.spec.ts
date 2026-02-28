@@ -1,4 +1,3 @@
-import { randomUUID } from "node:crypto";
 import { Product } from "./product";
 import { PRODUCT_CATEGORIES } from "../enums/product-categories";
 import { UniqueEntityId } from "@/shared/entity/unique-entity-id";

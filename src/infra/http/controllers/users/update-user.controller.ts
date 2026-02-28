@@ -21,20 +21,14 @@ export const updateUserController = async (
   try {
     const updateUserUseCase = makeUpdateUserUseCase(request.server.prisma);
 
-    const { user } = await updateUserUseCase.execute({
+    await updateUserUseCase.execute({
       userId,
       name,
       email,
       password,
     });
 
-    reply.status(204).send({
-      user: {
-        name: user.name,
-        email: user.email,
-        updatedAt: user.updatedAt,
-      },
-    });
+    reply.status(204).send();
   } catch (error) {
     if (error instanceof UserDoesNotExists) {
       reply.status(400).send({ message: error.message });

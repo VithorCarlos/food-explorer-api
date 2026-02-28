@@ -60,7 +60,8 @@ export const ModelName = {
   Favorite: 'Favorite',
   RefreshToken: 'RefreshToken',
   Attachment: 'Attachment',
-  AttachmentLink: 'AttachmentLink'
+  ProductAttachment: 'ProductAttachment',
+  UserAttachment: 'UserAttachment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -189,23 +190,30 @@ export const AttachmentScalarFieldEnum = {
   id: 'id',
   title: 'title',
   url: 'url',
-  createdAt: 'createdAt',
-  expiresAt: 'expiresAt',
-  status: 'status'
+  createdAt: 'createdAt'
 } as const
 
 export type AttachmentScalarFieldEnum = (typeof AttachmentScalarFieldEnum)[keyof typeof AttachmentScalarFieldEnum]
 
 
-export const AttachmentLinkScalarFieldEnum = {
+export const ProductAttachmentScalarFieldEnum = {
   id: 'id',
+  isMain: 'isMain',
+  position: 'position',
   attachmentId: 'attachmentId',
-  resourceId: 'resourceId',
-  resourceType: 'resourceType',
-  linkedAt: 'linkedAt'
+  productId: 'productId'
 } as const
 
-export type AttachmentLinkScalarFieldEnum = (typeof AttachmentLinkScalarFieldEnum)[keyof typeof AttachmentLinkScalarFieldEnum]
+export type ProductAttachmentScalarFieldEnum = (typeof ProductAttachmentScalarFieldEnum)[keyof typeof ProductAttachmentScalarFieldEnum]
+
+
+export const UserAttachmentScalarFieldEnum = {
+  id: 'id',
+  attachmentId: 'attachmentId',
+  userId: 'userId'
+} as const
+
+export type UserAttachmentScalarFieldEnum = (typeof UserAttachmentScalarFieldEnum)[keyof typeof UserAttachmentScalarFieldEnum]
 
 
 export const SortOrder = {

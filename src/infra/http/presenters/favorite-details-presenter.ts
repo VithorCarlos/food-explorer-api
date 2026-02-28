@@ -9,9 +9,7 @@ export class FavoriteDetailsPresenter {
       attachmentUrl: FavoriteDetails.attachmentUrl,
       title: FavoriteDetails.title,
       category: FavoriteDetails.category,
-      ingredients: FavoriteDetails.ingredients,
       price: FavoriteDetails.price,
-      description: FavoriteDetails.description,
     };
   }
 }

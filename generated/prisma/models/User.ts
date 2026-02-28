@@ -226,6 +226,7 @@ export type UserWhereInput = {
   favorite?: Prisma.FavoriteListRelationFilter
   refreshToken?: Prisma.XOR<Prisma.RefreshTokenNullableScalarRelationFilter, Prisma.RefreshTokenWhereInput> | null
   orders?: Prisma.OrderListRelationFilter
+  userAttachments?: Prisma.UserAttachmentListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -243,6 +244,7 @@ export type UserOrderByWithRelationInput = {
   favorite?: Prisma.FavoriteOrderByRelationAggregateInput
   refreshToken?: Prisma.RefreshTokenOrderByWithRelationInput
   orders?: Prisma.OrderOrderByRelationAggregateInput
+  userAttachments?: Prisma.UserAttachmentOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -263,6 +265,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   favorite?: Prisma.FavoriteListRelationFilter
   refreshToken?: Prisma.XOR<Prisma.RefreshTokenNullableScalarRelationFilter, Prisma.RefreshTokenWhereInput> | null
   orders?: Prisma.OrderListRelationFilter
+  userAttachments?: Prisma.UserAttachmentListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -312,6 +315,7 @@ export type UserCreateInput = {
   favorite?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   refreshToken?: Prisma.RefreshTokenCreateNestedOneWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  userAttachments?: Prisma.UserAttachmentCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -329,6 +333,7 @@ export type UserUncheckedCreateInput = {
   favorite?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   refreshToken?: Prisma.RefreshTokenUncheckedCreateNestedOneWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  userAttachments?: Prisma.UserAttachmentUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -346,6 +351,7 @@ export type UserUpdateInput = {
   favorite?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   refreshToken?: Prisma.RefreshTokenUpdateOneWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  userAttachments?: Prisma.UserAttachmentUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -363,6 +369,7 @@ export type UserUncheckedUpdateInput = {
   favorite?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   refreshToken?: Prisma.RefreshTokenUncheckedUpdateOneWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  userAttachments?: Prisma.UserAttachmentUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -520,6 +527,20 @@ export type UserUpdateOneRequiredWithoutRefreshTokenNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutRefreshTokenInput, Prisma.UserUpdateWithoutRefreshTokenInput>, Prisma.UserUncheckedUpdateWithoutRefreshTokenInput>
 }
 
+export type UserCreateNestedOneWithoutUserAttachmentsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserAttachmentsInput, Prisma.UserUncheckedCreateWithoutUserAttachmentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserAttachmentsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutUserAttachmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutUserAttachmentsInput, Prisma.UserUncheckedCreateWithoutUserAttachmentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserAttachmentsInput
+  upsert?: Prisma.UserUpsertWithoutUserAttachmentsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserAttachmentsInput, Prisma.UserUpdateWithoutUserAttachmentsInput>, Prisma.UserUncheckedUpdateWithoutUserAttachmentsInput>
+}
+
 export type UserCreateWithoutProductsInput = {
   id?: string
   name: string
@@ -534,6 +555,7 @@ export type UserCreateWithoutProductsInput = {
   favorite?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   refreshToken?: Prisma.RefreshTokenCreateNestedOneWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  userAttachments?: Prisma.UserAttachmentCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProductsInput = {
@@ -550,6 +572,7 @@ export type UserUncheckedCreateWithoutProductsInput = {
   favorite?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   refreshToken?: Prisma.RefreshTokenUncheckedCreateNestedOneWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  userAttachments?: Prisma.UserAttachmentUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProductsInput = {
@@ -582,6 +605,7 @@ export type UserUpdateWithoutProductsInput = {
   favorite?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   refreshToken?: Prisma.RefreshTokenUpdateOneWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  userAttachments?: Prisma.UserAttachmentUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProductsInput = {
@@ -598,6 +622,7 @@ export type UserUncheckedUpdateWithoutProductsInput = {
   favorite?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   refreshToken?: Prisma.RefreshTokenUncheckedUpdateOneWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  userAttachments?: Prisma.UserAttachmentUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutOrdersInput = {
@@ -614,6 +639,7 @@ export type UserCreateWithoutOrdersInput = {
   products?: Prisma.ProductCreateNestedManyWithoutUserInput
   favorite?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   refreshToken?: Prisma.RefreshTokenCreateNestedOneWithoutUserInput
+  userAttachments?: Prisma.UserAttachmentCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOrdersInput = {
@@ -630,6 +656,7 @@ export type UserUncheckedCreateWithoutOrdersInput = {
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutUserInput
   favorite?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   refreshToken?: Prisma.RefreshTokenUncheckedCreateNestedOneWithoutUserInput
+  userAttachments?: Prisma.UserAttachmentUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOrdersInput = {
@@ -662,6 +689,7 @@ export type UserUpdateWithoutOrdersInput = {
   products?: Prisma.ProductUpdateManyWithoutUserNestedInput
   favorite?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   refreshToken?: Prisma.RefreshTokenUpdateOneWithoutUserNestedInput
+  userAttachments?: Prisma.UserAttachmentUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -678,6 +706,7 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
   products?: Prisma.ProductUncheckedUpdateManyWithoutUserNestedInput
   favorite?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   refreshToken?: Prisma.RefreshTokenUncheckedUpdateOneWithoutUserNestedInput
+  userAttachments?: Prisma.UserAttachmentUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutFavoriteInput = {
@@ -694,6 +723,7 @@ export type UserCreateWithoutFavoriteInput = {
   products?: Prisma.ProductCreateNestedManyWithoutUserInput
   refreshToken?: Prisma.RefreshTokenCreateNestedOneWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  userAttachments?: Prisma.UserAttachmentCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutFavoriteInput = {
@@ -710,6 +740,7 @@ export type UserUncheckedCreateWithoutFavoriteInput = {
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutUserInput
   refreshToken?: Prisma.RefreshTokenUncheckedCreateNestedOneWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  userAttachments?: Prisma.UserAttachmentUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutFavoriteInput = {
@@ -742,6 +773,7 @@ export type UserUpdateWithoutFavoriteInput = {
   products?: Prisma.ProductUpdateManyWithoutUserNestedInput
   refreshToken?: Prisma.RefreshTokenUpdateOneWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  userAttachments?: Prisma.UserAttachmentUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFavoriteInput = {
@@ -758,6 +790,7 @@ export type UserUncheckedUpdateWithoutFavoriteInput = {
   products?: Prisma.ProductUncheckedUpdateManyWithoutUserNestedInput
   refreshToken?: Prisma.RefreshTokenUncheckedUpdateOneWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  userAttachments?: Prisma.UserAttachmentUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutRefreshTokenInput = {
@@ -774,6 +807,7 @@ export type UserCreateWithoutRefreshTokenInput = {
   products?: Prisma.ProductCreateNestedManyWithoutUserInput
   favorite?: Prisma.FavoriteCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  userAttachments?: Prisma.UserAttachmentCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutRefreshTokenInput = {
@@ -790,6 +824,7 @@ export type UserUncheckedCreateWithoutRefreshTokenInput = {
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutUserInput
   favorite?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  userAttachments?: Prisma.UserAttachmentUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutRefreshTokenInput = {
@@ -822,6 +857,7 @@ export type UserUpdateWithoutRefreshTokenInput = {
   products?: Prisma.ProductUpdateManyWithoutUserNestedInput
   favorite?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  userAttachments?: Prisma.UserAttachmentUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutRefreshTokenInput = {
@@ -838,6 +874,91 @@ export type UserUncheckedUpdateWithoutRefreshTokenInput = {
   products?: Prisma.ProductUncheckedUpdateManyWithoutUserNestedInput
   favorite?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  userAttachments?: Prisma.UserAttachmentUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutUserAttachmentsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  role?: $Enums.ROLE
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  deletionRequestedAt?: Date | string | null
+  hardDeleteScheduledAt?: Date | string | null
+  products?: Prisma.ProductCreateNestedManyWithoutUserInput
+  favorite?: Prisma.FavoriteCreateNestedManyWithoutUserInput
+  refreshToken?: Prisma.RefreshTokenCreateNestedOneWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutUserAttachmentsInput = {
+  id?: string
+  name: string
+  email: string
+  password: string
+  role?: $Enums.ROLE
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deletedAt?: Date | string | null
+  deletionRequestedAt?: Date | string | null
+  hardDeleteScheduledAt?: Date | string | null
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutUserInput
+  favorite?: Prisma.FavoriteUncheckedCreateNestedManyWithoutUserInput
+  refreshToken?: Prisma.RefreshTokenUncheckedCreateNestedOneWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutUserAttachmentsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserAttachmentsInput, Prisma.UserUncheckedCreateWithoutUserAttachmentsInput>
+}
+
+export type UserUpsertWithoutUserAttachmentsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutUserAttachmentsInput, Prisma.UserUncheckedUpdateWithoutUserAttachmentsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutUserAttachmentsInput, Prisma.UserUncheckedCreateWithoutUserAttachmentsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutUserAttachmentsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutUserAttachmentsInput, Prisma.UserUncheckedUpdateWithoutUserAttachmentsInput>
+}
+
+export type UserUpdateWithoutUserAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletionRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hardDeleteScheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  products?: Prisma.ProductUpdateManyWithoutUserNestedInput
+  favorite?: Prisma.FavoriteUpdateManyWithoutUserNestedInput
+  refreshToken?: Prisma.RefreshTokenUpdateOneWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutUserAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletionRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  hardDeleteScheduledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  products?: Prisma.ProductUncheckedUpdateManyWithoutUserNestedInput
+  favorite?: Prisma.FavoriteUncheckedUpdateManyWithoutUserNestedInput
+  refreshToken?: Prisma.RefreshTokenUncheckedUpdateOneWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -849,12 +970,14 @@ export type UserCountOutputType = {
   products: number
   favorite: number
   orders: number
+  userAttachments: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   products?: boolean | UserCountOutputTypeCountProductsArgs
   favorite?: boolean | UserCountOutputTypeCountFavoriteArgs
   orders?: boolean | UserCountOutputTypeCountOrdersArgs
+  userAttachments?: boolean | UserCountOutputTypeCountUserAttachmentsArgs
 }
 
 /**
@@ -888,6 +1011,13 @@ export type UserCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Ext
   where?: Prisma.OrderWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountUserAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserAttachmentWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -904,6 +1034,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   favorite?: boolean | Prisma.User$favoriteArgs<ExtArgs>
   refreshToken?: boolean | Prisma.User$refreshTokenArgs<ExtArgs>
   orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
+  userAttachments?: boolean | Prisma.User$userAttachmentsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -952,6 +1083,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   favorite?: boolean | Prisma.User$favoriteArgs<ExtArgs>
   refreshToken?: boolean | Prisma.User$refreshTokenArgs<ExtArgs>
   orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
+  userAttachments?: boolean | Prisma.User$userAttachmentsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -964,6 +1096,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     favorite: Prisma.$FavoritePayload<ExtArgs>[]
     refreshToken: Prisma.$RefreshTokenPayload<ExtArgs> | null
     orders: Prisma.$OrderPayload<ExtArgs>[]
+    userAttachments: Prisma.$UserAttachmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1374,6 +1507,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   favorite<T extends Prisma.User$favoriteArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$favoriteArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FavoritePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   refreshToken<T extends Prisma.User$refreshTokenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$refreshTokenArgs<ExtArgs>>): Prisma.Prisma__RefreshTokenClient<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   orders<T extends Prisma.User$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userAttachments<T extends Prisma.User$userAttachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userAttachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1889,6 +2023,30 @@ export type User$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+}
+
+/**
+ * User.userAttachments
+ */
+export type User$userAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserAttachment
+   */
+  select?: Prisma.UserAttachmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserAttachment
+   */
+  omit?: Prisma.UserAttachmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserAttachmentInclude<ExtArgs> | null
+  where?: Prisma.UserAttachmentWhereInput
+  orderBy?: Prisma.UserAttachmentOrderByWithRelationInput | Prisma.UserAttachmentOrderByWithRelationInput[]
+  cursor?: Prisma.UserAttachmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserAttachmentScalarFieldEnum | Prisma.UserAttachmentScalarFieldEnum[]
 }
 
 /**
