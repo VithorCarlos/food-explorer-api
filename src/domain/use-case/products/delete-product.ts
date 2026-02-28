@@ -12,7 +12,6 @@ export class DeleteProductUseCase {
 
   async execute({ id, userId }: DeleteProductRequest) {
     const product = await this.productsRepository.findById(id);
-
     if (!product) {
       throw new ProductDoesNotExists();
     }

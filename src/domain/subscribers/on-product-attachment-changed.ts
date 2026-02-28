@@ -25,7 +25,6 @@ export class OnProductAttachmentChanged implements EventHandler {
     const attachment = await this.attachmentsRepository.findById(
       attachmentId.toString(),
     );
-
     if (attachment?.url) {
       await Promise.all([
         this.uploader.delete({ key: attachment.url }),

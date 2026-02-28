@@ -19,6 +19,12 @@ export class PrismaProductsRepository implements ProductsRepository {
   async findById(id: string) {
     const product = await this.prisma.product.findFirst({
       where: { id },
+      include: {
+        productAttachments: {
+          take: 1,
+          where: { isMain: true },
+        },
+      },
     });
 
     if (!product) {
@@ -295,7 +301,6 @@ export class PrismaProductsRepository implements ProductsRepository {
         productId: id,
       },
     });
-
     await this.prisma.product.delete({
       where: {
         id,
