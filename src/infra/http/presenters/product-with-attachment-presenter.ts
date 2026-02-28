@@ -4,6 +4,7 @@ export class ProductWithAttachmentPresenter {
   static toHTTP(productWithAttachment: ProductWithAttachment) {
     return {
       productId: productWithAttachment.productId.toString(),
+      isFavorited: productWithAttachment.isFavorited,
       attachmentUrl: productWithAttachment.attachmentUrl,
       attachmentId: productWithAttachment.attachmentId?.toString(),
       userId: productWithAttachment.userId.toString(),

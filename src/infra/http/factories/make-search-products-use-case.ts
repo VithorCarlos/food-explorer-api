@@ -5,7 +5,7 @@ import { R2Storage } from "@/infra/storage/r2-storage";
 
 export function makeSearchProductsUseCase(prisma: PrismaService) {
   const r2Storage = new R2Storage();
-  const productsRepository = new PrismaProductsRepository(prisma, r2Storage);
+  const productsRepository = new PrismaProductsRepository(prisma);
   const searchProductUsecase = new SearchProductUseCase(productsRepository);
 
   return searchProductUsecase;

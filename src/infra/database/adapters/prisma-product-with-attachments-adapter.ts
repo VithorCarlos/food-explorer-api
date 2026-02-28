@@ -13,10 +13,9 @@ interface PrismaProductWithAttachmentRaw {
       url: string;
     };
   }[];
-  // favorite: {
-  //   id: string;
-  //   productId: string;
-  // };
+  favorite?: {
+    id: string;
+  }[];
   category: keyof typeof PRODUCT_CATEGORIES;
   title: string;
   ingredients: string[];
@@ -35,14 +34,7 @@ export class PrismaProductWithAttachmentsAdapter {
     const attchment = raw.productAttachments[0]?.attachment;
     return ProductWithAttachment.create({
       productId: new UniqueEntityId(raw.id),
-      ...(attchment && {
-        attachmentUrl: attchment.url
-          ? `${env.CLOUDFARE_PUBLIC_CDN}/${attchment.url}`
-          : null,
-        attachmentId: new UniqueEntityId(
-          raw.productAttachments[0]?.attachmentId,
-        ),
-      }),
+      ...(raw.favorite && { isFavorited: raw.favorite.length > 0 }),
       userId: new UniqueEntityId(raw.userId),
       title: raw.title,
       category: raw.category as PRODUCT_CATEGORIES,
@@ -51,6 +43,14 @@ export class PrismaProductWithAttachmentsAdapter {
       price: Number(raw.price),
       createdAt: raw.createdAt,
       updatedAt: raw.updatedAt,
+      ...(attchment && {
+        attachmentUrl: attchment.url
+          ? `${env.CLOUDFARE_PUBLIC_CDN}/${attchment.url}`
+          : null,
+        attachmentId: new UniqueEntityId(
+          raw.productAttachments[0]?.attachmentId,
+        ),
+      }),
     });
   }
 }

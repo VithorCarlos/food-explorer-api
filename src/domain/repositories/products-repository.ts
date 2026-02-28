@@ -23,6 +23,7 @@ export interface ProductsRepository {
   ): Promise<PaginatedResponse<Product>>;
   searchManyWithAttachments(
     props: SearchManyProductsParams,
+    userId: string,
   ): Promise<PaginatedResponse<ProductWithAttachment>>;
   findActiveCategories(): Promise<PRODUCT_CATEGORIES[]>;
   create(product: Product): Promise<void>;

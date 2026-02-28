@@ -7,6 +7,7 @@ interface SearchProductRequest {
   title?: string;
   category?: PRODUCT_CATEGORIES;
   ingredients?: string[];
+  userId: string;
 }
 
 export class SearchProductUseCase {
@@ -18,14 +19,18 @@ export class SearchProductUseCase {
     category,
     page = 1,
     perPage = 10,
+    userId,
   }: SearchProductRequest) {
-    const products = await this.productsRepository.searchManyWithAttachments({
-      page,
-      perPage,
-      ...(title && { title }),
-      ...(category && { category }),
-      ...(ingredients?.length && { ingredients }),
-    });
+    const products = await this.productsRepository.searchManyWithAttachments(
+      {
+        page,
+        perPage,
+        ...(title && { title }),
+        ...(category && { category }),
+        ...(ingredients?.length && { ingredients }),
+      },
+      userId,
+    );
 
     return { products };
   }

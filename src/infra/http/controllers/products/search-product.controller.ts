@@ -19,6 +19,7 @@ export const searchProductController = async (
   const { page, perPage, category, title, ingredients } = searchSchema.parse(
     request.query,
   );
+  const userId = request.user.sub;
 
   try {
     const searchProductsUseCase = makeSearchProductsUseCase(
@@ -31,6 +32,7 @@ export const searchProductController = async (
       ...(category && { category }),
       ...(title && { title }),
       ...(ingredients?.length && { ingredients }),
+      userId,
     });
 
     const products = result.products.data.map(

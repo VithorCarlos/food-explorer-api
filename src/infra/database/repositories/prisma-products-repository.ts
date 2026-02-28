@@ -125,15 +125,10 @@ export class PrismaProductsRepository implements ProductsRepository {
     return activeCategories.map((c) => c.category as PRODUCT_CATEGORIES);
   }
 
-  async searchManyWithAttachments({
-    page,
-    perPage,
-    category,
-    title,
-    ingredients,
-  }: SearchManyProductsParams): Promise<
-    PaginatedResponse<ProductWithAttachment>
-  > {
+  async searchManyWithAttachments(
+    { page, perPage, category, title, ingredients }: SearchManyProductsParams,
+    userId: string,
+  ): Promise<PaginatedResponse<ProductWithAttachment>> {
     const searchConditions: Prisma.ProductWhereInput[] = [];
 
     if (category) {
@@ -171,6 +166,7 @@ export class PrismaProductsRepository implements ProductsRepository {
       this.prisma.product.findMany({
         where,
         include: {
+          favorite: { where: { userId }, select: { id: true } },
           productAttachments: {
             take: 1,
             where: { isMain: true },

@@ -14,7 +14,7 @@ interface ProductWithAttachmentProps {
   userId: UniqueEntityId;
   createdAt: Date;
   updatedAt?: Date;
-  favoriteId?: string;
+  isFavorited?: boolean;
 }
 
 export class ProductWithAttachment extends ValueObject<ProductWithAttachmentProps> {
@@ -56,6 +56,10 @@ export class ProductWithAttachment extends ValueObject<ProductWithAttachmentProp
 
   get createdAt() {
     return this.props.createdAt;
+  }
+
+  get isFavorited() {
+    return this.props.isFavorited;
   }
 
   get updatedAt() {
