@@ -285,10 +285,6 @@ export class PrismaProductsRepository implements ProductsRepository {
 
       if (remainingProducsAttachments === 0 && existingProductAttachment) {
         DomainEvents.dispatchEventsForAggregate(data.id);
-
-        await this.prisma.attachment.delete({
-          where: { id: oldAttachmentId },
-        });
       }
     }
   }
@@ -298,16 +294,7 @@ export class PrismaProductsRepository implements ProductsRepository {
       where: {
         productId: id,
       },
-      include: {
-        attachment: true,
-      },
     });
-
-    if (productAttachment) {
-      await this.prisma.attachment.delete({
-        where: { id: productAttachment.attachmentId },
-      });
-    }
 
     await this.prisma.product.delete({
       where: {
@@ -315,6 +302,8 @@ export class PrismaProductsRepository implements ProductsRepository {
       },
     });
 
-    DomainEvents.dispatchEventsForAggregate(new UniqueEntityId(id));
+    if (productAttachment) {
+      DomainEvents.dispatchEventsForAggregate(new UniqueEntityId(id));
+    }
   }
 }
